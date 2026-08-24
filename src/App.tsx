@@ -1,12 +1,6 @@
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+
 export default function App() {
-  return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold text-emerald-400 mb-2">
-        Art Project Frontend
-      </h1>
-      <p className="text-slate-400">
-        React + TypeScript + Vite + Tailwind CSS v4 готові до роботи
-      </p>
-    </div>
-  );
+  return (<RouterProvider router={router} />);
 }
