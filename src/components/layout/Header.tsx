@@ -1,3 +1,9 @@
+import { Logo } from '@/components/ui/Logo';
+
 export const Header = () => {
-  return <div>Header</div>;
+  return (
+    <header>
+      <Logo />
+    </header>
+  );
 };
