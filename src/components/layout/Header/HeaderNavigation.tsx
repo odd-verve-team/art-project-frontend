@@ -21,11 +21,11 @@ const getLinkClass =
       : 'font-[300] opacity-70 hover:opacity-100'
     }
   `;
-  };
+};
 
-export const Navigation = () => {
+export const HeaderNavigation = () => {
   return (
-    <nav aria-label="Navigation" className="flex w-[485px] h-[50px]">
+    <nav aria-label="HeaderNavigation" className="flex w-[485px] h-[50px]">
       <ul className="flex w-full items-center justify-between">
         {NAV_ITEMS.map((item) => (
           <li key={item.path} className="flex-1 flex justify-center">

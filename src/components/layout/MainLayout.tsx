@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom"
-import { Header } from "./Header"
-import { Footer } from "./Footer"
-import { GlobalModal } from "../modals/GlobalModal"
+import { Outlet } from 'react-router-dom';
+import { Header } from './Header/Header';
+import { Footer } from './Footer/Footer';
+import { GlobalModal } from '../modals/GlobalModal';
 
 export const MainLayout = () => {
   return (
@@ -14,5 +14,5 @@ export const MainLayout = () => {
 
       <GlobalModal />
     </div>
-  )
-}
+  );
+};
