@@ -3,7 +3,7 @@ import { NewsletterForm } from "./NewsletterForm"
 
 export const Footer = () => {
   return (
-    <div className="bg-primary text-background border-t border-background">
+    <div className="bg-primary text-background border-t border-background px-[48px] pb-[16px]">
       <div className="flex justify-between">
         <FooterNavigation />
         <NewsletterForm />
