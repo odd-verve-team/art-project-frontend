@@ -6,6 +6,10 @@
   --color-muted: #707070;
   --color-border: #A4A4A4;
 
+  --spacing-global: 48px;
+  --spacing-header: 38px;
+  --spacing-footer: 16px;
+
   --font-sans: "Archivo", sans-serif;
 }
 
