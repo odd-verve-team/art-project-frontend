@@ -8,7 +8,7 @@ export const MainLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 px-[48px]">
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
       <PreFooter />
