@@ -21,7 +21,10 @@ export const HeroLogo = () => {
   } as const;
 
   return (
-    <div className="absolute inset-0 pointer-events-none" style={layoutVars}>
+    <div
+      className="absolute inset-0 pointer-events-none select-none"
+      style={layoutVars}
+    >
       {/* ==================== CORNERS ==================== */}
       <motion.span
         layoutId="logo-corner-tl"

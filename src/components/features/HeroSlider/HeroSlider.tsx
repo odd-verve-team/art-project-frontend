@@ -7,15 +7,17 @@ import {
 } from 'framer-motion';
 import { heroSlides } from './sliderData';
 import { SliderIndicator } from './SliderIndicator';
-import { useEffect, useRef, useCallback } from 'react';
+import { SpeedControl } from './SpeedControl';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
-const SLIDE_DURATION = 10;
+const BASE_DURATION = 10;
 
 export const HeroSlider = () => {
   const totalSlides = heroSlides.length;
   const progress = useMotionValue(0);
   const controlsRef = useRef<ReturnType<typeof animate> | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [speed, setSpeed] = useState(1);
 
   const x = useTransform(progress, (p) => {
     const normalized = ((p % totalSlides) + totalSlides) % totalSlides;
@@ -33,21 +35,22 @@ export const HeroSlider = () => {
     const normalized = ((current % totalSlides) + totalSlides) % totalSlides;
     progress.set(normalized);
 
+    const duration = BASE_DURATION / speed;
     const remainingFraction = (totalSlides - normalized) / totalSlides;
 
     controlsRef.current = animate(progress, totalSlides, {
-      duration: SLIDE_DURATION * remainingFraction,
+      duration: duration * remainingFraction,
       ease: 'linear',
       onComplete: () => {
         progress.set(0);
         controlsRef.current = animate(progress, totalSlides, {
-          duration: SLIDE_DURATION,
+          duration: duration,
           ease: 'linear',
           repeat: Infinity,
         });
       },
     });
-  }, [progress, totalSlides]);
+  }, [progress, totalSlides, speed]);
 
   useEffect(() => {
     startAutoScroll();
@@ -69,6 +72,11 @@ export const HeroSlider = () => {
 
   const handleSliderPanEnd = () => {
     startAutoScroll();
+  };
+
+
+  const handleSpeedChange = (newSpeed: number) => {
+    setSpeed(newSpeed);
   };
 
   return (
@@ -112,6 +120,8 @@ export const HeroSlider = () => {
         onScrubStart={stopAutoScroll}
         onScrubEnd={startAutoScroll}
       />
+
+      <SpeedControl speed={speed} onSpeedChange={handleSpeedChange} />
     </>
   );
 };

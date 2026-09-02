@@ -9,7 +9,7 @@ export const HeroFrame = () => {
   return (
     <div className="absolute inset-0 pointer-events-none" style={frameVars}>
       {/* TEXT */}
-      <div className="absolute top-[var(--offset-y)] left-1/2 -translate-x-1/2 text-background text-[22px] font-light leading-none uppercase">
+      <div className="absolute top-[var(--offset-y)] left-1/2 -translate-x-1/2 text-background text-[22px] font-light leading-none uppercase select-none">
         Design 2026
       </div>
 
