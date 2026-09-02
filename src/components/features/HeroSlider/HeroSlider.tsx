@@ -22,6 +22,10 @@ export const HeroSlider = () => {
     return `${-(normalized / totalSlides) * 50}%`;
   });
 
+  const stopAutoScroll = useCallback(() => {
+    controlsRef.current?.stop();
+  }, []);
+
   const startAutoScroll = useCallback(() => {
     controlsRef.current?.stop();
 
@@ -50,20 +54,20 @@ export const HeroSlider = () => {
     return () => controlsRef.current?.stop();
   }, [startAutoScroll]);
 
-  const handlePanStart = () => {
-    controlsRef.current?.stop();
+  // --- Slider drag ---
+
+  const handleSliderPanStart = () => {
+    stopAutoScroll();
   };
 
-  const handlePan = (_event: PointerEvent, info: PanInfo) => {
+  const handleSliderPan = (_event: PointerEvent, info: PanInfo) => {
     if (!trackRef.current) return;
-
     const halfWidth = trackRef.current.scrollWidth / 2;
     const deltaProgress = (-info.delta.x / halfWidth) * totalSlides;
-
     progress.set(progress.get() + deltaProgress);
   };
 
-  const handlePanEnd = () => {
+  const handleSliderPanEnd = () => {
     startAutoScroll();
   };
 
@@ -72,9 +76,9 @@ export const HeroSlider = () => {
       <motion.div
         className="w-full z-0 absolute top-1/2 -translate-y-1/2 overflow-hidden cursor-grab active:cursor-grabbing"
         style={{ touchAction: 'none' }}
-        onPanStart={handlePanStart}
-        onPan={handlePan}
-        onPanEnd={handlePanEnd}
+        onPanStart={handleSliderPanStart}
+        onPan={handleSliderPan}
+        onPanEnd={handleSliderPanEnd}
       >
         <motion.div
           ref={trackRef}
@@ -102,7 +106,12 @@ export const HeroSlider = () => {
         </motion.div>
       </motion.div>
 
-      <SliderIndicator progress={progress} totalSlides={totalSlides} />
+      <SliderIndicator
+        progress={progress}
+        totalSlides={totalSlides}
+        onScrubStart={stopAutoScroll}
+        onScrubEnd={startAutoScroll}
+      />
     </>
   );
 };
