@@ -1,14 +1,26 @@
-import { heroSlides } from "./sliderData";
+import type { MotionValue } from 'framer-motion';
+import { heroSlides } from './sliderData';
+import { IndicatorLine } from './IndicatorLine';
 
-export const SliderIndicator = () => {
+interface SliderIndicatorProps {
+  progress: MotionValue<number>;
+  totalSlides: number;
+}
+
+export const SliderIndicator = ({
+  progress,
+  totalSlides,
+}: SliderIndicatorProps) => {
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-[10px] bottom-[68px]">
-      {heroSlides.map((slide) => (
-        <div
+    <div className="absolute left-1/2 -translate-x-1/2 flex items-center h-[24px] gap-[10px] bottom-[68px]">
+      {heroSlides.map((slide, index) => (
+        <IndicatorLine
           key={slide.id}
-          className="w-[1px] h-[13px] bg-background transition-all duration-500"
+          index={index}
+          progress={progress}
+          totalSlides={totalSlides}
         />
       ))}
     </div>
   );
-}
+};
