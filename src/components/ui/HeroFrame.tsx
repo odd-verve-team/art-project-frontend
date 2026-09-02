@@ -1,7 +1,7 @@
 export const HeroFrame = () => {
   const frameVars = {
     '--offset-x': '405px', // Horizontal screen edge offset
-    '--offset-y': '265px', // Bottom screen edge offset
+    '--offset-y': '205px', // Bottom screen edge offset
     '--corner-size': '25px', // Corner dimensions (width & height)
     '--border-width': '2px', // Corner line thickness
   } as React.CSSProperties;
