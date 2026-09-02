@@ -9,8 +9,8 @@ import slide8 from '@/assets/hero-slider/slide-08.png';
 
 export const heroSlides = [
   { id: 1, image: slide1, alt: 'Art Abstract Man' },
-  { id: 2, image: slide2, alt: 'Art Forest Look Up' },
-  { id: 3, image: slide3, alt: 'Art Abstract Faces' },
+  { id: 2, image: slide2, alt: 'Art Abstract Faces' },
+  { id: 3, image: slide3, alt: 'Art Forest Look Up' },
   { id: 4, image: slide4, alt: 'Art Red Road' },
   { id: 5, image: slide5, alt: 'Art Golden Landscape' },
   { id: 6, image: slide6, alt: 'Art Green Waterfall' },
