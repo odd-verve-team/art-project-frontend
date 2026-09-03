@@ -1,6 +1,6 @@
 export const AboutSection = () => {
   return (
-    <section className="grid grid-cols-3 items-start gap-x-[24px] pt-[147px]">
+    <section id="about" className="grid grid-cols-3 items-start gap-x-[24px] pt-[147px]">
       <div className="max-w-[365px] uppercase flex select-none">
         <p className="text-[100px]/[70px] font-[900] mt-[10px]">odd</p>
         <p className="text-[36px] font-[700] mt-[-5px] ml-[-5px]">
