@@ -10,19 +10,31 @@ import { SliderIndicator } from './SliderIndicator';
 import { SpeedControl } from './SpeedControl';
 import { useEffect, useRef, useCallback, useState } from 'react';
 
-const BASE_DURATION = 10;
+const BASE_DURATION = 10; // Auto-scroll: seconds per full cycle at 1× speed
+const SLIDER_DELAY = 1.5; // When slider starts entering from right (seconds)
+const CONTROLS_DELAY = 0.2; // Pause before controls appear after slider fills viewport
 
 export const HeroSlider = () => {
   const totalSlides = heroSlides.length;
   const progress = useMotionValue(0);
-  const controlsRef = useRef<ReturnType<typeof animate> | null>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [speed, setSpeed] = useState(1);
+  const entranceX = useMotionValue(
+    typeof window !== 'undefined' ? window.innerWidth : 2000,
+  );
 
-  const x = useTransform(progress, (p) => {
+  const controlsRef = useRef<ReturnType<typeof animate> | null>(null);
+  const entranceRef = useRef<ReturnType<typeof animate> | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const isEntranceDone = useRef(false);
+
+  const [speed, setSpeed] = useState(1);
+  const [showControls, setShowControls] = useState(false);
+
+
+  const scrollX = useTransform(progress, (p) => {
     const normalized = ((p % totalSlides) + totalSlides) % totalSlides;
     return `${-(normalized / totalSlides) * 50}%`;
   });
+
 
   const stopAutoScroll = useCallback(() => {
     controlsRef.current?.stop();
@@ -44,7 +56,7 @@ export const HeroSlider = () => {
       onComplete: () => {
         progress.set(0);
         controlsRef.current = animate(progress, totalSlides, {
-          duration: duration,
+          duration,
           ease: 'linear',
           repeat: Infinity,
         });
@@ -52,31 +64,62 @@ export const HeroSlider = () => {
     });
   }, [progress, totalSlides, speed]);
 
+
   useEffect(() => {
-    startAutoScroll();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const viewportWidth = window.innerWidth;
+        const halfTrackWidth = trackRef.current?.scrollWidth
+          ? trackRef.current.scrollWidth / 2
+          : viewportWidth * 3;
+
+        const autoScrollSpeed = halfTrackWidth / BASE_DURATION;
+        const entranceDuration = viewportWidth / autoScrollSpeed;
+
+        entranceX.set(viewportWidth);
+
+        entranceRef.current = animate(entranceX, 0, {
+          duration: entranceDuration,
+          ease: 'linear',
+          delay: SLIDER_DELAY,
+          onComplete: () => {
+            isEntranceDone.current = true;
+            startAutoScroll();
+            setTimeout(() => setShowControls(true), CONTROLS_DELAY * 1000);
+          },
+        });
+      });
+    });
+
+    return () => {
+      entranceRef.current?.stop();
+      controlsRef.current?.stop();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- runs once on mount
+
+  useEffect(() => {
+    if (isEntranceDone.current) {
+      startAutoScroll();
+    }
     return () => controlsRef.current?.stop();
   }, [startAutoScroll]);
 
-  // --- Slider drag ---
 
   const handleSliderPanStart = () => {
+    if (!isEntranceDone.current) return;
     stopAutoScroll();
   };
 
   const handleSliderPan = (_event: PointerEvent, info: PanInfo) => {
-    if (!trackRef.current) return;
+    if (!isEntranceDone.current || !trackRef.current) return;
     const halfWidth = trackRef.current.scrollWidth / 2;
     const deltaProgress = (-info.delta.x / halfWidth) * totalSlides;
     progress.set(progress.get() + deltaProgress);
   };
 
   const handleSliderPanEnd = () => {
+    if (!isEntranceDone.current) return;
     startAutoScroll();
-  };
-
-
-  const handleSpeedChange = (newSpeed: number) => {
-    setSpeed(newSpeed);
   };
 
   return (
@@ -88,40 +131,45 @@ export const HeroSlider = () => {
         onPan={handleSliderPan}
         onPanEnd={handleSliderPanEnd}
       >
-        <motion.div
-          ref={trackRef}
-          className="w-max flex items-center"
-          style={{ x }}
-        >
-          {heroSlides.map((slide) => (
-            <img
-              key={slide.id}
-              src={slide.image}
-              alt={slide.alt}
-              className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
-              draggable={false}
-            />
-          ))}
-          {heroSlides.map((slide) => (
-            <img
-              key={`dup-${slide.id}`}
-              src={slide.image}
-              alt={slide.alt}
-              className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
-              draggable={false}
-            />
-          ))}
+        <motion.div style={{ x: entranceX }}>
+          <motion.div
+            ref={trackRef}
+            className="w-max flex items-center"
+            style={{ x: scrollX }}
+          >
+            {heroSlides.map((slide) => (
+              <img
+                key={slide.id}
+                src={slide.image}
+                alt={slide.alt}
+                className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
+                draggable={false}
+              />
+            ))}
+            {heroSlides.map((slide) => (
+              <img
+                key={`dup-${slide.id}`}
+                src={slide.image}
+                alt={slide.alt}
+                className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
+                draggable={false}
+              />
+            ))}
+          </motion.div>
         </motion.div>
       </motion.div>
 
-      <SliderIndicator
-        progress={progress}
-        totalSlides={totalSlides}
-        onScrubStart={stopAutoScroll}
-        onScrubEnd={startAutoScroll}
-      />
-
-      <SpeedControl speed={speed} onSpeedChange={handleSpeedChange} />
+      {showControls && (
+        <>
+          <SliderIndicator
+            progress={progress}
+            totalSlides={totalSlides}
+            onScrubStart={stopAutoScroll}
+            onScrubEnd={startAutoScroll}
+          />
+          <SpeedControl speed={speed} onSpeedChange={setSpeed} />
+        </>
+      )}
     </>
   );
 };

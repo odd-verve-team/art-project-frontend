@@ -24,10 +24,8 @@ export const SliderIndicator = ({
 
   const handlePan = (_event: PointerEvent, info: PanInfo) => {
     if (!containerRef.current) return;
-
     const width = containerRef.current.offsetWidth;
     const deltaProgress = (info.delta.x / width) * totalSlides;
-
     progress.set(progress.get() + deltaProgress);
   };
 
@@ -40,6 +38,9 @@ export const SliderIndicator = ({
       ref={containerRef}
       className="absolute left-1/2 -translate-x-1/2 flex items-center h-[24px] gap-[10px] bottom-[68px] cursor-grab active:cursor-grabbing"
       style={{ touchAction: 'none' }}
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       onPanStart={handlePanStart}
       onPan={handlePan}
       onPanEnd={handlePanEnd}

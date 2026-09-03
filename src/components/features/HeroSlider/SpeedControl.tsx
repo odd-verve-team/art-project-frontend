@@ -47,7 +47,12 @@ export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
   };
 
   return (
-    <div className="absolute bottom-[185px] left-1/2 -translate-x-1/2 flex flex-col items-center">
+    <motion.div
+      className="absolute bottom-[185px] left-1/2 -translate-x-1/2 flex flex-col items-center"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+    >
       <div
         ref={trackRef}
         className="relative h-[20px] flex items-center cursor-pointer"
@@ -71,6 +76,6 @@ export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
       <span className="text-background/30 text-[10px] tracking-[0.15em] uppercase select-none">
         speed — {formatSpeed(speed)}×
       </span>
-    </div>
+    </motion.div>
   );
 };
