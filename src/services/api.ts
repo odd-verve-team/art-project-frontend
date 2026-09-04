@@ -10,7 +10,7 @@ export const api = axios.create({
 });
 
 export interface GetArtworksParams {
-  featured?: boolean;
+  is_featured?: boolean;
   status?: string;
 }
 
