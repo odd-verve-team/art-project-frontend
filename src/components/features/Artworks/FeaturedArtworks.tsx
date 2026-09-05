@@ -23,6 +23,7 @@ export const FeaturedArtworks = () => {
           className={`
             border-[1px] border-primary px-[44px] py-[22px]
             text-[24px] font-[300] uppercase
+            hover:bg-primary hover:text-background transition-colors duration-500 ease-in-out
           `}
         >
           go to gallery
