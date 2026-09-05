@@ -8,7 +8,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   return (
     <div
       style={{ aspectRatio: size }}
-      className="relative overflow-hidden bg-background/50"
+      className="relative overflow-hidden"
     >
       <img
         src={artwork.image_url}
@@ -16,6 +16,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
         onLoad={() => setIsLoaded(true)}
         className={`
           absolute inset-0 w-full h-full object-cover
+          p-[24px] border-[1px] border-primary
           transition-opacity duration-700 ease-in-out
           ${isLoaded ? 'opacity-100' : 'opacity-0'}
         `}
