@@ -1,3 +1,4 @@
+import type { Artwork } from '@/types/artwork';
 import axios from 'axios';
 
 export const api = axios.create({
@@ -7,3 +8,15 @@ export const api = axios.create({
   },
   timeout: 10000,
 });
+
+export interface GetArtworksParams {
+  is_featured?: boolean;
+  status?: string;
+}
+
+export const artworksApi = {
+  getAll: async (params?: GetArtworksParams): Promise<Artwork[]> => {
+    const response = await api.get('/artworks', { params });
+    return response.data;
+  },
+};

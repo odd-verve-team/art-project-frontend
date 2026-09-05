@@ -5,6 +5,7 @@ import { HeroSlider } from "@/components/features/HeroSlider/HeroSlider";
 import { HeroFrame } from "@/components/ui/HeroFrame";
 import { HeroLogo } from "@/components/ui/HeroLogo"
 import { useEffect } from "react";
+import { FeaturedArtworks } from "@/components/features/Artworks/FeaturedArtworks";
 
 export const HomePage = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ export const HomePage = () => {
       </div>
       <div className="mx-global">
         <AboutSection />
+        <FeaturedArtworks />
       </div>
     </div>
   );
