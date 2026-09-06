@@ -1,8 +1,8 @@
-import art1 from '@/assets/manifesto/manifesto-art-1.png';
-import art2 from '@/assets/manifesto/manifesto-art-2.png';
-import art3 from '@/assets/manifesto/manifesto-art-3.png';
-import art4 from '@/assets/manifesto/manifesto-art-4.png';
-import art5 from '@/assets/manifesto/manifesto-art-5.png';
+import art1 from '@/assets/manifesto/manifesto-art-1.webp';
+import art2 from '@/assets/manifesto/manifesto-art-2.webp';
+import art3 from '@/assets/manifesto/manifesto-art-3.webp';
+import art4 from '@/assets/manifesto/manifesto-art-4.webp';
+import art5 from '@/assets/manifesto/manifesto-art-5.webp';
 
 export const PreFooter = () => {
   return (

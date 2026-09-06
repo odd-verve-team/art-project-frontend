@@ -1,11 +1,11 @@
-import slide1 from '@/assets/hero-slider/slide-01.png';
-import slide2 from '@/assets/hero-slider/slide-02.png';
-import slide3 from '@/assets/hero-slider/slide-03.png';
-import slide4 from '@/assets/hero-slider/slide-04.png';
-import slide5 from '@/assets/hero-slider/slide-05.png';
-import slide6 from '@/assets/hero-slider/slide-06.png';
-import slide7 from '@/assets/hero-slider/slide-07.png';
-import slide8 from '@/assets/hero-slider/slide-08.png';
+import slide1 from '@/assets/hero-slider/slide-01.webp';
+import slide2 from '@/assets/hero-slider/slide-02.webp';
+import slide3 from '@/assets/hero-slider/slide-03.webp';
+import slide4 from '@/assets/hero-slider/slide-04.webp';
+import slide5 from '@/assets/hero-slider/slide-05.webp';
+import slide6 from '@/assets/hero-slider/slide-06.webp';
+import slide7 from '@/assets/hero-slider/slide-07.webp';
+import slide8 from '@/assets/hero-slider/slide-08.webp';
 
 export const heroSlides = [
   { id: 1, image: slide1, alt: 'Art Abstract Man' },
