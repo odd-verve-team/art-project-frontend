@@ -9,25 +9,28 @@ import { heroSlides } from './sliderData';
 import { SliderIndicator } from './SliderIndicator';
 import { SpeedControl } from './SpeedControl';
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { useAppStore } from '@/store/useAppStore';
 
-const BASE_DURATION = 10; // Auto-scroll: seconds per full cycle at 1× speed
-const SLIDER_DELAY = 1.5; // When slider starts entering from right (seconds)
-const CONTROLS_DELAY = 0.2; // Pause before controls appear after slider fills viewport
+const BASE_DURATION = 10;
+const SLIDER_DELAY = 1.5;
+const CONTROLS_DELAY = 0.2;
 
 export const HeroSlider = () => {
+  const [isFirstVisit] = useState(
+    () => !useAppStore.getState().heroAnimated,
+  );
+
   const totalSlides = heroSlides.length;
   const progress = useMotionValue(0);
-  const entranceX = useMotionValue(
-    typeof window !== 'undefined' ? window.innerWidth : 2000,
-  );
+  const entranceX = useMotionValue(isFirstVisit ? window.innerWidth : 0);
 
   const controlsRef = useRef<ReturnType<typeof animate> | null>(null);
   const entranceRef = useRef<ReturnType<typeof animate> | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const isEntranceDone = useRef(false);
+  const isEntranceDone = useRef(!isFirstVisit);
 
   const [speed, setSpeed] = useState(1);
-  const [showControls, setShowControls] = useState(false);
+  const [showControls, setShowControls] = useState(!isFirstVisit);
 
 
   const scrollX = useTransform(progress, (p) => {
@@ -68,6 +71,11 @@ export const HeroSlider = () => {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
+    if (!isFirstVisit) {
+      isEntranceDone.current = true;
+      return;
+    }
 
     const startTime = Date.now();
     const images = Array.from(track.querySelectorAll('img'));
@@ -196,8 +204,13 @@ export const HeroSlider = () => {
             totalSlides={totalSlides}
             onScrubStart={stopAutoScroll}
             onScrubEnd={startAutoScroll}
+            skipAnimation={!isFirstVisit}
           />
-          <SpeedControl speed={speed} onSpeedChange={setSpeed} />
+          <SpeedControl
+            speed={speed}
+            onSpeedChange={setSpeed}
+            skipAnimation={!isFirstVisit}
+          />
         </>
       )}
     </>

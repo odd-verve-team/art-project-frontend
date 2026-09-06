@@ -4,6 +4,7 @@ import { useRef } from 'react';
 interface SpeedControlProps {
   speed: number;
   onSpeedChange: (speed: number) => void;
+  skipAnimation?: boolean;
 }
 
 const MIN_SPEED = 0.1;
@@ -26,7 +27,7 @@ const formatSpeed = (s: number) => {
   return r % 1 === 0 ? r.toFixed(0) : r.toFixed(1);
 };
 
-export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
+export const SpeedControl = ({ speed, onSpeedChange, skipAnimation }: SpeedControlProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const dragX = useMotionValue(speedToX(speed));
 
@@ -49,9 +50,9 @@ export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
   return (
     <motion.div
       className="absolute bottom-[185px] left-1/2 -translate-x-1/2 flex flex-col items-center"
-      initial={{ opacity: 0, y: 30 }}
+      initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }}
     >
       <div
         ref={trackRef}
