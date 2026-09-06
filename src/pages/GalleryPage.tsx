@@ -1,4 +1,5 @@
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
+import { GalleryToolbar } from '@/components/features/GalleryToolbar';
 import { useArtworkStore } from '@/store/useArtworkStore';
 import { useEffect } from 'react';
 
@@ -22,7 +23,10 @@ export const GalleryPage = () => {
       >
         gallery
       </h2>
-      <ArtworkGrid artworks={galleryArtworks} />
+      <div className="mx-global my-[32px] p-[32px] border-[1px] border-primary">
+        <GalleryToolbar />
+        <ArtworkGrid artworks={galleryArtworks} />
+      </div>
     </div>
   );
 };
