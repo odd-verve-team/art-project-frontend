@@ -1,4 +1,4 @@
-import { motion, useMotionValue, type PanInfo } from 'framer-motion';
+import { motion, useMotionValue, useTransform, type PanInfo } from 'framer-motion';
 import { useRef } from 'react';
 
 interface SpeedControlProps {
@@ -63,12 +63,17 @@ export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
 
         <motion.div
           className="absolute h-[1px] bg-background/50 rounded-full"
-          style={{ width: dragX }}
+          style={{ 
+            width: TRACK_WIDTH,
+            scaleX: useTransform(dragX, (x) => x / TRACK_WIDTH),
+            transformOrigin: 'left',
+            willChange: 'transform'
+          }}
         />
 
         <motion.div
           className="absolute w-[6px] h-[6px] rounded-full bg-background/70 cursor-grab active:cursor-grabbing"
-          style={{ x: dragX, marginLeft: -3, touchAction: 'none' }}
+          style={{ x: dragX, marginLeft: -3, touchAction: 'none', willChange: 'transform' }}
           onPan={handlePan}
         />
       </div>

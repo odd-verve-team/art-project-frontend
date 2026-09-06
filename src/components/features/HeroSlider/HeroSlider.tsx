@@ -66,32 +66,62 @@ export const HeroSlider = () => {
 
 
   useEffect(() => {
-    requestAnimationFrame(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const startTime = Date.now();
+    const images = Array.from(track.querySelectorAll('img'));
+
+    const runEntranceAnimation = () => {
       requestAnimationFrame(() => {
-        const viewportWidth = window.innerWidth;
-        const halfTrackWidth = trackRef.current?.scrollWidth
-          ? trackRef.current.scrollWidth / 2
-          : viewportWidth * 3;
+        requestAnimationFrame(() => {
+          const viewportWidth = window.innerWidth;
+          const halfTrackWidth = track.scrollWidth / 2;
+          const autoScrollSpeed = halfTrackWidth / BASE_DURATION;
+          const entranceDuration = viewportWidth / autoScrollSpeed;
 
-        const autoScrollSpeed = halfTrackWidth / BASE_DURATION;
-        const entranceDuration = viewportWidth / autoScrollSpeed;
+          const elapsed = (Date.now() - startTime) / 1000;
+          const delay = Math.max(0, SLIDER_DELAY - elapsed);
 
-        entranceX.set(viewportWidth);
-
-        entranceRef.current = animate(entranceX, 0, {
-          duration: entranceDuration,
-          ease: 'linear',
-          delay: SLIDER_DELAY,
-          onComplete: () => {
-            isEntranceDone.current = true;
-            startAutoScroll();
-            setTimeout(() => setShowControls(true), CONTROLS_DELAY * 1000);
-          },
+          entranceX.set(viewportWidth);
+          entranceRef.current = animate(entranceX, 0, {
+            duration: entranceDuration,
+            ease: 'linear',
+            delay,
+            onComplete: () => {
+              isEntranceDone.current = true;
+              startAutoScroll();
+              setTimeout(() => setShowControls(true), CONTROLS_DELAY * 1000);
+            },
+          });
         });
       });
-    });
+    };
+
+    let loadedCount = 0;
+    const incompleteImages = images.filter((img) => !img.complete);
+
+    const onImageLoad = () => {
+      loadedCount++;
+      if (loadedCount >= incompleteImages.length) {
+        runEntranceAnimation();
+      }
+    };
+
+    if (incompleteImages.length === 0) {
+      runEntranceAnimation();
+    } else {
+      incompleteImages.forEach((img) => {
+        img.addEventListener('load', onImageLoad);
+        img.addEventListener('error', onImageLoad);
+      });
+    }
 
     return () => {
+      incompleteImages.forEach((img) => {
+        img.removeEventListener('load', onImageLoad);
+        img.removeEventListener('error', onImageLoad);
+      });
       entranceRef.current?.stop();
       controlsRef.current?.stop();
     };
@@ -131,11 +161,11 @@ export const HeroSlider = () => {
         onPan={handleSliderPan}
         onPanEnd={handleSliderPanEnd}
       >
-        <motion.div style={{ x: entranceX }}>
+        <motion.div style={{ x: entranceX, willChange: 'transform' }}>
           <motion.div
             ref={trackRef}
             className="w-max flex items-center"
-            style={{ x: scrollX }}
+            style={{ x: scrollX, willChange: 'transform' }}
           >
             {heroSlides.map((slide) => (
               <img
