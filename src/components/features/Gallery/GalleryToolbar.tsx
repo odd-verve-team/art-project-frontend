@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { SortingDropdown } from './SortingDropdown';
+
 import FilterIcon from '@/assets/filter-icon.svg';
 import SortingIcon from '@/assets/sorting-icon.svg';
 
@@ -22,14 +24,21 @@ export const GalleryToolbar = () => {
         <img src={FilterIcon} aria-hidden="true" />
       </button>
 
-      <button
-        onClick={() => setIsSortingOpen(!isSortingOpen)}
-        aria-expanded={isSortingOpen}
-        className={`${BTN_BASE} ${BTN_HOVER} ${isSortingOpen ? BTN_ACTIVE : ''}`}
-      >
-        Sorting
-        <img src={SortingIcon} aria-hidden="true" />
-      </button>
+      <div className="relative">
+        <button
+          onClick={() => setIsSortingOpen(!isSortingOpen)}
+          aria-expanded={isSortingOpen}
+          className={`${BTN_BASE} ${BTN_HOVER} ${isSortingOpen ? BTN_ACTIVE : ''}`}
+        >
+          Sorting
+          <img src={SortingIcon} aria-hidden="true" />
+        </button>
+
+        <SortingDropdown
+          isOpen={isSortingOpen}
+          onClose={() => setIsSortingOpen(false)}
+        />
+      </div>
     </div>
   );
 };

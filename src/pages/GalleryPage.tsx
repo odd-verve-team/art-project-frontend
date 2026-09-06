@@ -1,5 +1,5 @@
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
-import { GalleryToolbar } from '@/components/features/GalleryToolbar';
+import { GalleryToolbar } from '@/components/features/Gallery/GalleryToolbar';
 import { useArtworkStore } from '@/store/useArtworkStore';
 import { useEffect } from 'react';
 
