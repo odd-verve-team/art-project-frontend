@@ -8,6 +8,7 @@ interface SliderIndicatorProps {
   totalSlides: number;
   onScrubStart: () => void;
   onScrubEnd: () => void;
+  skipAnimation?: boolean;
 }
 
 export const SliderIndicator = ({
@@ -15,6 +16,7 @@ export const SliderIndicator = ({
   totalSlides,
   onScrubStart,
   onScrubEnd,
+  skipAnimation,
 }: SliderIndicatorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,9 +40,9 @@ export const SliderIndicator = ({
       ref={containerRef}
       className="absolute left-1/2 -translate-x-1/2 flex items-center h-[24px] gap-[10px] bottom-[68px] cursor-grab active:cursor-grabbing"
       style={{ touchAction: 'none' }}
-      initial={{ opacity: 0, y: 40 }}
+      initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }}
       onPanStart={handlePanStart}
       onPan={handlePan}
       onPanEnd={handlePanEnd}
