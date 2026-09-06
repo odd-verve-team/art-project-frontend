@@ -40,28 +40,24 @@ export const HeroLogo = () => {
     >
       {/* ==================== CORNERS ==================== */}
       <motion.span
-        layoutId="logo-corner-tl"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(CORNER_DELAY)}
         className="absolute top-0 left-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-t-[length:var(--border-width)] border-l-[length:var(--border-width)]"
       />
       <motion.span
-        layoutId="logo-corner-tr"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(CORNER_DELAY + 0.05)}
         className="absolute top-0 right-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-t-[length:var(--border-width)] border-r-[length:var(--border-width)]"
       />
       <motion.span
-        layoutId="logo-corner-bl"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(CORNER_DELAY + 0.1)}
         className="absolute bottom-[var(--offset-y)] left-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-b-[length:var(--border-width)] border-l-[length:var(--border-width)]"
       />
       <motion.span
-        layoutId="logo-corner-br"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(CORNER_DELAY + 0.15)}
@@ -70,7 +66,6 @@ export const HeroLogo = () => {
 
       {/* ==================== TEXT ==================== */}
       <motion.span
-        layoutId="logo-text-odd"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(TEXT_DELAY)}
@@ -79,7 +74,6 @@ export const HeroLogo = () => {
         ODD
       </motion.span>
       <motion.span
-        layoutId="logo-text-verve"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(TEXT_DELAY + 0.05)}
@@ -88,7 +82,6 @@ export const HeroLogo = () => {
         VERVE
       </motion.span>
       <motion.span
-        layoutId="logo-text-art"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(TEXT_DELAY + 0.1)}
@@ -97,7 +90,6 @@ export const HeroLogo = () => {
         ART
       </motion.span>
       <motion.span
-        layoutId="logo-text-gallery"
         transition={springTransition}
         initial={{ opacity: 0 }}
         animate={entrance(TEXT_DELAY + 0.15)}
@@ -108,3 +100,4 @@ export const HeroLogo = () => {
     </div>
   );
 };
+
