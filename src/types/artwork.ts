@@ -1,11 +1,17 @@
+export interface Artist {
+  first_name: string;
+  last_name: string;
+  avatar_url: string;
+}
+
 export interface Artwork {
   id: number;
   title: string;
   image_url: string;
   image_width: number;
   image_height: number;
-  artist_full_name: string;
   price: string;
+  artist: Artist;
 
   description?: string;
   category?: string;
@@ -14,5 +20,4 @@ export interface Artwork {
   status?: string;
   is_featured?: boolean;
   created_at?: string;
-  artist?: number;
 }
