@@ -8,7 +8,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   return (
     <div
       style={{ aspectRatio: size }}
-      className="relative overflow-hidden"
+      className="relative group overflow-hidden cursor-pointer"
     >
       <img
         src={artwork.image_url}
@@ -21,6 +21,14 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
           ${isLoaded ? 'opacity-100' : 'opacity-0'}
         `}
       />
+
+      <div
+        className="
+          absolute inset-0
+          bg-gradient-to-t from-primary/70 via-primary/60 to-primary/50
+          opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out
+        "
+      ></div>
     </div>
   );
 }
