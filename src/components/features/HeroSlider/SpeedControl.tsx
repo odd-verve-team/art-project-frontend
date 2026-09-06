@@ -51,7 +51,7 @@ export const SpeedControl = ({ speed, onSpeedChange }: SpeedControlProps) => {
       className="absolute bottom-[185px] left-1/2 -translate-x-1/2 flex flex-col items-center"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
       <div
         ref={trackRef}

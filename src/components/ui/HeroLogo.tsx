@@ -1,10 +1,22 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useAppStore } from '@/store/useAppStore';
 
 const CORNER_DELAY = 0;
 const TEXT_DELAY = 0.25;
 const ENTRANCE_DURATION = 0.5;
 
 export const HeroLogo = () => {
+  const [isFirstVisit] = useState(
+    () => !useAppStore.getState().heroAnimated,
+  );
+
+  useEffect(() => {
+    if (isFirstVisit) {
+      useAppStore.getState().setHeroAnimated(true);
+    }
+  }, [isFirstVisit]);
+
   const layoutVars = {
     '--offset-x': '117px',
     '--offset-y': '68px',
@@ -42,29 +54,37 @@ export const HeroLogo = () => {
       <motion.span
         layoutId="logo-corner-tl"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(CORNER_DELAY)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(CORNER_DELAY),
+        })}
         className="absolute top-0 left-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-t-[length:var(--border-width)] border-l-[length:var(--border-width)]"
       />
       <motion.span
         layoutId="logo-corner-tr"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(CORNER_DELAY + 0.05)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(CORNER_DELAY + 0.05),
+        })}
         className="absolute top-0 right-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-t-[length:var(--border-width)] border-r-[length:var(--border-width)]"
       />
       <motion.span
         layoutId="logo-corner-bl"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(CORNER_DELAY + 0.1)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(CORNER_DELAY + 0.1),
+        })}
         className="absolute bottom-[var(--offset-y)] left-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-b-[length:var(--border-width)] border-l-[length:var(--border-width)]"
       />
       <motion.span
         layoutId="logo-corner-br"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(CORNER_DELAY + 0.15)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(CORNER_DELAY + 0.15),
+        })}
         className="absolute bottom-[var(--offset-y)] right-[var(--offset-x)] w-[var(--corner-size)] h-[var(--corner-size)] border-background border-b-[length:var(--border-width)] border-r-[length:var(--border-width)]"
       />
 
@@ -72,8 +92,10 @@ export const HeroLogo = () => {
       <motion.span
         layoutId="logo-text-odd"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(TEXT_DELAY)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(TEXT_DELAY),
+        })}
         className={`${textBaseClasses} top-[var(--text-offset-y)] left-[calc(var(--offset-x)+var(--text-offset-x))]`}
       >
         ODD
@@ -81,8 +103,10 @@ export const HeroLogo = () => {
       <motion.span
         layoutId="logo-text-verve"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(TEXT_DELAY + 0.05)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(TEXT_DELAY + 0.05),
+        })}
         className={`${textBaseClasses} top-[var(--text-offset-y)] right-[calc(var(--offset-x)+var(--text-offset-x))]`}
       >
         VERVE
@@ -90,8 +114,10 @@ export const HeroLogo = () => {
       <motion.span
         layoutId="logo-text-art"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(TEXT_DELAY + 0.1)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(TEXT_DELAY + 0.1),
+        })}
         className={`${textBaseClasses} bottom-[calc(var(--offset-y)+var(--text-offset-y))] left-[calc(var(--offset-x)+var(--text-offset-x))]`}
       >
         ART
@@ -99,8 +125,10 @@ export const HeroLogo = () => {
       <motion.span
         layoutId="logo-text-gallery"
         transition={springTransition}
-        initial={{ opacity: 0 }}
-        animate={entrance(TEXT_DELAY + 0.15)}
+        {...(isFirstVisit && {
+          initial: { opacity: 0 },
+          animate: entrance(TEXT_DELAY + 0.15),
+        })}
         className={`${textBaseClasses} bottom-[calc(var(--offset-y)+var(--text-offset-y))] right-[calc(var(--offset-x)+var(--text-offset-x))]`}
       >
         GALLERY
@@ -108,4 +136,3 @@ export const HeroLogo = () => {
     </div>
   );
 };
-
