@@ -22,9 +22,11 @@ export const RangeSlider = ({
 
   return (
     <div className="flex flex-col gap-[24px]">
-      <div className="">
+      <div className="flex items-center">
         <h3>{title}</h3>
-        <span>{formatValue(value)}</span>
+        <span className="ml-[10px] font-[600] text-[24px]/[30px] underline">
+          {formatValue(value)}
+        </span>
       </div>
 
       <input

@@ -1,23 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { FilterButtonGroup } from './FilterButtonGroup';
+import { RangeSlider } from './RangeSlider';
 
 import {
   SUBJECT_OPTIONS,
   MEDIUM_OPTIONS,
   SIZE_OPTIONS,
   STATUS_OPTIONS,
+  FILTER_LIMITS,
 } from './galleryConstants';
 
 import CloseIcon from '@/assets/close-icon.svg';
 
+type ArrayCategory = 'subject' | 'medium' | 'size' | 'status';
+type NumberCategory = 'maxPrice' | 'maxYear';
+
+const ACTION_BTN = `
+  text-[14px] font-[500] uppercase cursor-pointer
+  w-[156px] h-[44px] transition-all tracking-[1px]
+`;
+
 interface Props {
   onClose: () => void;
 }
-
-const ACTION_BTN = `
-  w-[156px] h-[44px] text-[14px] font-[600] uppercase cursor-pointer transition-all
-`;
 
 export const FilterPanel = ({ onClose }: Props) => {
   const [draftValues, setDraftValues] = useState({
@@ -25,9 +31,11 @@ export const FilterPanel = ({ onClose }: Props) => {
     medium: [] as string[],
     size: [] as string[],
     status: [] as string[],
-  })
+    maxPrice: FILTER_LIMITS.MAX_PRICE as number,
+    maxYear: FILTER_LIMITS.MAX_YEAR as number,
+  });
 
-  function HandleToggle(category: keyof typeof draftValues, value: string) {
+  function handleToggle(category: ArrayCategory, value: string) {
     setDraftValues((prev) => {
       const currentValues = prev[category];
       const newValues = currentValues.includes(value)
@@ -37,6 +45,10 @@ export const FilterPanel = ({ onClose }: Props) => {
       return { ...prev, [category]: newValues };
     });
   };
+
+  function handleSliderChange(category: NumberCategory, value: number) {
+    setDraftValues((prev) => ({ ...prev, [category]: value }));
+  }
 
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -84,33 +96,52 @@ export const FilterPanel = ({ onClose }: Props) => {
         <img src={CloseIcon} aria-hidden="true" />
       </button>
 
-      <div className="grid grid-cols-2 gap-x-[165px] gap-y-[32px] m-[55px_45px_24px_40px]">
-        <div>PRICE</div>
-        <div>YEAR</div>
-
+      <div
+        className={`
+          grid grid-cols-2 gap-x-[165px] gap-y-[32px] m-[55px_45px_24px_40px]
+          uppercase text-primary font-[500] text-[16px]/[24px]
+        `}
+      >
+        <RangeSlider
+          title="price up to"
+          min={FILTER_LIMITS.MIN_PRICE}
+          max={FILTER_LIMITS.MAX_PRICE}
+          step={FILTER_LIMITS.PRICE_STEP}
+          value={draftValues.maxPrice}
+          onChange={(value) => handleSliderChange('maxPrice', value)}
+          formatValue={(val) => val.toLocaleString('uk-UA')}
+        />
+        <RangeSlider
+          title="year up to"
+          min={FILTER_LIMITS.MIN_YEAR}
+          max={FILTER_LIMITS.MAX_YEAR}
+          step={FILTER_LIMITS.YEAR_STEP}
+          value={draftValues.maxYear}
+          onChange={(value) => handleSliderChange('maxYear', value)}
+        />
         <FilterButtonGroup
           title="subject / genre"
           options={SUBJECT_OPTIONS}
           selectedValues={draftValues.subject}
-          onToggle={(value) => HandleToggle('subject', value)}
+          onToggle={(value) => handleToggle('subject', value)}
         />
         <FilterButtonGroup
           title="size"
           options={SIZE_OPTIONS}
           selectedValues={draftValues.size}
-          onToggle={(value) => HandleToggle('size', value)}
+          onToggle={(value) => handleToggle('size', value)}
         />
         <FilterButtonGroup
           title="medium"
           options={MEDIUM_OPTIONS}
           selectedValues={draftValues.medium}
-          onToggle={(value) => HandleToggle('medium', value)}
+          onToggle={(value) => handleToggle('medium', value)}
         />
         <FilterButtonGroup
           title="status"
           options={STATUS_OPTIONS}
           selectedValues={draftValues.status}
-          onToggle={(value) => HandleToggle('status', value)}
+          onToggle={(value) => handleToggle('status', value)}
         />
       </div>
 
