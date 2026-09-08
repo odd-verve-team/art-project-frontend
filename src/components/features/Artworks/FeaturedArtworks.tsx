@@ -1,21 +1,20 @@
-import { useArtworkStore } from "@/store/useArtworkStore";
-import { useEffect } from "react"
-import { ArtworkGrid } from "./ArtworkGrid";
-import { Link } from "react-router-dom";
+import { useArtworkStore } from '@/store/useArtworkStore';
+import { useEffect } from 'react';
+import { ArtworkGrid } from './ArtworkGrid';
+import { Link } from 'react-router-dom';
 
 export const FeaturedArtworks = () => {
-  const artworks = useArtworkStore((state) => state.artworks);
-  const fetchArtworks = useArtworkStore((state) => state.fetchArtworks);
-  // const isLoading = useArtworkStore((state) => state.isLoading);
+  const featuredArtworks = useArtworkStore((state) => state.featuredArtworks);
+  const fetchFeaturedArtworks = useArtworkStore((state) => state.fetchFeaturedArtworks);
 
   useEffect(() => {
-    fetchArtworks({ is_featured: true })
-  }, [fetchArtworks]);
+    fetchFeaturedArtworks();
+  }, [fetchFeaturedArtworks]);
 
   return (
     <section className="mt-[100px]">
       <div className="p-[32px] border-[1px] border-primary">
-        <ArtworkGrid artworks={artworks} />
+        <ArtworkGrid artworks={featuredArtworks} />
       </div>
       <div className="my-[50px] flex justify-center">
         <Link
@@ -31,4 +30,4 @@ export const FeaturedArtworks = () => {
       </div>
     </section>
   );
-}
+};
