@@ -50,3 +50,14 @@ export const FILTER_LIMITS = {
   MAX_YEAR: 2026,
   YEAR_STEP: 1,
 };
+
+import type { GalleryFilterState } from '@/types/gallery';
+
+export const DEFAULT_FILTERS: GalleryFilterState = {
+  subject: [],
+  medium: [],
+  size: [],
+  status: [],
+  maxPrice: FILTER_LIMITS.MAX_PRICE,
+  maxYear: FILTER_LIMITS.MAX_YEAR,
+};
