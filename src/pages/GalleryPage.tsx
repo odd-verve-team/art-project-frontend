@@ -23,7 +23,7 @@ export const GalleryPage = () => {
       >
         gallery
       </h2>
-      <div className="mx-global my-[32px] p-[32px] border-[1px] border-primary">
+      <div className="mx-global my-[32px] p-[32px] border-[1px] border-primary bg-background">
         <GalleryToolbar />
         <ArtworkGrid artworks={galleryArtworks} />
       </div>

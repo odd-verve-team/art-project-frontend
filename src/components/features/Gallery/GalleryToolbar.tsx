@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { SortingDropdown } from './SortingDropdown';
+import { FilterPanel } from './FilterPanel';
 
 import FilterIcon from '@/assets/filter-icon.svg';
 import SortingIcon from '@/assets/sorting-icon.svg';
@@ -16,7 +17,7 @@ export const GalleryToolbar = () => {
   const [activeSort, setActiveSort] = useState('');
 
   return (
-    <div className="flex justify-between items-center mb-[16px]">
+    <div className="relative flex justify-between items-center mb-[16px]">
       <button
         onClick={() => setIsFilterOpen(!isFilterOpen)}
         aria-expanded={isFilterOpen}
@@ -25,6 +26,12 @@ export const GalleryToolbar = () => {
         Filter
         <img src={FilterIcon} aria-hidden="true" />
       </button>
+
+      {isFilterOpen && (
+        <FilterPanel
+          onClose={() => setIsFilterOpen(false)}
+        />
+      )}
 
       <div className="relative">
         <button
