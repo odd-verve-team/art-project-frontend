@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { FilterButtonGroup } from './FilterButtonGroup';
 import { RangeSlider } from './RangeSlider';
 
+import type { GalleryFilterState } from '@/types/gallery';
 import {
   SUBJECT_OPTIONS,
   MEDIUM_OPTIONS,
   SIZE_OPTIONS,
   STATUS_OPTIONS,
   FILTER_LIMITS,
+  DEFAULT_FILTERS,
 } from './galleryConstants';
 
 import CloseIcon from '@/assets/close-icon.svg';
@@ -22,18 +24,13 @@ const ACTION_BTN = `
 `;
 
 interface Props {
+  initialFilters: GalleryFilterState;
+  onApply: (filters: GalleryFilterState) => void;
   onClose: () => void;
 }
 
-export const FilterPanel = ({ onClose }: Props) => {
-  const [draftValues, setDraftValues] = useState({
-    subject: [] as string[],
-    medium: [] as string[],
-    size: [] as string[],
-    status: [] as string[],
-    maxPrice: FILTER_LIMITS.MAX_PRICE as number,
-    maxYear: FILTER_LIMITS.MAX_YEAR as number,
-  });
+export const FilterPanel = ({ initialFilters, onApply, onClose }: Props) => {
+  const [draftValues, setDraftValues] = useState<GalleryFilterState>(initialFilters);
 
   function handleToggle(category: ArrayCategory, value: string) {
     setDraftValues((prev) => {
@@ -41,10 +38,10 @@ export const FilterPanel = ({ onClose }: Props) => {
       const newValues = currentValues.includes(value)
         ? currentValues.filter((v) => v !== value)
         : [...currentValues, value];
-      
+
       return { ...prev, [category]: newValues };
     });
-  };
+  }
 
   function handleSliderChange(category: NumberCategory, value: number) {
     setDraftValues((prev) => ({ ...prev, [category]: value }));
@@ -147,18 +144,19 @@ export const FilterPanel = ({ onClose }: Props) => {
 
       <div className="flex justify-end gap-[16px] mb-[80px]">
         <button
-          onClick={onClose}
+          onClick={() => setDraftValues(DEFAULT_FILTERS)}
           className={`
             ${ACTION_BTN} 
             text-primary border-[1px] border-primary hover:bg-gray-100
           `}
         >
-          Close
+          Reset
         </button>
 
         <button
           onClick={() => {
-            console.log('Apply:', '');
+            onApply(draftValues);
+            onClose();
           }}
           className={`
             ${ACTION_BTN} 

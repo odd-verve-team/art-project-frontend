@@ -21,7 +21,7 @@ export const FilterButtonGroup = ({ title, options, selectedValues, onToggle }: 
               }}
               className={`
                cursor-pointer border-[1px] border-primary px-[10px] py-[12px]
-               focus:outline-none hover:bg-gray-100 transition-colors duration-300
+               focus:outline-none transition-colors duration-300
               ${
                 isSelected
                   ? 'bg-primary text-background'

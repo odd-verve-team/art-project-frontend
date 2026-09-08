@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { SortingDropdown } from './SortingDropdown';
 import { FilterPanel } from './FilterPanel';
 
+import type { GalleryFilterState } from '@/types/gallery';
+import { DEFAULT_FILTERS } from './galleryConstants';
+
 import FilterIcon from '@/assets/filter-icon.svg';
 import SortingIcon from '@/assets/sorting-icon.svg';
 
@@ -15,6 +18,7 @@ export const GalleryToolbar = () => {
   const [isSortingOpen, setIsSortingOpen] = useState(false);
 
   const [activeSort, setActiveSort] = useState('');
+  const [activeFilters, setActiveFilters] = useState<GalleryFilterState>(DEFAULT_FILTERS);
 
   return (
     <div className="relative flex justify-between items-center mb-[16px]">
@@ -29,6 +33,8 @@ export const GalleryToolbar = () => {
 
       {isFilterOpen && (
         <FilterPanel
+          initialFilters={activeFilters}
+          onApply={(newFilters) => setActiveFilters(newFilters)}
           onClose={() => setIsFilterOpen(false)}
         />
       )}
