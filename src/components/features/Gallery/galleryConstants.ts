@@ -40,8 +40,6 @@ export const SIZE_OPTIONS = [
 export const STATUS_OPTIONS = [
   { label: 'AVAILABLE', value: 'approved' },
   { label: 'SOLD', value: 'sold' },
-  { label: 'AVAILABLE ON REQUEST', value: 'pending' },
-  { label: 'RARE ITEM', value: 'rare' },
 ];
 
 export const FILTER_LIMITS = {

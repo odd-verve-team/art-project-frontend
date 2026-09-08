@@ -1,4 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { FilterButtonGroup } from './FilterButtonGroup';
+
+import {
+  SUBJECT_OPTIONS,
+  MEDIUM_OPTIONS,
+  SIZE_OPTIONS,
+  STATUS_OPTIONS,
+} from './galleryConstants';
 
 import CloseIcon from '@/assets/close-icon.svg';
 
@@ -11,6 +20,24 @@ const ACTION_BTN = `
 `;
 
 export const FilterPanel = ({ onClose }: Props) => {
+  const [draftValues, setDraftValues] = useState({
+    subject: [] as string[],
+    medium: [] as string[],
+    size: [] as string[],
+    status: [] as string[],
+  })
+
+  function HandleToggle(category: keyof typeof draftValues, value: string) {
+    setDraftValues((prev) => {
+      const currentValues = prev[category];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((v) => v !== value)
+        : [...currentValues, value];
+      
+      return { ...prev, [category]: newValues };
+    });
+  };
+
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -61,11 +88,30 @@ export const FilterPanel = ({ onClose }: Props) => {
         <div>PRICE</div>
         <div>YEAR</div>
 
-        <div>SUBJECT</div>
-        <div>SIZE</div>
-
-        <div>MEDIUM</div>
-        <div>STATUS</div>
+        <FilterButtonGroup
+          title="subject / genre"
+          options={SUBJECT_OPTIONS}
+          selectedValues={draftValues.subject}
+          onToggle={(value) => HandleToggle('subject', value)}
+        />
+        <FilterButtonGroup
+          title="size"
+          options={SIZE_OPTIONS}
+          selectedValues={draftValues.size}
+          onToggle={(value) => HandleToggle('size', value)}
+        />
+        <FilterButtonGroup
+          title="medium"
+          options={MEDIUM_OPTIONS}
+          selectedValues={draftValues.medium}
+          onToggle={(value) => HandleToggle('medium', value)}
+        />
+        <FilterButtonGroup
+          title="status"
+          options={STATUS_OPTIONS}
+          selectedValues={draftValues.status}
+          onToggle={(value) => HandleToggle('status', value)}
+        />
       </div>
 
       <div className="flex justify-end gap-[16px] mb-[80px]">
