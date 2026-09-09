@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react';
+
+import { FOOTER_HOVER } from './footerConstants';
+
+const INPUT_CLASS = `
+  w-full pb-[4px]
+  text-muted uppercase outline-none
+  bg-transparent border-b border-background/70 
+  focus:border-background transition-colors
+`;
 
 export const NewsletterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setName('');
     setEmail('');
@@ -15,11 +24,13 @@ export const NewsletterForm = () => {
     <form
       onSubmit={handleSubmit}
       className={`
-        flex flex-col gap-[18px] max-w-[570px] mt-[32px] 
-        text-[12px]/[24px] font-[500] tracking-[1px]
+        flex flex-col gap-[16px] w-full 
+        lg:max-w-[570px] 
+        text-[10px]/[24px] font-[500] tracking-[1px]
+        lg:text-[12px]
       `}
     >
-      <h3 className="text-[16px] text-background uppercase">
+      <h3 className="text-[14px] text-background uppercase text-justify lg:text-left">
         BE THE FIRST TO RECEIVE NOTIFICATIONS ABOUT ALL OUR EVENTS AND
         EXHIBITIONS
       </h3>
@@ -29,12 +40,7 @@ export const NewsletterForm = () => {
           type="text"
           value={name}
           placeholder="your name"
-          className={`
-            w-full pb-[4px] 
-            text-muted uppercase outline-none 
-            bg-transparent border-b border-background/70 
-            focus:border-background transition-colors
-            `}
+          className={INPUT_CLASS}
           onChange={(e) => setName(e.target.value)}
           required
         />
@@ -42,12 +48,7 @@ export const NewsletterForm = () => {
           type="email"
           value={email}
           placeholder="your email"
-          className={`
-            w-full pb-[4px] 
-            text-muted uppercase outline-none 
-            bg-transparent border-b border-background/70 
-            focus:border-background transition-colors
-          `}
+          className={INPUT_CLASS}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
@@ -55,9 +56,10 @@ export const NewsletterForm = () => {
 
       <button
         className={`
-          self-end px-[22px] py-[5px] 
-          text-primary bg-background font-[500] uppercase 
-          hover:opacity-70 transition-opacity duration-500 ease-in-out
+          w-full py-[12px] mt-[16px] 
+          lg:w-auto lg:self-end lg:px-[22px] lg:py-[5px] lg:mt-0
+          text-[12px] text-primary bg-background uppercase 
+          ${FOOTER_HOVER}
         `}
       >
         send

@@ -1,11 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-const NAV_ITEMS = [
-  { label: 'home', path: '/' },
-  { label: 'about', path: '/#about' },
-  { label: 'gallery', path: '/gallery' },
-  { label: 'profile', path: '/profile' },
-];
+import { NAV_ITEMS, HEADER_HOVER } from './headerConstants';
 
 const getLinkClass =
   (path: string) =>
@@ -13,15 +8,11 @@ const getLinkClass =
     const isCurrent = isActive && !path.includes('#');
 
     return `
-    inline-block text-background text-[24px] leading-[30px]
-    transition-all duration-300 ease-out
-
-    ${isCurrent
-      ? 'font-[600] opacity-100'
-      : 'font-[300] opacity-70 hover:opacity-100'
-    }
-  `;
-};
+      inline-block text-background text-[24px] leading-[30px]
+      ${HEADER_HOVER}
+      ${isCurrent ? 'font-[600] opacity-100' : 'font-[300] opacity-70 hover:opacity-100'}
+    `;
+  };
 
 export const HeaderNavigation = () => {
   return (
