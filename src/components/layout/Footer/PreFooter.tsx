@@ -1,74 +1,46 @@
-import art1 from '@/assets/manifesto/manifesto-art-1.webp';
-import art2 from '@/assets/manifesto/manifesto-art-2.webp';
-import art3 from '@/assets/manifesto/manifesto-art-3.webp';
-import art4 from '@/assets/manifesto/manifesto-art-4.webp';
-import art5 from '@/assets/manifesto/manifesto-art-5.webp';
+import { MANIFESTO_IMAGES, LINE_BASE } from './preFooterConstants';
 
 export const PreFooter = () => {
   return (
     <div
       className={`
-        relative w-full flex justify-center overflow-hidden 
-        bg-primary pt-[172px] pb-[88px]
+        w-full flex justify-center overflow-hidden bg-primary
+        pt-[80px] pb-[50px]
+        md:pt-[120px] md:pb-[70px]
+        lg:pt-[172px] lg:pb-[88px]
       `}
     >
       <div
         className={`
-          flex flex-col gap-[10px] w-full max-w-[1050px] mb-[55px]
-          text-[56px]/[100%] font-[300] text-background uppercase whitespace-nowrap
+          relative flex flex-col w-full
+          font-[300] text-background uppercase
+          gap-[14px] max-w-[350px] mb-[30px] text-[24px]/[100%]
+          md:gap-[8px] md:max-w-[680px] md:mb-[40px] md:text-[28px]/[100%]
+          lg:gap-[10px] lg:max-w-[1050px] lg:mb-[55px] lg:text-[56px]/[100%]
+          md:whitespace-nowrap
         `}
       >
-        <span className="relative z-10 self-start">the purpose of art</span>
-        <span className="relative z-10 self-center ml-[3%]">
+        <span className={`${LINE_BASE} self-start`}>
+          the purpose of art
+        </span>
+        <span className={`${LINE_BASE} self-start ml-[18%] md:self-center md:ml-[3%]`}>
           is to challenge the ordinary,
         </span>
-        <span className="relative z-10 self-center ml-[3%]">
+        <span className={`${LINE_BASE} self-start ml-[10%] md:self-center md:ml-[3%]`}>
           expand emotion,
         </span>
-        <span className="relative z-10 self-center ml-[3%]">
+        <span className={`${LINE_BASE} self-start ml-[5%] md:self-center md:ml-[3%]`}>
           and make the impossible visible
         </span>
 
-        <img
-          src={art1}
-          alt="Art 1"
-          className={`
-            absolute z-0 pointer-events-none
-            top-[36%] left-[33%]
-          `}
-        />
-        <img
-          src={art2}
-          alt="Art 2"
-          className={`
-            absolute z-0 pointer-events-none
-            top-[45%] right-[26%]
-          `}
-        />
-        <img
-          src={art3}
-          alt="Art 3"
-          className={`
-            absolute z-20 pointer-events-none
-            top-[50.5%] left-[45.5%]
-          `}
-        />
-        <img
-          src={art4}
-          alt="Art 4"
-          className={`
-            absolute z-20 pointer-events-none
-            bottom-[20.5%] left-[23%]
-          `}
-        />
-        <img
-          src={art5}
-          alt="Art 5"
-          className={`
-            absolute z-0 pointer-events-none
-            bottom-[16%] right-[31.5%]
-          `}
-        />
+        {MANIFESTO_IMAGES.map((img, index) => (
+          <img
+            key={index}
+            src={img.src}
+            alt={img.alt}
+            className={img.className}
+          />
+        ))}
       </div>
     </div>
   );
