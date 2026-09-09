@@ -1,4 +1,9 @@
-import { motion, useMotionValue, useTransform, type PanInfo } from 'framer-motion';
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  type PanInfo,
+} from 'framer-motion';
 import { useRef } from 'react';
 
 interface SpeedControlProps {
@@ -27,7 +32,11 @@ const formatSpeed = (s: number) => {
   return r % 1 === 0 ? r.toFixed(0) : r.toFixed(1);
 };
 
-export const SpeedControl = ({ speed, onSpeedChange, skipAnimation }: SpeedControlProps) => {
+export const SpeedControl = ({
+  speed,
+  onSpeedChange,
+  skipAnimation,
+}: SpeedControlProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const dragX = useMotionValue(speedToX(speed));
 
@@ -49,10 +58,17 @@ export const SpeedControl = ({ speed, onSpeedChange, skipAnimation }: SpeedContr
 
   return (
     <motion.div
-      className="absolute bottom-[185px] left-1/2 -translate-x-1/2 flex flex-col items-center"
+      className={`
+        absolute left-1/2 -translate-x-1/2 flex flex-col items-center
+        bottom-[110px] 
+        md:bottom-[150px]
+        lg:bottom-[205px]
+      `}
       initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }}
+      transition={
+        skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }
+      }
     >
       <div
         ref={trackRef}
@@ -64,17 +80,22 @@ export const SpeedControl = ({ speed, onSpeedChange, skipAnimation }: SpeedContr
 
         <motion.div
           className="absolute h-[1px] bg-background/50 rounded-full"
-          style={{ 
+          style={{
             width: TRACK_WIDTH,
             scaleX: useTransform(dragX, (x) => x / TRACK_WIDTH),
             transformOrigin: 'left',
-            willChange: 'transform'
+            willChange: 'transform',
           }}
         />
 
         <motion.div
           className="absolute w-[6px] h-[6px] rounded-full bg-background/70 cursor-grab active:cursor-grabbing"
-          style={{ x: dragX, marginLeft: -3, touchAction: 'none', willChange: 'transform' }}
+          style={{
+            x: dragX,
+            marginLeft: -3,
+            touchAction: 'none',
+            willChange: 'transform',
+          }}
           onPan={handlePan}
         />
       </div>
