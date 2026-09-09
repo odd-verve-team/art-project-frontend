@@ -23,9 +23,11 @@ export const HomePage = () => {
     <div className="w-full">
       <HeroSection />
 
-      <div className="mx-global">
-        <AboutSection />
-        <FeaturedArtworks />
+      <div className="w-full px-global">
+        <div className="max-w-[1440px] mx-auto w-full">
+          <AboutSection />
+          <FeaturedArtworks />
+        </div>
       </div>
     </div>
   );
