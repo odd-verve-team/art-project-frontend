@@ -1,6 +1,8 @@
-import { useAppStore } from '@/store/useAppStore';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAppStore } from '@/store/useAppStore';
+
+import { NAV_ITEMS, HEADER_HOVER } from './headerConstants';
 
 import SearchIcon from '@/assets/search-icon.svg';
 import CloseIcon from '@/assets/close-icon.svg';
@@ -9,13 +11,6 @@ interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const NAV_ITEMS = [
-  { label: 'HOME', path: '/' },
-  { label: 'ABOUT', path: '/#about' },
-  { label: 'GALLERY', path: '/gallery' },
-  { label: 'PROFILE', path: '/profile' },
-];
 
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const openModal = useAppStore((state) => state.openModal);
@@ -28,22 +23,24 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed inset-0 z-50 flex flex-col bg-primary px-global pt-header pb-[48px]"
+          className={`
+            fixed inset-0 z-50 flex flex-col 
+            bg-primary px-global pt-header pb-[48px]
+          `}
         >
           <div className="flex items-center justify-between">
             <button
               onClick={onClose}
-              className="text-background hover:opacity-70 transition-opacity"
+              className={`
+                text-background 
+                ${HEADER_HOVER}
+              `}
               aria-label="Close menu"
             >
               <img src={CloseIcon} aria-hidden="true" className="invert" />
             </button>
 
-            <Link
-              to="/search"
-              onClick={onClose}
-              className="hover:opacity-70 transition-opacity"
-            >
+            <Link to="/search" onClick={onClose} className={HEADER_HOVER}>
               <img
                 src={SearchIcon}
                 alt="Search"
@@ -52,14 +49,15 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             </Link>
           </div>
 
-          <nav className="flex-1 flex flex-col items-center justify-center gap-[40px]">
+          <nav className="flex-1 flex flex-col items-center justify-center gap-[22px]">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) => `
-                  text-[32px] font-[600] text-background transition-opacity duration-300
+                  text-[52px] font-[700] text-background uppercase
+                  ${HEADER_HOVER}
                   ${isActive && !item.path.includes('#') ? 'opacity-100' : 'opacity-70 hover:opacity-100'}
                 `}
               >
@@ -77,7 +75,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
               className={`
                 w-[164px] h-[43px] border-[1px] border-background 
                 text-[12px] font-[500] text-background uppercase tracking-[0.1em] 
-                transition-all duration-500 hover:opacity-70
+                ${HEADER_HOVER}
               `}
             >
               contact us

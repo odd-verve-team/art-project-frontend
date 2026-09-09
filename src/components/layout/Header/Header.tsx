@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Logo } from '@/components/ui/Logo';
@@ -10,36 +10,78 @@ import BurgerIcon from '@/assets/burger-icon.svg';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const { pathname } = useLocation();
   const isHomePage = pathname === '/';
 
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        const height = headerRef.current.offsetHeight;
+        document.documentElement.style.setProperty(
+          '--header-height',
+          `${height}px`,
+        );
+      }
+    };
+
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+
+    return () => window.removeEventListener('resize', updateHeaderHeight);
+  }, []);
+
   return (
-    <header
-      className={`
-        w-full items-center px-global pt-header bg-primary
-        ${isHomePage ? 'flex justify-center' : 'flex justify-between'}
-        lg:grid lg:grid-cols-3
-      `}
-    >
-      <div className="lg:justify-self-start min-h-[64px] flex items-center">
-        {!isHomePage && <Logo />}
-      </div>
-
-      <div className="hidden lg:block lg:justify-self-center">
-        <HeaderNavigation />
-      </div>
-
-      <div className="hidden lg:flex lg:justify-self-end">
-        {!isHomePage && <HeaderActions />}
-      </div>
-
-      <button
-        className="block lg:hidden"
-        onClick={() => setIsMobileMenuOpen(true)}
+    <header ref={headerRef} className="w-full px-global pt-header bg-primary">
+      <div
+        className={`
+          max-w-[1440px] mx-auto w-full items-center
+          ${
+            isHomePage
+              ? 'flex justify-center md:grid md:grid-cols-3'
+              : 'flex justify-between xl:grid xl:grid-cols-3'
+          }
+        `}
       >
-        <img src={BurgerIcon} alt="Menu" />
-      </button>
+        <div
+          className={`
+            min-h-[64px] flex items-center
+            ${isHomePage ? 'md:justify-self-start' : 'xl:justify-self-start'}
+          `}
+        >
+          {!isHomePage && <Logo />}
+        </div>
+
+        <div
+          className={`
+            hidden 
+            ${isHomePage ? 'md:block md:justify-self-center' : 'xl:block xl:justify-self-center'}
+          `}
+        >
+          <HeaderNavigation />
+        </div>
+
+        <div
+          className={`
+            hidden 
+            ${isHomePage ? 'md:flex md:justify-self-end' : 'xl:flex xl:justify-self-end'}
+          `}
+        >
+          {!isHomePage && <HeaderActions />}
+        </div>
+
+        <button
+          className={`
+            block
+            ${isHomePage ? 'translate-y-[6px] md:hidden' : 'xl:hidden xl:translate-y-0'}
+          `}
+          onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          <img src={BurgerIcon} alt="Menu" />
+        </button>
+      </div>
 
       <MobileMenu
         isOpen={isMobileMenuOpen}

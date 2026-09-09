@@ -14,6 +14,11 @@ export const Logo = () => {
     mass: 1.2,
   } as const;
 
+  const cornerClasses = `
+    absolute border-white
+    w-[var(--corner-size)] h-[var(--corner-size)] 
+  `;
+
   return (
     <Link
       to="/"
@@ -24,22 +29,34 @@ export const Logo = () => {
       <motion.span
         layoutId="logo-corner-tl"
         transition={springTransition}
-        className="absolute top-0 left-0 w-[var(--corner-size)] h-[var(--corner-size)] border-t-[length:var(--border-width)] border-l-[length:var(--border-width)] border-white"
+        className={`
+          ${cornerClasses} top-0 left-0
+          border-t-[length:var(--border-width)] border-l-[length:var(--border-width)] 
+        `}
       />
       <motion.span
         layoutId="logo-corner-tr"
         transition={springTransition}
-        className="absolute top-0 right-0 w-[var(--corner-size)] h-[var(--corner-size)] border-t-[length:var(--border-width)] border-r-[length:var(--border-width)] border-white"
+        className={`
+          ${cornerClasses} top-0 right-0 
+          border-t-[length:var(--border-width)] border-r-[length:var(--border-width)] 
+        `}
       />
       <motion.span
         layoutId="logo-corner-bl"
         transition={springTransition}
-        className="absolute bottom-0 left-0 w-[var(--corner-size)] h-[var(--corner-size)] border-b-[length:var(--border-width)] border-l-[length:var(--border-width)] border-white"
+        className={`
+          ${cornerClasses} bottom-0 left-0 
+          border-b-[length:var(--border-width)] border-l-[length:var(--border-width)] 
+        `}
       />
       <motion.span
         layoutId="logo-corner-br"
         transition={springTransition}
-        className="absolute bottom-0 right-0 w-[var(--corner-size)] h-[var(--corner-size)] border-b-[length:var(--border-width)] border-r-[length:var(--border-width)] border-white"
+        className={`
+          ${cornerClasses} bottom-0 right-0 
+          border-b-[length:var(--border-width)] border-r-[length:var(--border-width)] 
+        `}
       />
 
       {/* MAIN TEXT */}
