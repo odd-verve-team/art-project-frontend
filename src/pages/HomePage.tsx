@@ -1,11 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
-import { AboutSection } from "@/components/features/AboutSection";
-import { HeroSlider } from "@/components/features/HeroSlider/HeroSlider";
-import { HeroFrame } from "@/components/ui/HeroFrame";
-import { HeroLogo } from "@/components/ui/HeroLogo"
-import { useEffect } from "react";
-import { FeaturedArtworks } from "@/components/features/Artworks/FeaturedArtworks";
+import { AboutSection } from '@/components/features/AboutSection';
+import { HeroSlider } from '@/components/features/HeroSlider/HeroSlider';
+import { HeroFrame } from '@/components/ui/HeroFrame';
+import { HeroLogo } from '@/components/ui/HeroLogo';
+import { FeaturedArtworks } from '@/components/features/Artworks/FeaturedArtworks';
 
 export const HomePage = () => {
   const location = useLocation();
@@ -23,10 +23,13 @@ export const HomePage = () => {
 
   return (
     <div className="w-full">
-      <div className="bg-primary min-h-[calc(100vh-102px)] relative overflow-hidden">
+      <div className="bg-primary min-h-[calc(100svh-var(--header-height))] relative">
         <HeroLogo />
         <HeroFrame />
-        <HeroSlider />
+
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <HeroSlider />
+        </div>
       </div>
       <div className="mx-global">
         <AboutSection />
@@ -34,4 +37,4 @@ export const HomePage = () => {
       </div>
     </div>
   );
-}
+};
