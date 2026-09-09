@@ -1,10 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
+import { HeroSection } from '@/components/features/HeroSection';
 import { AboutSection } from '@/components/features/AboutSection';
-import { HeroSlider } from '@/components/features/HeroSlider/HeroSlider';
-import { HeroFrame } from '@/components/ui/HeroFrame';
-import { HeroLogo } from '@/components/ui/HeroLogo';
 import { FeaturedArtworks } from '@/components/features/Artworks/FeaturedArtworks';
 
 export const HomePage = () => {
@@ -23,14 +21,8 @@ export const HomePage = () => {
 
   return (
     <div className="w-full">
-      <div className="bg-primary min-h-[calc(100svh-var(--header-height))] relative">
-        <HeroLogo />
-        <HeroFrame />
+      <HeroSection />
 
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <HeroSlider />
-        </div>
-      </div>
       <div className="mx-global">
         <AboutSection />
         <FeaturedArtworks />
