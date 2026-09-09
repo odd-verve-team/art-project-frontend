@@ -8,7 +8,7 @@ export const HeroSection = () => {
       <HeroLogo />
       <HeroFrame />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute z-0 inset-0 overflow-hidden">
         <HeroSlider />
       </div>
     </section>
