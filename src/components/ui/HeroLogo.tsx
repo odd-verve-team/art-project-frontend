@@ -6,7 +6,6 @@ const CORNER_DELAY = 0;
 const TEXT_DELAY = 0.25;
 const ENTRANCE_DURATION = 0.5;
 
-// 💡 Усі xl замінені на md
 const TEXT_BASE_CLASSES = `
   absolute text-background font-light leading-none uppercase text-[24px]
   md:text-[36px]
@@ -62,8 +61,7 @@ export const HeroLogo = () => {
             })}
             className={`
               ${CORNER_BASE_CLASSES}
-              top-0 left-0 border-t-[1px] border-l-[1px] 
-              md:border-t-[2px] md:border-l-[2px]
+              top-0 left-0 border-t-[2px] border-l-[2px] 
             `}
           />
           <motion.span
@@ -75,8 +73,7 @@ export const HeroLogo = () => {
             })}
             className={`
               ${CORNER_BASE_CLASSES}
-              top-0 right-0 border-t-[1px] border-r-[1px] 
-              md:border-t-[2px] md:border-r-[2px]
+              top-0 right-0 border-t-[2px] border-r-[2px] 
             `}
           />
           <motion.span
@@ -88,8 +85,7 @@ export const HeroLogo = () => {
             })}
             className={`
               ${CORNER_BASE_CLASSES}
-              bottom-0 left-0 border-b-[1px] border-l-[1px] 
-              md:border-b-[2px] md:border-l-[2px]
+              bottom-0 left-0 border-b-[2px] border-l-[2px] 
             `}
           />
           <motion.span
@@ -101,8 +97,7 @@ export const HeroLogo = () => {
             })}
             className={`
               ${CORNER_BASE_CLASSES}
-              bottom-0 right-0 border-b-[1px] border-r-[1px] 
-              md:border-b-[2px] md:border-r-[2px]
+              bottom-0 right-0 border-b-[2px] border-r-[2px] 
             `}
           />
 
