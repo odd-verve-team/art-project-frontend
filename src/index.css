@@ -6,11 +6,27 @@
   --color-muted: #707070;
   --color-border: #A4A4A4;
 
-  --spacing-global: 48px;
-  --spacing-header: 38px;
-  --spacing-footer: 16px;
+  --spacing-global: var(--global-padding);
+  --spacing-header: var(--header-padding);
+  --spacing-footer: var(--footer-padding);
 
   --font-sans: "Archivo", sans-serif;
+}
+
+@layer base {
+  :root {
+    --global-padding: 16px;
+    --header-padding: 16px;
+    --footer-padding: 16px;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --global-padding: 48px;
+      --header-padding: 38px;
+      --footer-padding: 16px;
+    }
+  }
 }
 
 body {
