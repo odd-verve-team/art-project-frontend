@@ -29,8 +29,8 @@ export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
   fetchGalleryArtworks: async (params) => {
     set({ isLoading: true, error: null });
     try {
-      const arts = await artworksApi.getAll({ status: 'approved', ...params });
-      set({ galleryArtworks: arts });
+      const response = await artworksApi.getAll(params);
+      set({ galleryArtworks: response.data });
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -45,8 +45,8 @@ export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
   fetchFeaturedArtworks: async () => {
     set({ error: null });
     try {
-      const arts = await artworksApi.getAll({ is_featured: true });
-      set({ featuredArtworks: arts });
+      const response = await artworksApi.getAll({ is_featured: true });
+      set({ featuredArtworks: response.data });
     } catch (error) {
       const errorMessage =
         error instanceof Error

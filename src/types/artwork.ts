@@ -1,7 +1,7 @@
 export interface Artist {
   first_name: string;
   last_name: string;
-  avatar_url: string;
+  avatar_url: string | null;
 }
 
 export interface Artwork {
@@ -20,4 +20,18 @@ export interface Artwork {
   status?: string;
   is_featured?: boolean;
   created_at?: string;
+  year: number;
+  medium: string;
+}
+
+export interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface ArtworksResponse {
+  data: Artwork[];
+  meta: PaginationMeta;
 }

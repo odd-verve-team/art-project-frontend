@@ -37,7 +37,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
         <div className="w-full flex items-center justify-between pointer-events-auto">
           <div className="flex items-center gap-[8px] bg-white p-[8px]">
             <img
-              src={artwork.artist.avatar_url}
+              src={artwork.artist.avatar_url || undefined}
               alt="Artist avatar"
               className="w-[24px] h-[24px] rounded-full object-cover"
             />
