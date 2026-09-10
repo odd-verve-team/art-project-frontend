@@ -1,4 +1,4 @@
-import type { Artwork } from '@/types/artwork';
+import type { ArtworksResponse } from '@/types/artwork';
 import axios from 'axios';
 
 export const api = axios.create({
@@ -15,7 +15,7 @@ export interface GetArtworksParams {
 }
 
 export const artworksApi = {
-  getAll: async (params?: GetArtworksParams): Promise<Artwork[]> => {
+  getAll: async (params?: GetArtworksParams): Promise<ArtworksResponse> => {
     const response = await api.get('/artworks', { params });
     return response.data;
   },
