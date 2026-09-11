@@ -1,3 +1,7 @@
+export type ArtworkMedium = 'oil' | 'acrylic' | 'watercolor' | 'graphics' | 'mixed_media' | 'lithography';
+export type ArtworkStatus = 'approved' | 'sold' | 'pending' | 'rejected';
+export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' | 'year_asc' | 'year_desc' | 'size_asc' | 'size_desc';
+
 export interface Artist {
   first_name: string;
   last_name: string;
@@ -17,11 +21,11 @@ export interface Artwork {
   category?: string;
   painting_length?: number;
   painting_width?: number;
-  status?: string;
+  status?: ArtworkStatus;
   is_featured?: boolean;
   created_at?: string;
   year: number;
-  medium: string;
+  medium: ArtworkMedium;
 }
 
 export interface PaginationMeta {
