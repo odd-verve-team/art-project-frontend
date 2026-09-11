@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 
 import { artworksApi, type GetArtworksParams } from '@/services/api';
-import type { Artwork } from '@/types/artwork';
+import type { Artwork, PaginationMeta } from '@/types/artwork';
 
 interface ArtworkState {
   galleryArtworks: Artwork[];
   featuredArtworks: Artwork[];
+  meta: PaginationMeta | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -13,6 +14,7 @@ interface ArtworkState {
 const initialState: ArtworkState = {
   galleryArtworks: [],
   featuredArtworks: [],
+  meta: null,
   isLoading: false,
   error: null,
 };
@@ -30,7 +32,10 @@ export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await artworksApi.getAll(params);
-      set({ galleryArtworks: response.data });
+      set({
+        galleryArtworks: response.data,
+        meta: response.meta
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error
