@@ -28,31 +28,58 @@ export const GalleryPage = () => {
       params.page = meta.page + 1;
       fetchGalleryArtworks(params, true);
     }
-  }
+  };
 
   return (
     <div className="">
       <h2
         className={`
-        bg-primary pt-[80px] pb-[110px] text-center
-        text-background text-[140px] font-[700] uppercase
-      `}
+          bg-primary text-center text-background font-[700] uppercase
+          pt-[100px] pb-[100px] text-[52px]
+          md:pt-[60px] md:pb-[80px] md:text-[100px]
+          lg:pt-[80px] lg:pb-[110px] lg:text-[140px]
+        `}
       >
         gallery
       </h2>
-      <div className="mx-global my-[32px] p-[32px] border-[1px] border-primary bg-background">
+
+      <div
+        className={`
+          mx-global bg-background
+          my-[24px]
+          md:my-[28px] md:p-[28px] md:border-[1px] md:border-primary
+          lg:my-[32px] lg:p-[32px]
+        `}
+      >
         <GalleryToolbar />
-        <ArtworkGrid artworks={galleryArtworks} />
+
+        <div
+          className={`
+            border-primary
+            border-[1px] px-[8px] py-[16px]
+            md:border-none md:p-0
+          `}
+        >
+          <ArtworkGrid artworks={galleryArtworks} />
+        </div>
       </div>
 
       {meta && meta.page < meta.totalPages && (
-        <div className="flex justify-center pt-[30px] pb-[62px]">
+        <div
+          className={`
+            flex justify-center
+            pb-[24px]
+            lg:pt-[30px] lg:pb-[62px]
+          `}
+        >
           <button
             onClick={handleLoadMore}
             disabled={isLoading}
             className={`
-              text-primary text-[24px] font-[300] uppercase 
-              transition-opacity duration-300 hover:opacity-70 disabled:opacity-50
+              text-primary font-[300] uppercase transition-opacity
+              duration-300 hover:opacity-70 disabled:opacity-50
+              text-[16px]/[24px]
+              lg:text-[24px]
             `}
           >
             {isLoading ? 'Loading...' : 'See More'}
