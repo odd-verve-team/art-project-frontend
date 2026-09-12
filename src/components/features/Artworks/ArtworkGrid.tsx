@@ -1,10 +1,26 @@
+import { useEffect, useMemo, useState } from 'react';
+
 import type { Artwork } from '@/types/artwork';
 import { ArtworkCard } from './ArtworkCard';
-import { useMemo, useState } from 'react';
+
+const getColumnsCount = () => {
+  return window.innerWidth >= 1024 ? 3 : 2;
+};
 
 export const ArtworkGrid = ({ artworks }: { artworks: Artwork[] }) => {
-  // TODO: Add window resize listener to update columnsCount dynamically using setColumnsCount
-  const [columnsCount] = useState<number>(3);
+  const [columnsCount, setColumnsCount] = useState<number>(getColumnsCount);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newCount = getColumnsCount();
+      if (newCount !== columnsCount) {
+        setColumnsCount(newCount);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [columnsCount]);
 
   const columns: Artwork[][] = useMemo(() => {
     if (!Array.isArray(artworks)) return [];
@@ -30,14 +46,27 @@ export const ArtworkGrid = ({ artworks }: { artworks: Artwork[] }) => {
 
   return (
     <div
+      className={`
+        grid 
+        gap-[8px] 
+        md:gap-[16px] 
+        lg:gap-[24px]
+      `}
       style={{
-        display: 'grid',
         gridTemplateColumns: `repeat(${columnsCount}, minmax(0, 1fr))`,
-        gap: '24px',
       }}
     >
       {columns.map((column, index) => (
-        <div key={index} className="flex flex-col gap-[24px]">
+        <div
+          key={index}
+          className={`
+            flex 
+            flex-col 
+            gap-[8px] 
+            md:gap-[16px] 
+            lg:gap-[24px]
+          `}
+        >
           {column.map((artwork) => (
             <ArtworkCard key={artwork.id} artwork={artwork} />
           ))}
