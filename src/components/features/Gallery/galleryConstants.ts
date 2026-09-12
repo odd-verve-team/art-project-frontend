@@ -64,7 +64,7 @@ export const DEFAULT_FILTERS: GalleryFilterState = {
   category: [],
   medium: [],
   size: [],
-  status: [],
+  status: ['approved'],
   maxPrice: FILTER_LIMITS.MAX_PRICE,
   maxYear: FILTER_LIMITS.MAX_YEAR,
 };
