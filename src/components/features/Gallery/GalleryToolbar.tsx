@@ -32,8 +32,8 @@ export const GalleryToolbar = () => {
       className={`
         relative flex justify-between items-center
         mb-[8px]
-        md:mb-[12px]
-        lg:mb-[16px]
+        md:mb-[12px] md:mt-[20px]
+        lg:mb-[16px] lg:mt-[30px]
       `}
     >
       <button

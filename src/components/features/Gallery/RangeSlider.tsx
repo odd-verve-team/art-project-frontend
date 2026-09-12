@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent } from 'react';
 
 interface Props {
   title: string;
@@ -11,20 +11,44 @@ interface Props {
 }
 
 export const RangeSlider = ({
-  title, min, max, step, value, onChange,
+  title,
+  min,
+  max,
+  step,
+  value,
+  onChange,
   formatValue = (value) => value.toString(),
 }: Props) => {
-  const pencentage = ((value - min) / (max - min)) * 100;
+  const percentage = ((value - min) / (max - min)) * 100;
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     onChange(Number(e.target.value));
-  };
+  }
 
   return (
-    <div className="flex flex-col gap-[24px]">
+    <div
+      className={`
+        flex flex-col
+        gap-[16px]
+        md:gap-[24px]
+      `}
+    >
       <div className="flex items-center">
-        <h3>{title}</h3>
-        <span className="ml-[10px] font-[600] text-[24px]/[30px] underline">
+        <h3
+          className={`
+            text-[14px]
+            md:text-[16px]
+          `}
+        >
+          {title}
+        </h3>
+        <span
+          className={`
+            ml-[10px] font-[600] underline
+            text-[18px]/[22px]
+            md:text-[24px]/[30px]
+          `}
+        >
           {formatValue(value)}
         </span>
       </div>
@@ -36,9 +60,12 @@ export const RangeSlider = ({
         step={step}
         value={value}
         onChange={handleChange}
-        className="w-[400px] h-[6px] cursor-pointer appearance-none outline-none"
+        className={`
+          cursor-pointer appearance-none outline-none
+          w-full max-w-[400px] h-[6px]
+        `}
         style={{
-          background: `linear-gradient(to right, #111111 ${pencentage}%, #A4A4A4 ${pencentage}%)`,
+          background: `linear-gradient(to right, #111111 ${percentage}%, #A4A4A4 ${percentage}%)`,
         }}
       />
 
