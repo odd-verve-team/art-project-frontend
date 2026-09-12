@@ -10,7 +10,9 @@ import { DEFAULT_PAGE } from '@/components/features/Gallery/galleryConstants';
 
 export const GalleryPage = () => {
   const galleryArtworks = useArtworkStore((state) => state.galleryArtworks);
-  const fetchGalleryArtworks = useArtworkStore((state) => state.fetchGalleryArtworks);
+  const fetchGalleryArtworks = useArtworkStore(
+    (state) => state.fetchGalleryArtworks,
+  );
   const filters = useArtworkStore((state) => state.filters);
   const sort = useArtworkStore((state) => state.sort);
   const meta = useArtworkStore((state) => state.meta);
@@ -31,7 +33,7 @@ export const GalleryPage = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <h2
         className={`
           bg-primary text-center text-background font-[700] uppercase
@@ -43,49 +45,53 @@ export const GalleryPage = () => {
         gallery
       </h2>
 
-      <div
-        className={`
-          mx-global bg-background
-          my-[24px]
-          md:my-[28px] md:p-[28px] md:border-[1px] md:border-primary
-          lg:my-[32px] lg:p-[32px]
-        `}
-      >
-        <GalleryToolbar />
-
-        <div
-          className={`
-            border-primary
-            border-[1px] px-[8px] py-[16px]
-            md:border-none md:p-0
-          `}
-        >
-          <ArtworkGrid artworks={galleryArtworks} />
-        </div>
-      </div>
-
-      {meta && meta.page < meta.totalPages && (
-        <div
-          className={`
-            flex justify-center
-            pb-[24px]
-            lg:pt-[30px] lg:pb-[62px]
-          `}
-        >
-          <button
-            onClick={handleLoadMore}
-            disabled={isLoading}
+      <div className="w-full px-global">
+        <div className="max-w-[1440px] mx-auto w-full">
+          <div
             className={`
-              text-primary font-[300] uppercase transition-opacity
-              duration-300 hover:opacity-70 disabled:opacity-50
-              text-[16px]/[24px]
-              lg:text-[24px]
+              bg-background
+              my-[24px]
+              md:my-[28px] md:p-[28px] md:border-[1px] md:border-primary
+              lg:my-[32px] lg:p-[32px]
             `}
           >
-            {isLoading ? 'Loading...' : 'See More'}
-          </button>
+            <GalleryToolbar />
+
+            <div
+              className={`
+                border-primary
+                border-[1px] px-[8px] py-[16px]
+                md:border-none md:p-0
+              `}
+            >
+              <ArtworkGrid artworks={galleryArtworks} />
+            </div>
+          </div>
+
+          {meta && meta.page < meta.totalPages && (
+            <div
+              className={`
+                flex justify-center
+                pb-[24px]
+                lg:pt-[30px] lg:pb-[62px]
+              `}
+            >
+              <button
+                onClick={handleLoadMore}
+                disabled={isLoading}
+                className={`
+                  text-primary font-[300] uppercase transition-opacity
+                  duration-300 hover:opacity-70 disabled:opacity-50
+                  text-[16px]/[24px]
+                  lg:text-[24px]
+                `}
+              >
+                {isLoading ? 'Loading...' : 'See More'}
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
