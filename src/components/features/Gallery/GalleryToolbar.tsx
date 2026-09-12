@@ -37,6 +37,10 @@ export const GalleryToolbar = () => {
       `}
     >
       <button
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          setIsSortingOpen(false);
+        }}
         onClick={() => setIsFilterOpen(!isFilterOpen)}
         aria-expanded={isFilterOpen}
         className={`${BTN_BASE} ${BTN_HOVER} ${isFilterOpen ? BTN_ACTIVE : ''}`}
@@ -63,6 +67,10 @@ export const GalleryToolbar = () => {
 
       <div>
         <button
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setIsFilterOpen(false);
+          }}
           onClick={() => setIsSortingOpen(!isSortingOpen)}
           aria-expanded={isSortingOpen}
           className={`${BTN_BASE} ${BTN_HOVER} ${isSortingOpen ? BTN_ACTIVE : ''}`}
