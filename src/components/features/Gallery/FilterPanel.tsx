@@ -5,7 +5,7 @@ import { RangeSlider } from './RangeSlider';
 
 import type { GalleryFilterState } from '@/types/gallery';
 import {
-  SUBJECT_OPTIONS,
+  CATEGORY_OPTIONS,
   MEDIUM_OPTIONS,
   SIZE_OPTIONS,
   STATUS_OPTIONS,
@@ -15,7 +15,7 @@ import {
 
 import CloseIcon from '@/assets/close-icon.svg';
 
-type ArrayCategory = 'subject' | 'medium' | 'size' | 'status';
+type ArrayCategory = 'category' | 'medium' | 'size' | 'status';
 type NumberCategory = 'maxPrice' | 'maxYear';
 
 const ACTION_BTN = `
@@ -118,9 +118,9 @@ export const FilterPanel = ({ initialFilters, onApply, onClose }: Props) => {
         />
         <FilterButtonGroup
           title="subject / genre"
-          options={SUBJECT_OPTIONS}
-          selectedValues={draftValues.subject}
-          onToggle={(value) => handleToggle('subject', value)}
+          options={CATEGORY_OPTIONS}
+          selectedValues={draftValues.category}
+          onToggle={(value) => handleToggle('category', value)}
         />
         <FilterButtonGroup
           title="size"

@@ -1,4 +1,11 @@
-export const SORT_OPTIONS = [
+import type {
+  ArtworkCategory,
+  ArtworkMedium,
+  ArtworkSort,
+  ArtworkStatus,
+} from '@/types/artwork';
+
+export const SORT_OPTIONS: { label: string; value: ArtworkSort }[] = [
   { label: 'PRICE : LOW TO HIGH', value: 'price_asc' },
   { label: 'PRICE : HIGH TO LOW', value: 'price_desc' },
   { label: 'DATE : NEWEST ARRIVALS', value: 'date_desc' },
@@ -9,7 +16,7 @@ export const SORT_OPTIONS = [
   { label: 'SIZE: LARGE TO SMALL', value: 'size_desc' },
 ];
 
-export const SUBJECT_OPTIONS = [
+export const CATEGORY_OPTIONS: { label: string, value: ArtworkCategory }[] = [
   { label: 'LANDSCAPE', value: 'landscape' },
   { label: 'PORTRAIT', value: 'portrait' },
   { label: 'STILL LIFE', value: 'still_life' },
@@ -18,7 +25,7 @@ export const SUBJECT_OPTIONS = [
   { label: 'AVANT-GARDE', value: 'avant-garde' },
 ];
 
-export const MEDIUM_OPTIONS = [
+export const MEDIUM_OPTIONS: { label: string; value: ArtworkMedium }[] = [
   { label: 'OIL', value: 'oil' },
   { label: 'ACRYLIC', value: 'acrylic' },
   { label: 'WATERCOLOR', value: 'watercolor' },
@@ -37,7 +44,7 @@ export const SIZE_OPTIONS = [
   { label: '60×90', value: '60x90' },
 ];
 
-export const STATUS_OPTIONS = [
+export const STATUS_OPTIONS: { label: string; value: ArtworkStatus }[] = [
   { label: 'AVAILABLE', value: 'approved' },
   { label: 'SOLD', value: 'sold' },
 ];
