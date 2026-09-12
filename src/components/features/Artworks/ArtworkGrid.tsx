@@ -15,13 +15,7 @@ export const ArtworkGrid = ({ artworks }: { artworks: Artwork[] }) => {
     );
     const columnHeights: number[] = new Array(columnsCount).fill(0);
 
-    const sortedArtworks = [...artworks].sort((a, b) => {
-      const ratioA = a.image_height / a.image_width;
-      const ratioB = b.image_height / b.image_width;
-      return ratioB - ratioA;
-    });
-
-    sortedArtworks.forEach((art) => {
+    artworks.forEach((art) => {
       const ratio = art.image_height / art.image_width;
 
       const minH = Math.min(...columnHeights);
