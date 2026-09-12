@@ -52,9 +52,8 @@ export const GalleryPage = () => {
         <div className="max-w-[1440px] mx-auto w-full">
           <div
             className={`
-              bg-background
               my-[24px]
-              md:my-[28px] md:p-[28px] md:border-[1px] md:border-primary
+              md:bg-background md:my-[28px] md:p-[28px] md:border-[1px] md:border-primary
               lg:my-[32px] lg:p-[32px]
             `}
           >
@@ -62,8 +61,8 @@ export const GalleryPage = () => {
 
             <div
               className={`
-                border-primary
-                border-[1px] px-[8px] py-[16px]
+                bg-background md:bg-transparent
+                border-primary border-[1px] px-[8px] py-[16px]
                 md:border-none md:p-0
               `}
             >
