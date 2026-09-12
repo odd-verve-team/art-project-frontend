@@ -61,3 +61,6 @@ export const DEFAULT_FILTERS: GalleryFilterState = {
   maxPrice: FILTER_LIMITS.MAX_PRICE,
   maxYear: FILTER_LIMITS.MAX_YEAR,
 };
+
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_LIMIT = 12;
