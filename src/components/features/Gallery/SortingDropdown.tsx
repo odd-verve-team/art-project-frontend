@@ -9,17 +9,19 @@ interface Props {
   onClose: () => void;
 }
 
-const OPTION_BTN = `
+const OPTION_BTN_BASE = `
   py-[16px] px-[24px] text-left text-[14px] font-[600] uppercase 
   transition-colors duration-300 cursor-pointer
 `;
 
-const ACTION_BTN = `
+const ACTION_BTN_BASE = `
   flex-1 text-[14px] font-[600] uppercase cursor-pointer transition-all
 `;
 
 export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
-  const [draftSort, setDraftSort] = useState<ArtworkSort | undefined>(activeSort);
+  const [draftSort, setDraftSort] = useState<ArtworkSort | undefined>(
+    activeSort,
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,11 +51,14 @@ export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
 
   return (
     <div
-      className={`
-        absolute top-full right-0 z-50 mt-[16px] w-[340px] 
-        flex flex-col bg-background border-[1px] border-primary
-      `}
       ref={dropdownRef}
+      className={`
+        absolute z-50 flex flex-col bg-background border-primary
+        top-full mt-[8px] w-screen left-1/2 -translate-x-1/2 border-y-[1px] border-x-0
+        [@media(min-width:624px)]:w-[340px] [@media(min-width:624px)]:left-auto [@media(min-width:624px)]:right-0 [@media(min-width:624px)]:translate-x-0 [@media(min-width:624px)]:border-[1px]
+        md:mt-[12px]
+        lg:mt-[16px]
+      `}
     >
       <div className="flex flex-col divide-y-[1px] divide-primary border-b-[1px] border-primary">
         {SORT_OPTIONS.map((option) => {
@@ -68,7 +73,7 @@ export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
                   : () => setDraftSort(undefined)
               }
               className={`
-                ${OPTION_BTN}
+                ${OPTION_BTN_BASE}
                 ${
                   isActive
                     ? 'bg-primary text-background'
@@ -86,7 +91,7 @@ export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
         <button
           onClick={onClose}
           className={`
-            ${ACTION_BTN} 
+            ${ACTION_BTN_BASE} 
             text-primary border-r-[1px] border-primary hover:bg-gray-100
           `}
         >
@@ -95,12 +100,11 @@ export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
 
         <button
           onClick={() => {
-            console.log('Apply:', draftSort);
             onApply(draftSort);
-            onClose()
+            onClose();
           }}
           className={`
-            ${ACTION_BTN} 
+            ${ACTION_BTN_BASE} 
             bg-primary text-background hover:opacity-80
           `}
         >

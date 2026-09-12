@@ -61,7 +61,7 @@ export const GalleryToolbar = () => {
         />
       )}
 
-      <div className="relative">
+      <div>
         <button
           onClick={() => setIsSortingOpen(!isSortingOpen)}
           aria-expanded={isSortingOpen}
