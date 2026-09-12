@@ -54,7 +54,7 @@ export const FILTER_LIMITS = {
 import type { GalleryFilterState } from '@/types/gallery';
 
 export const DEFAULT_FILTERS: GalleryFilterState = {
-  subject: [],
+  category: [],
   medium: [],
   size: [],
   status: [],

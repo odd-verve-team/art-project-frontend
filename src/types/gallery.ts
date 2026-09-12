@@ -1,5 +1,5 @@
 export interface GalleryFilterState {
-  subject: string[];
+  category: string[];
   medium: string[];
   size: string[];
   status: string[];
