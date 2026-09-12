@@ -4,6 +4,7 @@ import { useArtworkStore } from '@/store/useArtworkStore';
 
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
 import { GalleryToolbar } from '@/components/features/Gallery/GalleryToolbar';
+import { Loader } from '@/components/ui/Loader';
 
 import { formatGalleryParams } from '@/utils/galleryFilters';
 import { DEFAULT_PAGE } from '@/components/features/Gallery/galleryConstants';
@@ -31,6 +32,8 @@ export const GalleryPage = () => {
       fetchGalleryArtworks(params, true);
     }
   };
+
+  const isInitialLoading = isLoading && galleryArtworks.length === 0;
 
   return (
     <div>
@@ -64,7 +67,11 @@ export const GalleryPage = () => {
                 md:border-none md:p-0
               `}
             >
-              <ArtworkGrid artworks={galleryArtworks} />
+              {isInitialLoading ? (
+                <Loader text="Loading artworks..." />
+              ) : (
+                <ArtworkGrid artworks={galleryArtworks} />
+              )}
             </div>
           </div>
 
