@@ -3,10 +3,12 @@ import { Header } from "./Header/Header"
 import { PreFooter } from "./Footer/PreFooter"
 import { Footer } from "./Footer/Footer"
 import { GlobalModal } from "../modals/GlobalModal"
+import { ScrollToTop } from "@/utils/ScrollToTop"
 
 export const MainLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       <Header />
       <main className="flex-1 w-full">
         <Outlet />
