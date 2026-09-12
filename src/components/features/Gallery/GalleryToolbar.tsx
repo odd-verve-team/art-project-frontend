@@ -13,6 +13,7 @@ const BTN_BASE = `
   text-[16px]
   md:text-[20px]
   lg:text-[24px]
+  disabled:opacity-50 disabled:cursor-default
 `;
 const BTN_HOVER =
   'hover:opacity-70 transition-opacity duration-500 ease-in-out';
@@ -26,6 +27,7 @@ export const GalleryToolbar = () => {
   const setFilters = useArtworkStore((state) => state.setFilters);
   const sort = useArtworkStore((state) => state.sort);
   const setSort = useArtworkStore((state) => state.setSort);
+  const isLoading = useArtworkStore((state) => state.isLoading);
 
   return (
     <div
@@ -37,6 +39,7 @@ export const GalleryToolbar = () => {
       `}
     >
       <button
+        disabled={isLoading}
         onMouseDown={(e) => {
           e.stopPropagation();
           setIsSortingOpen(false);
@@ -67,6 +70,7 @@ export const GalleryToolbar = () => {
 
       <div>
         <button
+          disabled={isLoading}
           onMouseDown={(e) => {
             e.stopPropagation();
             setIsFilterOpen(false);
