@@ -26,7 +26,7 @@ const initialState: ArtworkState = {
 };
 
 interface ArtworkActions {
-  fetchGalleryArtworks: (params?: GetArtworksParams) => Promise<void>;
+  fetchGalleryArtworks: (params?: GetArtworksParams, append?: boolean) => Promise<void>;
   fetchFeaturedArtworks: () => Promise<void>;
   setFilters: (filters: GalleryFilterState) => void;
   setSort: (sort?: ArtworkSort) => void;
@@ -36,14 +36,16 @@ interface ArtworkActions {
 export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
   ...initialState,
 
-  fetchGalleryArtworks: async (params) => {
+  fetchGalleryArtworks: async (params, append = false) => {
     set({ isLoading: true, error: null });
     try {
       const response = await artworksApi.getAll(params);
-      set({
-        galleryArtworks: response.data,
+      set((state) => ({
+        galleryArtworks: append
+          ? [...state.galleryArtworks, ...response.data]
+          : response.data,
         meta: response.meta
-      });
+      }));
     } catch (error) {
       const errorMessage =
         error instanceof Error
