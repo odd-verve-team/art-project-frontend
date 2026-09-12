@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 
 import { artworksApi, type GetArtworksParams } from '@/services/api';
-import type { Artwork } from '@/types/artwork';
+import type { Artwork, ArtworkSort, PaginationMeta } from '@/types/artwork';
+import type { GalleryFilterState } from '@/types/gallery';
+import { DEFAULT_FILTERS } from '@/components/features/Gallery/galleryConstants';
 
 interface ArtworkState {
   galleryArtworks: Artwork[];
   featuredArtworks: Artwork[];
+  meta: PaginationMeta | null;
+  filters: GalleryFilterState,
+  sort?: ArtworkSort,
   isLoading: boolean;
   error: string | null;
 }
@@ -13,24 +18,34 @@ interface ArtworkState {
 const initialState: ArtworkState = {
   galleryArtworks: [],
   featuredArtworks: [],
+  meta: null,
+  filters: DEFAULT_FILTERS,
+  sort: undefined,
   isLoading: false,
   error: null,
 };
 
 interface ArtworkActions {
-  fetchGalleryArtworks: (params?: GetArtworksParams) => Promise<void>;
+  fetchGalleryArtworks: (params?: GetArtworksParams, append?: boolean) => Promise<void>;
   fetchFeaturedArtworks: () => Promise<void>;
+  setFilters: (filters: GalleryFilterState) => void;
+  setSort: (sort?: ArtworkSort) => void;
   clearError: () => void;
 }
 
 export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
   ...initialState,
 
-  fetchGalleryArtworks: async (params) => {
+  fetchGalleryArtworks: async (params, append = false) => {
     set({ isLoading: true, error: null });
     try {
       const response = await artworksApi.getAll(params);
-      set({ galleryArtworks: response.data });
+      set((state) => ({
+        galleryArtworks: append
+          ? [...state.galleryArtworks, ...response.data]
+          : response.data,
+        meta: response.meta
+      }));
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -56,5 +71,7 @@ export const useArtworkStore = create<ArtworkState & ArtworkActions>((set) => ({
     }
   },
 
+  setFilters: (filters) => set({ filters }),
+  setSort: (sort) => set({ sort }),
   clearError: () => set({ error: null }),
 }));

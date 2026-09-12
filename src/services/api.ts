@@ -1,4 +1,4 @@
-import type { ArtworksResponse } from '@/types/artwork';
+import type { ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import axios from 'axios';
 
 export const api = axios.create({
@@ -12,6 +12,14 @@ export const api = axios.create({
 export interface GetArtworksParams {
   is_featured?: boolean;
   status?: string;
+  price_lte?: number;
+  year_lte?: number;
+  category?: string; 
+  medium?: string;
+  size?: string;
+  sort?: ArtworkSort; 
+  page?: number;
+  limit?: number;
 }
 
 export const artworksApi = {

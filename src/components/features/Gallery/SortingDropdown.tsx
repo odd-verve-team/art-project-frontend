@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+
 import { SORT_OPTIONS } from '@/components/features/Gallery/galleryConstants';
+import type { ArtworkSort } from '@/types/artwork';
 
 interface Props {
-  activeSort: string;
-  onApply: (value: string) => void;
+  activeSort?: ArtworkSort;
+  onApply: (value?: ArtworkSort) => void;
   onClose: () => void;
 }
 
@@ -17,7 +19,7 @@ const ACTION_BTN = `
 `;
 
 export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
-  const [draftSort, setDraftSort] = useState<string>(activeSort);
+  const [draftSort, setDraftSort] = useState<ArtworkSort | undefined>(activeSort);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export const SortingDropdown = ({ activeSort, onApply, onClose }: Props) => {
               onClick={
                 !isActive
                   ? () => setDraftSort(option.value)
-                  : () => setDraftSort('')
+                  : () => setDraftSort(undefined)
               }
               className={`
                 ${OPTION_BTN}

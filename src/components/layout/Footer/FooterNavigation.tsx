@@ -57,7 +57,6 @@ export const FooterNavigation = () => {
               <NavLink
                 to={item.path}
                 className={LINK_CLASS}
-                onClick={() => window.scrollTo(0, 0)}
               >
                 {({ isActive }) =>
                   isActive && !item.path.includes('#about')
