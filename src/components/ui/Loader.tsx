@@ -1,14 +1,14 @@
 interface Props {
   text?: string;
+  compact?: boolean;
 }
 
-export const Loader = ({ text = 'Loading...' }: Props) => {
+export const Loader = ({ text = 'Loading...', compact = false }: Props) => {
   return (
     <div
       className={`
         flex flex-col items-center justify-center w-full gap-[24px]
-        py-[80px]
-        lg:py-[120px]
+        ${compact ? 'py-0' : 'py-[80px] lg:py-[120px]'}
       `}
     >
       <div className="custom-linear-loader"></div>

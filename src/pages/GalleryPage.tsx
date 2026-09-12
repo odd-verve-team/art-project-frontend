@@ -78,23 +78,26 @@ export const GalleryPage = () => {
           {meta && meta.page < meta.totalPages && (
             <div
               className={`
-                flex justify-center
+                flex justify-center items-center min-h-[44px]
                 pb-[24px]
                 lg:pt-[30px] lg:pb-[62px]
               `}
             >
-              <button
-                onClick={handleLoadMore}
-                disabled={isLoading}
-                className={`
-                  text-primary font-[300] uppercase transition-opacity
-                  duration-300 hover:opacity-70 disabled:opacity-50
-                  text-[16px]/[24px]
-                  lg:text-[24px]
-                `}
-              >
-                {isLoading ? 'Loading...' : 'See More'}
-              </button>
+              {isLoading && !isInitialLoading ? (
+                <Loader compact text="" />
+              ) : (
+                <button
+                  onClick={handleLoadMore}
+                  className={`
+                    text-primary font-[300] uppercase transition-opacity
+                    duration-300 hover:opacity-70
+                    text-[16px]/[24px]
+                    lg:text-[24px]
+                  `}
+                >
+                  See More
+                </button>
+              )}
             </div>
           )}
         </div>
