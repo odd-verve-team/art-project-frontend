@@ -6,12 +6,21 @@ import { HeaderNavigation } from '@/components/layout/Header/HeaderNavigation';
 import { HeaderActions } from '@/components/layout/Header/HeaderActions';
 import { MobileMenu } from './MobileMenu';
 
+import type { HeaderTheme } from './headerConstants';
+
 import BurgerIcon from '@/assets/burger-icon.svg';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const { pathname } = useLocation();
   const isHomePage = pathname === '/';
+
+  const isLightMode =
+    pathname.startsWith('/gallery/')
+    || pathname.includes('login')
+    || pathname.includes('/artist');
+  const theme: HeaderTheme = isLightMode ? 'light' : 'dark';
 
   const headerRef = useRef<HTMLElement>(null);
 
@@ -33,7 +42,14 @@ export const Header = () => {
   }, []);
 
   return (
-    <header ref={headerRef} className="w-full px-global pt-header bg-primary">
+    <header
+      ref={headerRef}
+      className={`
+        w-full px-global pt-header
+        ${isLightMode ? 'bg-background' : 'bg-primary'}
+        transition-colors duration-500
+      `}
+    >
       <div
         className={`
           max-w-[1440px] mx-auto w-full items-center
@@ -50,7 +66,7 @@ export const Header = () => {
             ${isHomePage ? 'md:justify-self-start' : 'xl:justify-self-start'}
           `}
         >
-          {!isHomePage && <Logo />}
+          {!isHomePage && <Logo theme={theme} />}
         </div>
 
         <div
@@ -59,7 +75,7 @@ export const Header = () => {
             ${isHomePage ? 'md:block md:justify-self-center' : 'xl:block xl:justify-self-center'}
           `}
         >
-          <HeaderNavigation />
+          <HeaderNavigation theme={theme} />
         </div>
 
         <div
@@ -68,7 +84,7 @@ export const Header = () => {
             ${isHomePage ? 'md:flex md:justify-self-end' : 'xl:flex xl:justify-self-end'}
           `}
         >
-          {!isHomePage && <HeaderActions />}
+          {!isHomePage && <HeaderActions theme={theme} />}
         </div>
 
         <button
@@ -79,7 +95,7 @@ export const Header = () => {
           onClick={() => setIsMobileMenuOpen(true)}
           aria-label="Open menu"
         >
-          <img src={BurgerIcon} alt="Menu" />
+          <img src={BurgerIcon} alt="Menu" className={isLightMode ? 'invert' : ''} />
         </button>
       </div>
 

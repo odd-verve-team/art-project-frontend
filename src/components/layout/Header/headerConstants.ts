@@ -1,3 +1,5 @@
+export type HeaderTheme = 'dark' | 'light';
+
 export const NAV_ITEMS = [
   { label: 'home', path: '/' },
   { label: 'about', path: '/#about' },
