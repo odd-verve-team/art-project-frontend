@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useArtworkStore } from '@/store/useArtworkStore';
 
@@ -19,7 +19,26 @@ export const GalleryPage = () => {
   const meta = useArtworkStore((state) => state.meta);
   const isLoading = useArtworkStore((state) => state.isLoading);
 
+  const isFirstRender = useRef(true);
+  const prevFilters = useRef(filters);
+  const prevSort = useRef(sort);
+  const initialCount = useRef(galleryArtworks.length);
+
   useEffect(() => {
+    const isFilterChanged =
+      prevFilters.current !== filters ||
+      prevSort.current !== sort;
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      if (initialCount.current > 0) return;
+    } else {
+      if (!isFilterChanged) return;
+    }
+
+    prevFilters.current = filters;
+    prevSort.current = sort;
+
     const params = formatGalleryParams(filters, sort);
     params.page = DEFAULT_PAGE;
     fetchGalleryArtworks(params, false);
