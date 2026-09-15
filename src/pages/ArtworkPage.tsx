@@ -5,6 +5,7 @@ import { useArtworkStore } from '@/store/useArtworkStore';
 import { Loader } from '@/components/ui/Loader';
 
 import { ArtworkImage } from '@/components/features/ArtworkDetails/ArtworkImage';
+import { ArtworkInfo } from '@/components/features/ArtworkDetails/ArworkInfo';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,12 +34,13 @@ export const ArtworkPage = () => {
   const { title } = currentArtwork;
 
   return (
-    <div className="px-global min-h-[calc(100svh-var(--header-height))] relative">
+    <div className="px-global min-h-[calc(100svh-var(--header-height))] relative mb-[32px]">
       <div className="mt-[65px] pb-[24px] border-b-[1px] border-primary -mx-global px-global">
         <h2 className="text-[52px]">{title}</h2>
       </div>
 
       <ArtworkImage artwork={currentArtwork} className="h-[420px]" />
+      <ArtworkInfo artwork={currentArtwork} />
     </div>
   );
 };
