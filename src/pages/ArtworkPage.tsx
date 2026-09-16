@@ -7,6 +7,7 @@ import { Loader } from '@/components/ui/Loader';
 import { ArtworkImage } from '@/components/features/ArtworkDetails/ArtworkImage';
 import { ArtworkInfo } from '@/components/features/ArtworkDetails/ArtworkInfo';
 import { RecommendedArtworks } from '@/components/features/ArtworkDetails/RecommendedArtworks';
+import { ArtworkDescription } from '@/components/features/ArtworkDetails/ArtworkDescription';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,9 +41,23 @@ export const ArtworkPage = () => {
         <h2 className="text-[52px]">{title}</h2>
       </div>
 
-      <ArtworkImage artwork={currentArtwork} className="h-[420px]" />
-      <ArtworkInfo artwork={currentArtwork} />
-      <RecommendedArtworks artworkId={currentArtwork.id} artworkCategory={currentArtwork.category} />
+      <ArtworkImage 
+        artwork={currentArtwork} 
+        className="h-[420px]"
+      />
+      <ArtworkInfo 
+        artwork={currentArtwork} 
+        className=""
+      />
+      <ArtworkDescription
+        artwork={currentArtwork}
+        className="min-h-[200px]"
+      />
+      <RecommendedArtworks 
+        artworkId={currentArtwork.id} 
+        artworkCategory={currentArtwork.category}
+        className=""
+      />
     </div>
   );
 };
