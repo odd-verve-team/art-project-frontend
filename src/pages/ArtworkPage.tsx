@@ -8,6 +8,7 @@ import { ArtworkImage } from '@/components/features/ArtworkDetails/ArtworkImage'
 import { ArtworkInfo } from '@/components/features/ArtworkDetails/ArtworkInfo';
 import { RecommendedArtworks } from '@/components/features/ArtworkDetails/RecommendedArtworks';
 import { ArtworkDescription } from '@/components/features/ArtworkDetails/ArtworkDescription';
+import { ArtworkOrderForm } from '@/components/features/ArtworkDetails/ArtworkOrderForm';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +37,7 @@ export const ArtworkPage = () => {
   const { title } = currentArtwork;
 
   return (
-    <div className="px-global min-h-[calc(100svh-var(--header-height))] relative mb-[32px]">
+    <div className="px-global min-h-[calc(100svh-var(--header-height))] relative">
       <div className="mt-[65px] pb-[24px] border-b-[1px] border-primary -mx-global px-global">
         <h2 className="text-[52px]">{title}</h2>
       </div>
@@ -56,6 +57,10 @@ export const ArtworkPage = () => {
       <RecommendedArtworks 
         artworkId={currentArtwork.id} 
         artworkCategory={currentArtwork.category}
+        className=""
+      />
+      <ArtworkOrderForm
+        artwork={currentArtwork}
         className=""
       />
     </div>
