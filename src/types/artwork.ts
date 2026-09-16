@@ -17,14 +17,13 @@ export interface Artwork {
   image_height: number;
   price: string;
   artist: Artist;
-
-  description?: string;
-  category?: ArtworkCategory;
-  painting_length?: number;
-  painting_width?: number;
-  status?: ArtworkStatus;
-  is_featured?: boolean;
-  created_at?: string;
+  description: string;
+  category: ArtworkCategory;
+  painting_length: number;
+  painting_width: number;
+  status: ArtworkStatus;
+  is_featured: boolean;
+  created_at: string;
   year: number;
   medium: ArtworkMedium;
 }
