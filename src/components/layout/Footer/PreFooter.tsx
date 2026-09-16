@@ -5,19 +5,15 @@ export const PreFooter = () => {
     <div
       className={`
         w-full flex justify-center overflow-hidden bg-primary
-        pt-[80px] pb-[50px]
-        md:pt-[120px] md:pb-[70px]
-        lg:pt-[172px] lg:pb-[88px]
+        pt-[clamp(80px,12vw,172px)] pb-[clamp(50px,6vw,88px)]
       `}
     >
       <div
         className={`
           relative flex flex-col w-full
           font-[300] text-background uppercase
-          gap-[14px] max-w-[350px] mb-[30px] text-[24px]/[100%]
-          md:gap-[8px] md:max-w-[680px] md:mb-[40px] md:text-[28px]/[100%]
-          lg:gap-[10px] lg:max-w-[1050px] lg:mb-[55px] lg:text-[56px]/[100%]
-          md:whitespace-nowrap
+          gap-[14px] max-w-[clamp(300px,72vw,1050px)] mb-[clamp(30px,4vw,55px)] text-[clamp(20px,3.9vw,56px)]/[100%]
+          md:gap-[10px] md:whitespace-nowrap
         `}
       >
         <span className={`${LINE_BASE} self-start`}>
