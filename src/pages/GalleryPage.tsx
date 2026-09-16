@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useArtworkStore } from '@/store/useArtworkStore';
 
@@ -19,7 +19,25 @@ export const GalleryPage = () => {
   const meta = useArtworkStore((state) => state.meta);
   const isLoading = useArtworkStore((state) => state.isLoading);
 
+  const isFirstRender = useRef(true);
+  const prevFilters = useRef(filters);
+  const prevSort = useRef(sort);
+  const initialCount = useRef(galleryArtworks.length);
+
   useEffect(() => {
+    const isFilterChanged =
+      prevFilters.current !== filters || prevSort.current !== sort;
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      if (initialCount.current > 0) return;
+    } else {
+      if (!isFilterChanged) return;
+    }
+
+    prevFilters.current = filters;
+    prevSort.current = sort;
+
     const params = formatGalleryParams(filters, sort);
     params.page = DEFAULT_PAGE;
     fetchGalleryArtworks(params, false);
@@ -68,8 +86,17 @@ export const GalleryPage = () => {
             >
               {isInitialLoading ? (
                 <Loader text="Loading artworks..." />
-              ) : (
+              ) : galleryArtworks.length > 0 ? (
                 <ArtworkGrid artworks={galleryArtworks} />
+              ) : (
+                <div className="flex flex-col items-center justify-center py-[80px] md:py-[120px] text-center text-primary select-none">
+                  <span className="text-[20px] md:text-[28px] font-[200] uppercase tracking-[1px]">
+                    No artworks found
+                  </span>
+                  <span className="text-[12px] md:text-[14px] font-[300] mt-[12px] opacity-60">
+                    Try adjusting your filters to discover more works.
+                  </span>
+                </div>
               )}
             </div>
           </div>
