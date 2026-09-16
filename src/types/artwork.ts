@@ -1,4 +1,4 @@
-export type ArtworkCategory = 'landscape' | 'portrait' | 'still_life' | 'abstract' | 'architecture' | 'avant-garde';
+export type ArtworkCategory = 'modern' | 'portrait' | 'abstractionism' | 'cubism' | 'surrealism' | 'pop_art' | 'impressionism' | 'landscape' | 'still_life' | 'romanticism';
 export type ArtworkMedium = 'oil' | 'acrylic' | 'watercolor' | 'graphics' | 'mixed_media' | 'lithography';
 export type ArtworkStatus = 'approved' | 'sold' | 'pending' | 'rejected';
 export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' | 'year_asc' | 'year_desc' | 'size_asc' | 'size_desc';

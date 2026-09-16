@@ -16,13 +16,17 @@ export const SORT_OPTIONS: { label: string; value: ArtworkSort }[] = [
   { label: 'SIZE: LARGE TO SMALL', value: 'size_desc' },
 ];
 
-export const CATEGORY_OPTIONS: { label: string, value: ArtworkCategory }[] = [
+export const CATEGORY_OPTIONS: { label: string; value: ArtworkCategory }[] = [
   { label: 'LANDSCAPE', value: 'landscape' },
   { label: 'PORTRAIT', value: 'portrait' },
   { label: 'STILL LIFE', value: 'still_life' },
-  { label: 'ABSTRACT', value: 'abstract' },
-  { label: 'ARCHITECTURE', value: 'architecture' },
-  { label: 'AVANT-GARDE', value: 'avant-garde' },
+  { label: 'MODERN', value: 'modern' },
+  { label: 'ABSTRACTIONISM', value: 'abstractionism' },
+  { label: 'CUBISM', value: 'cubism' },
+  { label: 'SURREALISM', value: 'surrealism' },
+  { label: 'POP ART', value: 'pop_art' },
+  { label: 'IMPRESSIONISM', value: 'impressionism' },
+  { label: 'ROMANTICISM', value: 'romanticism' },
 ];
 
 export const MEDIUM_OPTIONS: { label: string; value: ArtworkMedium }[] = [
