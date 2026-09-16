@@ -26,8 +26,7 @@ export const GalleryPage = () => {
 
   useEffect(() => {
     const isFilterChanged =
-      prevFilters.current !== filters ||
-      prevSort.current !== sort;
+      prevFilters.current !== filters || prevSort.current !== sort;
 
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -87,13 +86,22 @@ export const GalleryPage = () => {
             >
               {isInitialLoading ? (
                 <Loader text="Loading artworks..." />
-              ) : (
+              ) : galleryArtworks.length > 0 ? (
                 <ArtworkGrid artworks={galleryArtworks} />
+              ) : (
+                <div className="flex flex-col items-center justify-center py-[80px] md:py-[120px] text-center text-primary select-none">
+                  <span className="text-[20px] md:text-[28px] font-[200] uppercase tracking-[1px]">
+                    No artworks found
+                  </span>
+                  <span className="text-[12px] md:text-[14px] font-[300] mt-[12px] opacity-60">
+                    Try adjusting your filters to discover more works.
+                  </span>
+                </div>
               )}
             </div>
           </div>
 
-          {meta && meta.page < meta.totalPages && (
+          {meta && meta.page < meta.totalPages && galleryArtworks.length > 0 && (
             <div
               className={`
                 flex justify-center items-center min-h-[44px]

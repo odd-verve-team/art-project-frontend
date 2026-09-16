@@ -38,7 +38,7 @@ export const SliderIndicator = ({
   return (
     <motion.div
       ref={containerRef}
-      className="absolute left-1/2 -translate-x-1/2 flex items-center h-[24px] gap-[10px] bottom-[68px] cursor-grab active:cursor-grabbing"
+      className="absolute left-1/2 -translate-x-1/2 flex items-center h-[24px] gap-[10px] bottom-[7.5%] cursor-grab active:cursor-grabbing"
       style={{ touchAction: 'none' }}
       initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
