@@ -180,7 +180,7 @@ export const HeroSlider = () => {
                 key={slide.id}
                 src={slide.image}
                 alt={slide.alt}
-                className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
+                className="w-auto h-[clamp(100px,25svh,270px)] mr-[clamp(8px,1vw,16px)] object-cover shrink-0 select-none pointer-events-none"
                 draggable={false}
               />
             ))}
@@ -189,7 +189,7 @@ export const HeroSlider = () => {
                 key={`dup-${slide.id}`}
                 src={slide.image}
                 alt={slide.alt}
-                className="w-auto h-[246px] mr-[16px] object-cover shrink-0 select-none pointer-events-none"
+                className="w-auto h-[clamp(100px,25svh,270px)] mr-[clamp(8px,1vw,16px)] object-cover shrink-0 select-none pointer-events-none"
                 draggable={false}
               />
             ))}

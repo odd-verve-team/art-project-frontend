@@ -16,10 +16,9 @@ export const HeroFrame = () => {
         <motion.div
           className={`
             absolute 
-            top-[110px] bottom-[110px] left-[110px] right-[110px]
-            md:top-[150px] md:bottom-[150px] md:left-[200px] md:right-[200px]
-            lg:top-[205px] lg:bottom-[205px] lg:left-[300px] lg:right-[300px]
-            xl:left-[405px] xl:right-[405px]
+            top-1/2 -translate-y-1/2
+            h-[clamp(200px,38svh,380px)]
+            left-[clamp(50px,28%,405px)] right-[clamp(50px,28%,405px)]
           `}
           initial={isFirstVisit ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
@@ -33,8 +32,7 @@ export const HeroFrame = () => {
             className={`
               absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap
               text-background font-light leading-none uppercase select-none 
-              text-[16px]
-              md:text-[22px]
+              text-[clamp(14px,1.5vw,22px)]
             `}
             initial={isFirstVisit ? { y: -60, opacity: 0 } : false}
             animate={{ y: 0, opacity: 1 }}

@@ -60,9 +60,7 @@ export const SpeedControl = ({
     <motion.div
       className={`
         absolute left-1/2 -translate-x-1/2 flex flex-col items-center
-        bottom-[110px] 
-        md:bottom-[150px]
-        lg:bottom-[205px]
+        bottom-[clamp(110px,15%,205px)]
       `}
       initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
