@@ -101,7 +101,7 @@ export const GalleryPage = () => {
             </div>
           </div>
 
-          {meta && meta.page < meta.totalPages && (
+          {meta && meta.page < meta.totalPages && galleryArtworks.length > 0 && (
             <div
               className={`
                 flex justify-center items-center min-h-[44px]
