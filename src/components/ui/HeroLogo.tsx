@@ -7,13 +7,11 @@ const TEXT_DELAY = 0.25;
 const ENTRANCE_DURATION = 0.5;
 
 const TEXT_BASE_CLASSES = `
-  absolute text-background font-light leading-none uppercase text-[24px]
-  md:text-[36px]
+  absolute text-background font-light leading-none uppercase text-[clamp(18px,2.5vw,36px)]
 `;
 
 const CORNER_BASE_CLASSES = `
-  absolute border-background w-[24px] h-[24px]
-  md:w-[50px] md:h-[50px]
+  absolute border-background w-[clamp(24px,3.5vw,50px)] h-[clamp(24px,3.5vw,50px)]
 `;
 
 export const HeroLogo = () => {
@@ -48,7 +46,7 @@ export const HeroLogo = () => {
           className={`
             absolute
             -top-[44px] bottom-[24px] left-[16px] right-[16px]
-            md:top-[68px] md:bottom-[68px] md:left-[117px] md:right-[117px]
+            md:top-[7.5%] md:bottom-[7.5%] md:left-[8%] md:right-[8%]
           `}
         >
           {/* ==================== CORNERS ==================== */}
@@ -112,7 +110,7 @@ export const HeroLogo = () => {
             className={`
               ${TEXT_BASE_CLASSES}
               top-[8px] left-[12px]
-              md:top-[24px] md:left-[24px]
+              md:top-[clamp(12px,1.7vw,24px)] md:left-[clamp(12px,1.7vw,24px)]
             `}
           >
             ODD
@@ -127,7 +125,7 @@ export const HeroLogo = () => {
             className={`
               ${TEXT_BASE_CLASSES}
               top-[8px] right-[12px]
-              md:top-[24px] md:right-[24px]
+              md:top-[clamp(12px,1.7vw,24px)] md:right-[clamp(12px,1.7vw,24px)]
             `}
           >
             VERVE
@@ -142,7 +140,7 @@ export const HeroLogo = () => {
             className={`
               ${TEXT_BASE_CLASSES}
               bottom-[8px] left-[12px]
-              md:bottom-[24px] md:left-[24px]
+              md:bottom-[clamp(12px,1.7vw,24px)] md:left-[clamp(12px,1.7vw,24px)]
             `}
           >
             ART
@@ -157,7 +155,7 @@ export const HeroLogo = () => {
             className={`
               ${TEXT_BASE_CLASSES}
               bottom-[8px] right-[12px]
-              md:bottom-[24px] md:right-[24px]
+              md:bottom-[clamp(12px,1.7vw,24px)] md:right-[clamp(12px,1.7vw,24px)]
             `}
           >
             GALLERY
