@@ -4,6 +4,7 @@ export type ArtworkStatus = 'approved' | 'sold' | 'pending' | 'rejected';
 export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' | 'year_asc' | 'year_desc' | 'size_asc' | 'size_desc';
 
 export interface Artist {
+  id: number;
   first_name: string;
   last_name: string;
   avatar_url: string | null;

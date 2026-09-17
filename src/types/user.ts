@@ -1,4 +1,4 @@
-import type { ArtworkCategory } from "./artwork";
+import type { ArtworkCategory } from './artwork';
 
 export type UserRole = 'user' | 'artist' | 'admin';
 export type ApplicationStatus = 'pending' | 'approved' | 'rejected';
@@ -10,8 +10,8 @@ export interface UserListItem {
   last_name: string;
   avatar_url: string;
   role: UserRole;
-  artworks: number[] | ArtworkCategory[]; //! delete ArtworkCategory[] after backend update
-  art_categories?: ArtworkCategory[]; //! remove ? to make required after backend update
+  artworks: number[];
+  art_categories: ArtworkCategory[];
 }
 
 export interface UserDetail extends UserListItem {
