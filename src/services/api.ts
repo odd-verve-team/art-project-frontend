@@ -1,5 +1,7 @@
-import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import axios from 'axios';
+
+import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
+import type { UserDetail, UserListItem } from '@/types/user';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173/api',
@@ -20,6 +22,7 @@ export interface GetArtworksParams {
   sort?: ArtworkSort; 
   page?: number;
   limit?: number;
+  artist?: number;
 }
 
 export const artworksApi = {
@@ -30,6 +33,18 @@ export const artworksApi = {
 
   getById: async (id: number): Promise<Artwork> => {
     const response = await api.get(`/artworks/${id}/`);
+    return response.data;
+  },
+};
+
+export const usersApi = {
+  getAll: async (): Promise<UserListItem[]> => {
+    const response = await api.get('/users/');
+    return response.data;
+  },
+
+  getById: async (id: number): Promise<UserDetail> => {
+    const response = await api.get(`/users/${id}/`);
     return response.data;
   },
 };
