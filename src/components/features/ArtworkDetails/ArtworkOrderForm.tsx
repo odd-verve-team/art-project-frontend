@@ -53,7 +53,7 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
   };
 
   return (
-    <div
+    <section
       id="order-form"
       className={`
         flex flex-col gap-[16px] mb-[24px] 
@@ -123,6 +123,6 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
           </button>
         </form>
       </div>
-    </div>
+    </section>
   );
 };

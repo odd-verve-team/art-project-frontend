@@ -14,7 +14,7 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
     : 'xx/xx/xxxx';
 
   return (
-    <div
+    <section
       className={`-mx-global px-global border-b border-primary ${className}`}
     >
       <div className="relative h-full border-x border-primary flex items-center justify-center p-[45px]">
@@ -46,6 +46,6 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

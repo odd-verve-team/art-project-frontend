@@ -39,7 +39,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
   };
 
   return (
-    <div
+    <section
       className={`-mx-global px-global border-b border-primary ${className}`}
     >
       <div className="h-full border-x border-primary flex flex-col justify-center p-[12px]">
@@ -76,6 +76,6 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

@@ -130,12 +130,12 @@ export const RecommendedArtworks = ({
   }
 
   return (
-    <div
+    <section
       className={`-mx-global px-global border-b border-primary ${className}`}
     >
       <div className="h-full border-x border-primary pt-[12px] pb-[38px]">
         {content}
       </div>
-    </div>
+    </section>
   );
 };

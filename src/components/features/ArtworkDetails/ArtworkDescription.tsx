@@ -9,7 +9,7 @@ export const ArtworkDescription = ({ artwork, className = '' }: Props) => {
   const { category, description } = artwork;
 
   return (
-    <div
+    <section
       className={`-mx-global px-global border-b flex flex-col border-primary ${className}`}
     >
       <div
@@ -23,6 +23,6 @@ export const ArtworkDescription = ({ artwork, className = '' }: Props) => {
         <span>category: {category}</span>
         <span>description: {description}</span>
       </div>
-    </div>
+    </section>
   );
 }
