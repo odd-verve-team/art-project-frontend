@@ -50,6 +50,7 @@ export const useUserStore = create<UserState & UserActions>((set, get) => ({
 
     if (cachedUser) {
       set({ currentUser: cachedUser, error: null });
+      return;
     }
 
     set({ isLoading: true, error: null });
