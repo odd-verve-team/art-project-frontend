@@ -9,15 +9,14 @@ import { ArtworkInfo } from '@/components/features/ArtworkDetails/ArtworkInfo';
 import { RecommendedArtworks } from '@/components/features/ArtworkDetails/RecommendedArtworks';
 import { ArtworkDescription } from '@/components/features/ArtworkDetails/ArtworkDescription';
 import { ArtworkOrderForm } from '@/components/features/ArtworkDetails/ArtworkOrderForm';
+import { ArtworkAuthorInfo } from '@/components/features/ArtworkDetails/ArtworkAuthorInfo';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
 
   const currentArtwork = useArtworkStore((state) => state.currentArtwork);
   const fetchArtworkById = useArtworkStore((state) => state.fetchArtworkById);
-  const clearCurrentArtwork = useArtworkStore(
-    (state) => state.clearCurrentArtwork,
-  );
+  const clearCurrentArtwork = useArtworkStore((state) => state.clearCurrentArtwork);
   const isLoading = useArtworkStore((state) => state.isLoading);
   const error = useArtworkStore((state) => state.error);
 
@@ -53,6 +52,10 @@ export const ArtworkPage = () => {
       <ArtworkDescription
         artwork={currentArtwork}
         className="min-h-[200px]"
+      />
+      <ArtworkAuthorInfo
+        artistId={currentArtwork.artist.id}
+        className=""
       />
       <RecommendedArtworks 
         artworkId={currentArtwork.id} 
