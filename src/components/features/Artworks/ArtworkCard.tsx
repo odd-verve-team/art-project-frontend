@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { Artwork } from '@/types/artwork';
 import HeartIcon from '@/assets/heart-icon.svg';
+import { Link } from 'react-router-dom';
 
 export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -10,7 +11,8 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   const authorName = `${artwork.artist.first_name} ${artwork.artist.last_name}`;
 
   return (
-    <div
+    <Link
+      to={`/gallery/${artwork.id}`}
       style={{ aspectRatio: size }}
       className="relative group overflow-hidden cursor-pointer"
     >
@@ -52,13 +54,16 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
           </div>
           <button
             type="button"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
             className="p-[5px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110"
           >
             <img src={HeartIcon} alt="Add to favourite" />
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

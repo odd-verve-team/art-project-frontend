@@ -7,7 +7,7 @@ import {
 import { MainLayout } from '@/components/layout/MainLayout';
 import { HomePage } from '@/pages/HomePage';
 import { GalleryPage } from './pages/GalleryPage';
-import { ArtworkDetailsPage } from '@/pages/ArtworkDetailsPage';
+import { ArtworkPage } from '@/pages/ArtworkPage';
 import { ArtistProfilePage } from '@/pages/ArtistProfilePage';
 import { LoginPage } from '@/pages/LoginPage';
 import { RegisterPage } from '@/pages/RegisterPage';
@@ -21,7 +21,7 @@ export const router = createBrowserRouter(
       {/* Публічні маршрути*/}
       <Route index element={<HomePage />} />
       <Route path="gallery" element={<GalleryPage />} />
-      <Route path="artworks/:id" element={<ArtworkDetailsPage />} />
+      <Route path="gallery/:id" element={<ArtworkPage />} />
       <Route path="artists/:id" element={<ArtistProfilePage />} />
 
       {/* Авторизація */}

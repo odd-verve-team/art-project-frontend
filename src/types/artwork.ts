@@ -1,9 +1,10 @@
-export type ArtworkCategory = 'landscape' | 'portrait' | 'still_life' | 'abstract' | 'architecture' | 'avant-garde';
+export type ArtworkCategory = 'modern' | 'portrait' | 'abstractionism' | 'cubism' | 'surrealism' | 'pop_art' | 'impressionism' | 'landscape' | 'still_life' | 'romanticism';
 export type ArtworkMedium = 'oil' | 'acrylic' | 'watercolor' | 'graphics' | 'mixed_media' | 'lithography';
 export type ArtworkStatus = 'approved' | 'sold' | 'pending' | 'rejected';
 export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' | 'year_asc' | 'year_desc' | 'size_asc' | 'size_desc';
 
 export interface Artist {
+  id: number;
   first_name: string;
   last_name: string;
   avatar_url: string | null;
@@ -17,14 +18,13 @@ export interface Artwork {
   image_height: number;
   price: string;
   artist: Artist;
-
-  description?: string;
-  category?: ArtworkCategory;
-  painting_length?: number;
-  painting_width?: number;
-  status?: ArtworkStatus;
-  is_featured?: boolean;
-  created_at?: string;
+  description: string;
+  category: ArtworkCategory;
+  painting_length: number;
+  painting_width: number;
+  status: ArtworkStatus;
+  is_featured: boolean;
+  created_at: string;
   year: number;
   medium: ArtworkMedium;
 }
