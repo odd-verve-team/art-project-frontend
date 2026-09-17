@@ -43,9 +43,9 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
       className={`-mx-global px-global border-b border-primary ${className}`}
     >
       <div className="h-full border-x border-primary flex flex-col justify-center p-[12px]">
-        <div className="flex flex-col gap-[16px] text-primary font-[300]">
+        <div className="flex flex-col gap-[16px]">
           {specs.map((spec) => (
-            <div key={spec.label} className="flex">
+            <div key={spec.label} className="flex text-primary text-[16px] font-[300]">
               <span className="w-[80px] uppercase">{spec.label}</span>
               <span className={spec.className}>{spec.value}</span>
             </div>
