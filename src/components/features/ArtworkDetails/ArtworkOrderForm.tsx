@@ -64,7 +64,7 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
           animate={{ x: ['0%', '-50%'] }}
           transition={{ repeat: Infinity, ease: 'linear', duration: 10 }}
         >
-          {[0, 1].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
               className={`
@@ -92,7 +92,6 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             lg:flex-row lg:justify-between lg:gap-[64px]
           `}
         >
-          {/* ЛІВА КОЛОНКА (Поля форми) */}
           <div
             className={`
               flex flex-col gap-[32px] mt-[25px]
@@ -120,7 +119,6 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             />
           </div>
 
-          {/* ПРАВА КОЛОНКА (Картинка + Кнопка) */}
           <div
             className={`
               flex flex-col gap-[36px]
