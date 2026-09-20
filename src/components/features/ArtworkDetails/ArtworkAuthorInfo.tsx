@@ -7,6 +7,8 @@ import type { UserDetail } from '@/types/user';
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
 import { Loader } from '@/components/ui/Loader';
 
+const DEFAULT_AVATAR = 'https://res.cloudinary.com/mpczkqqv/image/upload/default_avatar.png';
+
 interface Props {
   artistId: number;
   className?: string;
@@ -50,21 +52,32 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
     } = currentUser as UserDetail;
     const name = `${first_name} ${last_name}`;
     const categories = art_categories.join(' / ');
+    const isDefaultAvatar = image === DEFAULT_AVATAR;
 
-    content = (
-      <>
-        <span className="text-muted text-[12px] font-[300] uppercase">
+    // --- МОБІЛЬНА ВЕРСІЯ ---
+    const mobileView = (
+      <div className="flex flex-col">
+        <span 
+          className={`
+            text-muted text-[12px] font-[300] uppercase
+          `}
+        >
           artist
         </span>
+        
         <div className="flex flex-col gap-[3px] mt-[16px]">
-          <span className="text-primary text-[16px] font-[600] uppercase">
+          <span 
+            className={`
+              text-primary text-[16px] font-[600] uppercase
+            `}
+          >
             {name}
           </span>
-          <span
+          <span 
             className={`
-            text-muted text-[10px]/[20px] font-[500] 
-            tracking-[1px] uppercase text-justify
-          `}
+              text-muted text-[10px]/[20px] font-[500] 
+              tracking-[1px] uppercase text-justify
+            `}
           >
             {categories}
           </span>
@@ -74,11 +87,11 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
           to={`/artists/${currentUser.id}`}
           className="group flex flex-col mt-[16px]"
         >
-          <div
+          <div 
             className={`
-            w-[177px] h-[229px] mx-auto 
-            overflow-hidden mb-[16px]
-          `}
+              w-[177px] h-[229px] mx-auto 
+              overflow-hidden mb-[16px]
+            `}
           >
             <img
               src={image}
@@ -86,19 +99,17 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
               aria-hidden="true"
               className={`
                 w-full h-full object-cover 
-                transition-transform duration-500 ease-out 
-                group-hover:scale-105
+                transition-transform duration-500 ease-out group-hover:scale-105
               `}
             />
           </div>
 
           <div className="flex gap-[16px] items-end">
-            <span
+            <span 
               className={`
-              text-primary text-[16px]/[18px] font-[300] 
-              text-justify line-clamp-2 grow
-              transition-colors duration-300 group-hover:text-primary/70
-            `}
+                text-primary text-[16px]/[18px] font-[300] text-justify 
+                line-clamp-2 grow transition-colors duration-300 group-hover:text-primary/70
+              `}
             >
               {bio}
             </span>
@@ -107,7 +118,7 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
               aria-hidden="true"
               className={`
                 w-[10px] h-[10px] invert mb-[3px] shrink-0 rotate-45 
-                transition-[translate,opacity] duration-300 ease-out
+                transition-[translate,opacity] duration-300 ease-out 
                 group-hover:opacity-70 group-hover:translate-x-[2px]
               `}
             />
@@ -124,7 +135,7 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
             aria-hidden="true"
             className="w-[24px] h-[24px] rounded-full object-cover"
           />
-          <span
+          <span 
             className={`
               text-primary text-[12px] font-[600] uppercase 
               transition-colors duration-300 group-hover:text-primary/70
@@ -133,15 +144,142 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
             {name}
           </span>
         </Link>
+      </div>
+    );
+
+    const desktopView = (
+      <>
+        <div 
+          className={`
+            flex flex-col min-h-0 border-r border-primary 
+            pt-[16px] p-[24px]
+          `}
+        >
+          <span 
+            className={`
+              text-muted text-[16px] font-[300] uppercase mb-[16px]
+            `}
+          >
+            artist
+          </span>
+
+          {isDefaultAvatar ? (
+            <div className="flex items-center ml-[24px] flex-1 border-primary">
+              <span 
+                className={`
+                  text-primary text-[150px]/[130px] font-[600] uppercase
+                `}
+              >
+                art<br/>ist
+              </span>
+            </div>
+          ) : (
+            <Link
+              to={`/artists/${currentUser.id}`}
+              className="group flex flex-col flex-1 min-h-0"
+            >
+              <div className="w-full h-full border-primary overflow-hidden">
+                <img
+                  src={image}
+                  alt={name}
+                  aria-hidden="true"
+                  className={`
+                    w-full h-full object-cover 
+                    transition-transform duration-500 ease-out group-hover:scale-105
+                  `}
+                />
+              </div>
+            </Link>
+          )}
+        </div>
+
+        <div 
+          className={`
+            flex flex-col justify-between 
+            px-[24px] pb-[24px] pt-[56px]
+          `}
+        >
+          <div className="flex flex-col gap-[3px]">
+            <span className="text-primary text-[24px] font-[600] uppercase">
+              {name}
+            </span>
+            <span 
+              className={`
+                text-muted text-[12px]/[24px] font-[500] 
+                tracking-[1px] uppercase text-justify
+              `}
+            >
+              {categories}
+            </span>
+          </div>
+
+          <div>
+            <Link
+              to={`/artists/${currentUser.id}`}
+              className="group flex flex-col"
+            >
+              <span 
+                className={`
+                  text-primary text-[18px]/[24px] font-[300] text-justify 
+                  line-clamp-3 mb-[24px] transition-colors duration-300 group-hover:text-primary/70
+                `}
+              >
+                {bio}
+              </span>
+            </Link>
+
+            <Link
+              to={`/artists/${currentUser.id}`}
+              className="group flex items-center gap-[8px] w-fit"
+            >
+              <img
+                src={image}
+                alt={name}
+                aria-hidden="true"
+                className="w-[24px] h-[24px] rounded-full object-cover"
+              />
+              <span 
+                className={`
+                  text-primary text-[12px] font-[600] uppercase 
+                  transition-colors duration-300 group-hover:text-primary/70
+                `}
+              >
+                {name}
+              </span>
+            </Link>
+          </div>
+        </div>
+      </>
+    );
+
+    content = (
+      <>
+        <div className="block lg:hidden">
+          {mobileView}
+        </div>
+
+        <div className="hidden lg:grid lg:grid-cols-2 lg:h-full">
+          {desktopView}
+        </div>
       </>
     );
   }
 
   return (
     <section
-      className={`-mx-global px-global border-b border-primary ${className}`}
+      className={`
+        border-b border-primary -mx-global px-global
+        lg:mx-0 lg:px-0 lg:border-b-0 lg:overflow-hidden
+        ${className}
+      `}
     >
-      <div className="h-full border-x border-primary flex flex-col justify-center p-[12px]">
+      <div
+        className={`
+          flex flex-col justify-center h-full
+          border-x border-primary p-[12px]
+          lg:border-x-0 lg:p-0
+        `}
+      >
         {content}
       </div>
     </section>
