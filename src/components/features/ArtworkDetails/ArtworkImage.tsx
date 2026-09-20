@@ -15,15 +15,25 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
 
   return (
     <section
-      className={`-mx-global px-global border-b border-primary ${className}`}
+      className={`
+        border-b border-primary -mx-global px-global
+        lg:mx-0 lg:px-0
+        ${className}
+      `}
     >
-      <div className="relative h-full border-x border-primary flex items-center justify-center p-[45px]">
+      <div
+        className={`
+          relative flex items-center justify-center
+          h-full border-x border-primary p-[45px]
+          lg:border-x-0 lg:p-[60px]
+        `}
+      >
         <div
           className={`
-            absolute top-0 left-0 w-full
-            flex justify-between items-center p-[12px]
+            absolute top-0 left-0 w-full flex justify-between
+            items-center pointer-events-none p-[12px]
             text-primary/50 text-[12px] font-[300] uppercase
-            pointer-events-none
+            lg:text-[16px] lg:py-[16px] lg:px-[24px]
           `}
         >
           <span>artwork</span>
@@ -33,15 +43,26 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
         <img
           src={image_url}
           alt={title}
-          className="max-w-full max-h-full object-contain"
+          className={`
+            max-w-full max-h-full object-contain
+            lg:w-full lg:h-full
+          `}
         />
 
-        <div className="absolute bottom-0 right-0 flex p-[10px]">
+        <div
+          className={`
+            absolute bottom-0 right-0 flex p-[10px]
+            lg:hidden
+          `}
+        >
           <button type="button">
             <img
               src={HeartIcon}
               alt="Add to favorite"
-              className="invert opacity-40 hover:opacity-100 transition-opacity"
+              className={`
+                invert opacity-40 transition-opacity
+                hover:opacity-100
+              `}
             />
           </button>
         </div>
