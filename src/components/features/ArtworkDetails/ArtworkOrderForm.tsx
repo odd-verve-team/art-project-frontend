@@ -12,8 +12,7 @@ const FORM_FIELDS = [
 ];
 
 const INPUT_CLASS = `
-  w-full pb-[2px] 
-  bg-transparent border-b border-primary 
+  w-full pb-[2px] bg-transparent border-b border-primary 
   text-primary text-[10px] font-[500] uppercase outline-none
   focus:border-primary/50 transition-colors
   placeholder:text-muted placeholder:text-[10px] placeholder:font-[500] placeholder:tracking-[1px]
@@ -21,14 +20,14 @@ const INPUT_CLASS = `
 
 const TEXTAREA_CLASS = cn(
   INPUT_CLASS,
-  'min-h-[70px] p-[8px] border resize-none',
+  'min-h-[70px] p-[8px] border resize-none lg:h-full',
 );
 
 const BUTTON_CLASS = `
-  w-full py-[10px]
-  bg-primary text-background 
+  w-full py-[10px] bg-primary text-background 
   text-[16px] font-[500] uppercase tracking-[1px]
-  hover:opacity-80 transition-opacity duration-300
+  hover:opacity-80 transition-opacity duration-300 cursor-pointer
+  lg:w-auto lg:px-[60px] lg:self-end
 `;
 // #endregion
 
@@ -56,14 +55,14 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
     <section
       id="order-form"
       className={`
-        flex flex-col gap-[16px] mb-[24px] 
+        flex flex-col gap-[16px] mb-[24px]
         ${className}
       `}
     >
       <div
         className={`
-          flex overflow-hidden select-none -mx-global 
-          border-b border-primary
+          flex overflow-hidden select-none
+          -mx-global border-y border-primary
         `}
       >
         <motion.div
@@ -75,8 +74,8 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             <span
               key={i}
               className={`
-                pr-[30px] whitespace-nowrap
-                text-[60px]/[60px] font-[200] tracking-[1px] uppercase
+                pr-[30px] whitespace-nowrap text-[60px]/[60px]
+                font-[200] tracking-[1px] uppercase
               `}
             >
               Inquiry & Order Form <span className="ml-[30px] h-full">/</span>
@@ -85,9 +84,25 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
         </motion.div>
       </div>
 
-      <div className="p-[12px] border border-primary">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[36px]">
-          <div className="flex flex-col gap-[32px] mt-[25px]">
+      <div
+        className={`
+          p-[12px] border border-primary
+          lg:px-[24px] lg:py-[32px]
+        `}
+      >
+        <form
+          onSubmit={handleSubmit}
+          className={`
+            flex flex-col gap-[36px]
+            lg:flex-row lg:justify-between lg:gap-[64px]
+          `}
+        >
+          <div
+            className={`
+              flex flex-col gap-[32px] mt-[25px]
+              lg:flex-1 lg:mt-0 lg:mr-[40px]
+            `}
+          >
             {FORM_FIELDS.map((input) => (
               <div key={input.name} className="relative w-full">
                 <input
@@ -109,18 +124,40 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             />
           </div>
 
-          <div className="flex items-end gap-[15px]">
-            <img
-              src={image}
-              alt={title}
-              className="w-[140px] aspect-[4/5] object-cover"
-            />
-            <span className="text-[12px] font-[300]">Artwork: "{title}"</span>
-          </div>
+          <div
+            className={`
+              flex flex-col gap-[36px]
+              lg:flex-1 lg:justify-between lg:gap-[0px]
+            `}
+          >
+            <div
+              className={`
+                flex items-end gap-[15px]
+                lg:flex-col lg:items-start lg:gap-[12px]
+              `}
+            >
+              <img
+                src={image}
+                alt={title}
+                className={`
+                  w-auto h-auto object-contain max-w-[140px] max-h-[180px] 
+                  lg:max-w-none lg:max-h-none lg:w-[260px] lg:h-[240px] lg:object-left-bottom
+                `}
+              />
+              <span
+                className={`
+                  text-[12px] font-[300] shrink-0
+                  lg:text-[14px] lg:text-left
+                `}
+              >
+                Artwork: "{title}"
+              </span>
+            </div>
 
-          <button type="submit" className={BUTTON_CLASS}>
-            send
-          </button>
+            <button type="submit" className={BUTTON_CLASS}>
+              send
+            </button>
+          </div>
         </form>
       </div>
     </section>
