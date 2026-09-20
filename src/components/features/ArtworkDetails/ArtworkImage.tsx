@@ -25,7 +25,7 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
         className={`
           relative flex items-center justify-center
           h-full border-x border-primary p-[45px]
-          lg:border-x-0 lg:p-[60px]
+          lg:border-x-0 lg:p-[min(6.94vw,100px)]
         `}
       >
         <div
@@ -33,7 +33,7 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
             absolute top-0 left-0 w-full flex justify-between
             items-center pointer-events-none p-[12px]
             text-primary/50 text-[12px] font-[300] uppercase
-            lg:text-[16px] lg:py-[16px] lg:px-[24px]
+            lg:text-[min(1.11vw,16px)] lg:py-[min(1.11vw,16px)] lg:px-[min(1.66vw,24px)]
           `}
         >
           <span>artwork</span>

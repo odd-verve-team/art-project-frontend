@@ -22,13 +22,6 @@ const TEXTAREA_CLASS = cn(
   INPUT_CLASS,
   'min-h-[70px] p-[8px] border resize-none lg:h-full',
 );
-
-const BUTTON_CLASS = `
-  w-full py-[10px] bg-primary text-background 
-  text-[16px] font-[500] uppercase tracking-[1px]
-  hover:opacity-80 transition-opacity duration-300 cursor-pointer
-  lg:w-auto lg:px-[60px] lg:self-end
-`;
 // #endregion
 
 interface Props {
@@ -62,7 +55,8 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
       <div
         className={`
           flex overflow-hidden select-none
-          -mx-global border-y border-primary
+          w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw]
+          border-y border-primary
         `}
       >
         <motion.div
@@ -75,6 +69,7 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
               key={i}
               className={`
                 pr-[30px] whitespace-nowrap text-[60px]/[60px]
+                lg:text-[min(4.16vw,60px)] lg:leading-[min(4.16vw,60px)]
                 font-[200] tracking-[1px] uppercase
               `}
             >
@@ -97,10 +92,11 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             lg:flex-row lg:justify-between lg:gap-[64px]
           `}
         >
+          {/* ЛІВА КОЛОНКА (Поля форми) */}
           <div
             className={`
               flex flex-col gap-[32px] mt-[25px]
-              lg:flex-1 lg:mt-0 lg:mr-[40px]
+              lg:flex-1 lg:mt-0 lg:mr-[min(5.55vw,80px)]
             `}
           >
             {FORM_FIELDS.map((input) => (
@@ -124,16 +120,17 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
             />
           </div>
 
+          {/* ПРАВА КОЛОНКА (Картинка + Кнопка) */}
           <div
             className={`
               flex flex-col gap-[36px]
-              lg:flex-1 lg:justify-between lg:gap-[0px]
+              lg:w-[min(27.77vw,400px)] lg:shrink-0 lg:justify-between lg:gap-[0px]
             `}
           >
             <div
               className={`
                 flex items-end gap-[15px]
-                lg:flex-col lg:items-start lg:gap-[12px]
+                lg:flex-col lg:items-center lg:justify-center lg:h-full lg:gap-[16px] lg:pb-[24px]
               `}
             >
               <img
@@ -141,20 +138,27 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
                 alt={title}
                 className={`
                   w-auto h-auto object-contain max-w-[140px] max-h-[180px] 
-                  lg:max-w-none lg:max-h-none lg:w-[260px] lg:h-[240px] lg:object-left-bottom
+                  lg:max-w-full lg:max-h-[min(16.66vw,240px)] lg:object-center
                 `}
               />
               <span
                 className={`
                   text-[12px] font-[300] shrink-0
-                  lg:text-[14px] lg:text-left
+                  lg:text-[min(1.11vw,16px)] lg:text-center
                 `}
               >
                 Artwork: "{title}"
               </span>
             </div>
 
-            <button type="submit" className={BUTTON_CLASS}>
+            <button 
+              type="submit" 
+              className={`
+                w-full py-[10px] bg-primary text-background 
+                text-[16px] font-[500] uppercase tracking-[1px]
+                hover:opacity-80 transition-opacity duration-300 cursor-pointer
+              `}
+            >
               send
             </button>
           </div>

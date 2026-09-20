@@ -50,13 +50,13 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
         className={`
           flex flex-col justify-center h-full
           border-x border-primary p-[12px]
-          lg:border-x-0 lg:justify-start lg:px-[24px] lg:py-[16px]
+          lg:border-x-0 lg:justify-start lg:px-[min(1.66vw,24px)] lg:py-[min(1.11vw,16px)]
         `}
       >
         <span
           className={`
             hidden
-            lg:block lg:text-muted lg:text-[16px] lg:font-[300] lg:uppercase lg:mb-[20px]
+            lg:block lg:text-muted lg:text-[min(1.11vw,16px)] lg:font-[300] lg:uppercase lg:mb-[min(1.38vw,20px)]
           `}
         >
           about
@@ -65,7 +65,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
         <div
           className={`
             flex flex-col gap-[16px]
-            lg:gap-[24px]
+            lg:gap-[min(1.66vw,24px)]
           `}
         >
           {specs.map((spec) => (
@@ -73,13 +73,13 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
               key={spec.label}
               className={`
                 flex text-primary font-[300] text-[16px]
-                lg:text-[24px]
+                lg:text-[min(1.66vw,24px)]
               `}
             >
               <span 
                 className={`
                   w-[80px] uppercase
-                  lg:w-[120px]
+                  lg:w-[min(8.33vw,120px)]
                 `}
               >
                 {spec.label}
@@ -100,12 +100,17 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
             <span 
               className={`
                 font-[300] uppercase w-[80px] text-[16px]
-                lg:text-[24px] lg:w-[120px]
+                lg:text-[min(1.66vw,24px)] lg:w-[min(8.33vw,120px)]
               `}
             >
               price
             </span>
-            <span className="flex items-center gap-[4px] text-[24px] font-[600]">
+            <span 
+              className={`
+                flex items-center gap-[4px] font-[600]
+                text-[24px] lg:text-[min(1.66vw,24px)]
+              `}
+            >
               {price}
               <img src={EuroIcon} alt="Euro" />
             </span>
@@ -118,7 +123,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
               bg-primary text-background p-[10px_45px_10px_45px]
               text-[16px]/[24px] font-[500] tracking-[1px] uppercase
               hover:opacity-80 transition-opacity duration-300 cursor-pointer
-              lg:p-[10px_27px_10px_27px]
+              lg:py-[min(0.69vw,10px)] lg:px-[min(1.87vw,27px)] lg:text-[min(1.11vw,16px)] lg:leading-[min(1.66vw,24px)]
             `}
           >
             buy

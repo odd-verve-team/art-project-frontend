@@ -68,7 +68,7 @@ export const RecommendedArtworks = ({
 
     return (
       <div key={id} className="flex flex-col gap-[16px]">
-        <div className="text-muted text-[16px] font-[300] text-right">
+        <div className="text-muted text-[16px] lg:text-[min(1.11vw,16px)] font-[300] text-right">
           {date}
         </div>
 
@@ -88,7 +88,7 @@ export const RecommendedArtworks = ({
           <div className="flex justify-between items-start">
             <span
               className={`
-                text-primary text-[16px]/[24px] font-[500] 
+                text-primary text-[16px]/[24px] lg:text-[min(1.11vw,16px)] lg:leading-[min(1.66vw,24px)] font-[500] 
                 tracking-[1px] uppercase pr-[8px] 
                 transition-colors duration-300 group-hover:text-primary/70
               `}
@@ -147,7 +147,7 @@ export const RecommendedArtworks = ({
     );
 
     const desktopView = (
-      <div className="relative h-full flex flex-col justify-center py-[24px]">
+      <div className="relative h-full flex flex-col justify-center py-[24px] lg:py-[min(1.66vw,24px)]">
         {artworks.length > 2 && (
           <div
             className={`
@@ -159,7 +159,8 @@ export const RecommendedArtworks = ({
 
         <div
           className={`
-            grid grid-cols-2 gap-y-[24px] gap-x-[48px] px-[24px]
+            grid grid-cols-2 gap-y-[24px] px-[24px] lg:gap-y-[min(1.66vw,24px)] lg:px-[min(1.66vw,24px)]
+            gap-x-[24px] lg:gap-x-[min(3.33vw,48px)]
           `}
         >
           {artworks.map(renderCard)}

@@ -152,12 +152,12 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
         <div 
           className={`
             flex flex-col min-h-0 border-r border-primary 
-            pt-[16px] p-[24px]
+            pt-[16px] p-[24px] lg:p-[min(3.33vw,48px)]
           `}
         >
           <span 
             className={`
-              text-muted text-[16px] font-[300] uppercase mb-[16px]
+              text-muted text-[16px] lg:text-[min(1.11vw,16px)] font-[300] uppercase mb-[16px]
             `}
           >
             artist
@@ -167,7 +167,7 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
             <div className="flex items-center ml-[24px] flex-1 border-primary">
               <span 
                 className={`
-                  text-primary text-[150px]/[130px] font-[600] uppercase
+                  text-primary text-[min(10.41vw,150px)] leading-[min(9.02vw,130px)] font-[600] uppercase
                 `}
               >
                 art<br/>ist
@@ -197,15 +197,16 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
           className={`
             flex flex-col justify-between 
             px-[24px] pb-[24px] pt-[56px]
+            lg:px-[min(1.66vw,24px)] lg:pb-[min(1.66vw,24px)] lg:pt-[min(3.88vw,56px)]
           `}
         >
           <div className="flex flex-col gap-[3px]">
-            <span className="text-primary text-[24px] font-[600] uppercase">
+            <span className="text-primary text-[24px] lg:text-[min(1.66vw,24px)] font-[600] uppercase">
               {name}
             </span>
             <span 
               className={`
-                text-muted text-[12px]/[24px] font-[500] 
+                text-muted text-[12px]/[24px] lg:text-[min(0.83vw,12px)] lg:leading-[min(1.66vw,24px)] font-[500] 
                 tracking-[1px] uppercase text-justify
               `}
             >
@@ -220,7 +221,7 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
             >
               <span 
                 className={`
-                  text-primary text-[18px]/[24px] font-[300] text-justify 
+                  text-primary text-[18px]/[24px] lg:text-[min(1.25vw,18px)] lg:leading-[min(1.66vw,24px)] font-[300] text-justify 
                   line-clamp-3 mb-[24px] transition-colors duration-300 group-hover:text-primary/70
                 `}
               >

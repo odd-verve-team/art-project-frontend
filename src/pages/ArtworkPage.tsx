@@ -44,14 +44,14 @@ export const ArtworkPage = () => {
       <div
         className={`
           border-b-[1px] border-primary -mx-global px-global
-          mt-[65px] mb-[25px]
+          mt-[65px] mb-[0px]
           lg:mt-[80px] lg:mb-[0px]
         `}
       >
         <h2
           className={`
             font-[500] text-[52px]
-            lg:text-center lg:text-[90px]/[100px]
+            lg:text-center lg:text-[min(6.25vw,90px)] lg:leading-[min(6.94vw,100px)]
           `}
         >
           {title}
@@ -74,14 +74,14 @@ export const ArtworkPage = () => {
             artwork={currentArtwork}
             className={`
               order-1 h-[420px]
-              lg:order-none lg:h-[850px]
+              lg:order-none lg:h-[min(59.02vw,850px)]
             `}
           />
           <ArtworkAuthorInfo
             artistId={currentArtwork.artist.id}
             className={`
               order-4
-              lg:order-none lg:h-[590px]
+              lg:order-none lg:h-[min(40.97vw,590px)]
             `}
           />
         </div>
@@ -96,14 +96,14 @@ export const ArtworkPage = () => {
             artwork={currentArtwork}
             className={`
               order-2
-              lg:order-none lg:h-[435px]
+              lg:order-none lg:h-[min(30.2vw,435px)]
             `}
           />
           <ArtworkDescription
             artwork={currentArtwork}
             className={`
               order-3 min-h-[200px]
-              lg:order-none lg:min-h-0 lg:h-[295px]
+              lg:order-none lg:min-h-0 lg:h-[min(20.48vw,295px)]
             `}
           />
           <RecommendedArtworks
@@ -111,7 +111,7 @@ export const ArtworkPage = () => {
             artworkCategory={currentArtwork.category}
             className={`
               order-5
-              lg:order-none lg:h-[710px]
+              lg:order-none lg:h-[min(49.3vw,710px)]
             `}
           />
         </div>
