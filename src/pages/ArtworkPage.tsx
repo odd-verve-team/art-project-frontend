@@ -10,6 +10,7 @@ import { RecommendedArtworks } from '@/components/features/ArtworkDetails/Recomm
 import { ArtworkDescription } from '@/components/features/ArtworkDetails/ArtworkDescription';
 import { ArtworkOrderForm } from '@/components/features/ArtworkDetails/ArtworkOrderForm';
 import { ArtworkAuthorInfo } from '@/components/features/ArtworkDetails/ArtworkAuthorInfo';
+import { BackButton } from '@/components/ui/BackButton';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,14 +49,23 @@ export const ArtworkPage = () => {
           lg:mt-[80px] lg:mb-[0px]
         `}
       >
-        <h2
-          className={`
-            font-[500] text-[52px]
-            lg:text-center lg:text-[min(6.25vw,90px)] lg:leading-[min(6.94vw,100px)]
-          `}
-        >
-          {title}
-        </h2>
+        <div className="relative w-full max-w-[1440px] mx-auto">
+          <BackButton
+            className={`
+              hidden md:flex absolute
+              left-0 w-[16px] h-[16px] -top-[24px]
+              lg:w-[24px] lg:h-[24px] lg:-top-[32px]
+            `}
+          />
+          <h2
+            className={`
+              font-[500] text-[52px]
+              lg:text-center lg:text-[min(6.25vw,90px)] lg:leading-[min(6.94vw,100px)]
+            `}
+          >
+            {title}
+          </h2>
+        </div>
       </div>
 
       <div
