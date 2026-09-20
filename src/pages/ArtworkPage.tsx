@@ -36,35 +36,92 @@ export const ArtworkPage = () => {
   const { title } = currentArtwork;
 
   return (
-    <div className="px-global min-h-[calc(100svh-var(--header-height))] relative">
-      <div className="mt-[65px] pb-[24px] border-b-[1px] border-primary -mx-global px-global">
-        <h2 className="text-[52px]">{title}</h2>
+    <div
+      className={`
+        relative px-global min-h-[calc(100svh-var(--header-height))]
+      `}
+    >
+      <div
+        className={`
+          border-b-[1px] border-primary -mx-global px-global
+          mt-[65px] mb-[25px]
+          lg:mt-[80px] lg:mb-[0px]
+        `}
+      >
+        <h2
+          className={`
+            font-[500] text-[52px]
+            lg:text-center lg:text-[90px]/[100px]
+          `}
+        >
+          {title}
+        </h2>
       </div>
 
-      <ArtworkImage 
-        artwork={currentArtwork} 
-        className="h-[420px]"
-      />
-      <ArtworkInfo 
-        artwork={currentArtwork} 
-        className=""
-      />
-      <ArtworkDescription
-        artwork={currentArtwork}
-        className="min-h-[200px]"
-      />
-      <ArtworkAuthorInfo
-        artistId={currentArtwork.artist.id}
-        className=""
-      />
-      <RecommendedArtworks 
-        artworkId={currentArtwork.id} 
-        artworkCategory={currentArtwork.category}
-        className=""
-      />
+      <div
+        className={`
+          flex flex-col
+          lg:grid lg:grid-cols-[2fr_1fr] lg:max-w-[1440px] lg:mx-auto lg:border-x lg:border-primary
+        `}
+      >
+        <div
+          className={`
+            contents
+            lg:block lg:border-r lg:border-primary
+          `}
+        >
+          <ArtworkImage
+            artwork={currentArtwork}
+            className={`
+              order-1 h-[420px]
+              lg:order-none lg:h-[850px]
+            `}
+          />
+          <ArtworkAuthorInfo
+            artistId={currentArtwork.artist.id}
+            className={`
+              order-4
+              lg:order-none lg:h-[590px]
+            `}
+          />
+        </div>
+
+        <div
+          className={`
+            contents
+            lg:flex lg:flex-col
+          `}
+        >
+          <ArtworkInfo
+            artwork={currentArtwork}
+            className={`
+              order-2
+              lg:order-none lg:h-[435px]
+            `}
+          />
+          <ArtworkDescription
+            artwork={currentArtwork}
+            className={`
+              order-3 min-h-[200px]
+              lg:order-none lg:min-h-0 lg:h-[295px]
+            `}
+          />
+          <RecommendedArtworks
+            artworkId={currentArtwork.id}
+            artworkCategory={currentArtwork.category}
+            className={`
+              order-5
+              lg:order-none lg:h-[710px]
+            `}
+          />
+        </div>
+      </div>
+
       <ArtworkOrderForm
         artwork={currentArtwork}
-        className=""
+        className={`
+          lg:max-w-[1440px] lg:mx-auto
+        `}
       />
     </div>
   );
