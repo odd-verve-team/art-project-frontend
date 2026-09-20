@@ -10,15 +10,20 @@ export const ArtworkDescription = ({ artwork, className = '' }: Props) => {
 
   return (
     <section
-      className={`-mx-global px-global border-b flex flex-col border-primary ${className}`}
+      className={`
+        flex flex-col border-b border-primary -mx-global px-global
+        lg:mx-0 lg:px-0
+        ${className}
+      `}
     >
       <div
         className={`
-          flex-1 border-x border-primary p-[12px]
-          flex flex-col justify-center gap-[24px]
-          text-primary text-[12px]/[24px] font-[400]
-          tracking-[1px] uppercase text-justify break-words
-      `}
+          flex flex-col flex-1 justify-center gap-[24px]
+          border-x border-primary p-[12px]
+          text-primary text-[12px]/[24px] font-[400] tracking-[1px]
+          uppercase text-justify break-words
+          lg:border-x-0 lg:p-[min(1.66vw,24px)] lg:text-[min(1.11vw,16px)] lg:leading-[min(1.66vw,24px)]
+        `}
       >
         <span>category: {category}</span>
         <span>description: {description}</span>

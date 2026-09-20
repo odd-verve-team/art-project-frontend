@@ -40,24 +40,77 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
 
   return (
     <section
-      className={`-mx-global px-global border-b border-primary ${className}`}
+      className={`
+        border-b border-primary -mx-global px-global
+        lg:mx-0 lg:px-0
+        ${className}
+      `}
     >
-      <div className="h-full border-x border-primary flex flex-col justify-center p-[12px]">
-        <div className="flex flex-col gap-[16px]">
+      <div
+        className={`
+          flex flex-col justify-center h-full
+          border-x border-primary p-[12px]
+          lg:border-x-0 lg:justify-start lg:px-[min(1.66vw,24px)] lg:py-[min(1.11vw,16px)]
+        `}
+      >
+        <span
+          className={`
+            hidden
+            lg:block lg:text-muted lg:text-[min(1.11vw,16px)] lg:font-[300] lg:uppercase lg:mb-[min(1.38vw,20px)]
+          `}
+        >
+          about
+        </span>
+
+        <div
+          className={`
+            flex flex-col gap-[16px]
+            lg:gap-[min(1.66vw,24px)]
+          `}
+        >
           {specs.map((spec) => (
-            <div key={spec.label} className="flex text-primary text-[16px] font-[300]">
-              <span className="w-[80px] uppercase">{spec.label}</span>
+            <div 
+              key={spec.label}
+              className={`
+                flex text-primary font-[300] text-[16px]
+                lg:text-[min(1.66vw,24px)]
+              `}
+            >
+              <span 
+                className={`
+                  w-[80px] uppercase
+                  lg:w-[min(8.33vw,120px)]
+                `}
+              >
+                {spec.label}
+              </span>
               <span className={spec.className}>{spec.value}</span>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between mt-[22px] mb-[12px]">
+        <div 
+          className={`
+            flex items-center justify-between
+            mt-[22px] mb-[12px]
+            lg:mt-auto lg:mb-[0px]
+          `}
+        >
           <div className="flex items-center text-primary">
-            <span className="text-[16px] font-[300] uppercase w-[80px]">
+            <span 
+              className={`
+                font-[300] uppercase w-[80px] text-[16px]
+                lg:text-[min(1.66vw,24px)] lg:w-[min(8.33vw,120px)]
+              `}
+            >
               price
             </span>
-            <span className="flex items-center gap-[4px] text-[24px] font-[600]">
+            <span 
+              className={`
+                flex items-center gap-[4px] font-[600]
+                text-[24px] lg:text-[min(1.66vw,24px)]
+              `}
+            >
               {price}
               <img src={EuroIcon} alt="Euro" />
             </span>
@@ -70,6 +123,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
               bg-primary text-background p-[10px_45px_10px_45px]
               text-[16px]/[24px] font-[500] tracking-[1px] uppercase
               hover:opacity-80 transition-opacity duration-300 cursor-pointer
+              lg:py-[min(0.69vw,10px)] lg:px-[min(1.87vw,27px)] lg:text-[min(1.11vw,16px)] lg:leading-[min(1.66vw,24px)]
             `}
           >
             buy
