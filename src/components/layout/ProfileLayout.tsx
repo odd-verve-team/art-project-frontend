@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import { usersApi } from '@/services/api';
 import type { UserDetail } from '@/types/user';
+import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
 
 export const ProfileLayout = () => {
   const [user, setUser] = useState<UserDetail | null>(null);
@@ -61,6 +62,7 @@ export const ProfileLayout = () => {
       </div>
 
       <main className="px-global max-w-[1440px] mx-auto w-full pt-[40px]">
+        <ProfileNavigation />
         <Outlet />
       </main>
     </div>
