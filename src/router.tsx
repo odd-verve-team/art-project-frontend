@@ -16,6 +16,7 @@ import { AdminPage } from '@/pages/AdminPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ProfileLayout } from './components/layout/ProfileLayout';
 import { ProfileSettings } from './components/features/Profile/ProfileSettings';
+import { ProfileFavorites } from './components/features/Profile/ProfileFavorites';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ export const router = createBrowserRouter(
       <Route path="profile" element={<ProfileLayout />}>
         <Route index element={<Navigate to="settings" replace />} />
         <Route path="settings" element={<ProfileSettings />} />
+        <Route path="favorites" element={<ProfileFavorites />} />
       </Route>
       <Route path="admin" element={<AdminPage />} />
 

@@ -1,9 +1,11 @@
-import type { UserDetail } from '@/types/user';
+import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 
+import { cn } from '@/utils/cn';
+
+import type { UserDetail } from '@/types/user';
 import type { ArtworkCategory } from '@/types/artwork';
 import { CATEGORY_OPTIONS } from '../Gallery/galleryConstants';
-import { cn } from '@/utils/cn';
 
 // #region Constants & Styles
 const PERSONAL_FIELDS = [
@@ -82,15 +84,11 @@ const ACTION_BUTTON_BASE =
   'w-full uppercase tracking-[1px] transition-opacity duration-500 ease-in-out cursor-pointer';
 //#endregion
 
-interface Props {
-  user: UserDetail | null;
-}
+export const ProfileSettings = () => {
+  const { user } = useOutletContext<{user: UserDetail | null}>();
 
-export const ProfileSettings = ({ user }: Props) => {
   const [isArtistForm, setIsArtistForm] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<
-    ArtworkCategory[]
-  >([]);
+  const [selectedCategories, setSelectedCategories] = useState<ArtworkCategory[]>([]);
 
   if (!user) return null;
 
