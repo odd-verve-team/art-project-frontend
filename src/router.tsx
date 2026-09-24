@@ -17,6 +17,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { ProfileLayout } from './components/layout/ProfileLayout';
 import { ProfileSettings } from './components/features/Profile/ProfileSettings';
 import { ProfileFavorites } from './components/features/Profile/ProfileFavorites';
+import { ProfileNotifications } from './components/features/Profile/ProfileNotifications';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
         <Route index element={<Navigate to="settings" replace />} />
         <Route path="settings" element={<ProfileSettings />} />
         <Route path="favorites" element={<ProfileFavorites />} />
+        <Route path="notifications" element={<ProfileNotifications />} />
       </Route>
       <Route path="admin" element={<AdminPage />} />
 
