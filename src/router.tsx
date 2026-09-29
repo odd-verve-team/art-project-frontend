@@ -1,6 +1,7 @@
 import { 
   createBrowserRouter, 
   createRoutesFromElements, 
+  Navigate, 
   Route, 
 } from 'react-router-dom'
 
@@ -11,9 +12,14 @@ import { ArtworkPage } from '@/pages/ArtworkPage';
 import { ArtistProfilePage } from '@/pages/ArtistProfilePage';
 import { LoginPage } from '@/pages/LoginPage';
 import { RegisterPage } from '@/pages/RegisterPage';
-import { ProfilePage } from '@/pages/ProfilePage';
 import { AdminPage } from '@/pages/AdminPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { ProfileLayout } from './components/layout/ProfileLayout';
+import { ProfileSettings } from './components/features/Profile/ProfileSettings';
+import { ProfileFavorites } from './components/features/Profile/ProfileFavorites';
+import { ProfileNotifications } from './components/features/Profile/ProfileNotifications';
+import { ProfileMyArts } from './components/features/Profile/ProfileMyArts';
+import { ProfileNewArt } from './components/features/Profile/ProfileNewArt';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +35,14 @@ export const router = createBrowserRouter(
       <Route path="register" element={<RegisterPage />} />
 
       {/* Особистий кабінет та панель керування */}
-      <Route path="profile" element={<ProfilePage />} />
+      <Route path="profile" element={<ProfileLayout />}>
+        <Route index element={<Navigate to="settings" replace />} />
+        <Route path="settings" element={<ProfileSettings />} />
+        <Route path="favorites" element={<ProfileFavorites />} />
+        <Route path="notifications" element={<ProfileNotifications />} />
+        <Route path="arts" element={<ProfileMyArts />} />
+        <Route path="arts/new" element={<ProfileNewArt />} />
+      </Route>
       <Route path="admin" element={<AdminPage />} />
 
       {/* Сторінка не знайдена */}
