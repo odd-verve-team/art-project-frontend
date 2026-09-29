@@ -18,6 +18,8 @@ import { ProfileLayout } from './components/layout/ProfileLayout';
 import { ProfileSettings } from './components/features/Profile/ProfileSettings';
 import { ProfileFavorites } from './components/features/Profile/ProfileFavorites';
 import { ProfileNotifications } from './components/features/Profile/ProfileNotifications';
+import { ProfileMyArts } from './components/features/Profile/ProfileMyArts';
+import { ProfileNewArt } from './components/features/Profile/ProfileNewArt';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +40,8 @@ export const router = createBrowserRouter(
         <Route path="settings" element={<ProfileSettings />} />
         <Route path="favorites" element={<ProfileFavorites />} />
         <Route path="notifications" element={<ProfileNotifications />} />
+        <Route path="arts" element={<ProfileMyArts />} />
+        <Route path="arts/new" element={<ProfileNewArt />} />
       </Route>
       <Route path="admin" element={<AdminPage />} />
 
