@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { useAuthStore } from '@/store/useAuthStore';
+
 import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthTokens } from '@/types/auth';
@@ -10,6 +12,16 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000,
+});
+
+api.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().accessToken;
+
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 export interface GetArtworksParams {
