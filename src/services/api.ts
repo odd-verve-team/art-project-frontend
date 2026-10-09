@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
+import type { AuthCodeRequest, AuthVerifyRequest, AuthTokens } from '@/types/auth';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173/api',
@@ -45,6 +46,18 @@ export const usersApi = {
 
   getById: async (id: number): Promise<UserDetail> => {
     const response = await api.get(`/users/${id}/`);
+    return response.data;
+  },
+};
+
+export const authApi = {
+  sendCode: async (data: AuthCodeRequest): Promise<string> => {
+    const response = await api.post('/users/code/', data);
+    return response.data;
+  },
+
+  verifyCode: async (data: AuthVerifyRequest): Promise<AuthTokens> => {
+    const response = await api.post('/users/authenticate/', data);
     return response.data;
   },
 };
