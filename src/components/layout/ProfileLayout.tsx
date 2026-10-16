@@ -1,50 +1,29 @@
-import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { usersApi } from '@/services/api';
-import type { UserDetail } from '@/types/user';
+import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/utils/cn';
 
 import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
-import { Loader } from '@/components/ui/Loader';
 
 // #region Constants & Styles
 const AVATAR_BASE = `
   w-[32px] h-[32px] rounded-full
 `;
 
-const AVATAR_SKELETON = cn(
-  AVATAR_BASE,
-  'bg-muted/30 animate-pulse'
-);
-
 const AVATAR_CONTAINER = cn(
   AVATAR_BASE,
-  'flex items-center justify-center overflow-hidden bg-muted'
+  'flex items-center justify-center overflow-hidden bg-muted shrink-0',
 );
 // #endregion
 
 export const ProfileLayout = () => {
-  const [user, setUser] = useState<UserDetail | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const user = useAuthStore((state) => state.user);
 
-  useEffect(() => {
-    const fetchTempUser = async () => {
-      try {
-        const data = await usersApi.getById(10);
-        setUser(data);
-      } catch (error) {
-        console.error('Failed to fetch temp user', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTempUser();
-  }, []);
+  const firstName = user?.first_name || 'User';
+  const lastName = user?.last_name || 'Name';
 
   return (
-    <div className="">
+    <div>
       <div
         className={`
           flex flex-col items-center gap-[34px]
@@ -64,27 +43,23 @@ export const ProfileLayout = () => {
 
         <div
           className={`
-            flex items-center gap-[12px] 
+            grid grid-cols-[1fr_auto_1fr] items-center gap-[12px] w-full max-w-[400px]
             text-[10px] font-[500] uppercase tracking-[1px]
           `}
         >
-          <span>{isLoading ? '...' : user?.first_name}</span>
+          <span className="text-right truncate">{firstName}</span>
 
-          {isLoading ? (
-            <div className={AVATAR_SKELETON} />
-          ) : (
-            <div className={AVATAR_CONTAINER}>
-              {user?.avatar_url && (
-                <img
-                  src={user.avatar_url}
-                  alt={`${user.first_name} ${user.last_name}`}
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
-          )}
+          <div className={AVATAR_CONTAINER}>
+            {user?.avatar_url && (
+              <img
+                src={user.avatar_url}
+                alt={`${firstName} ${lastName}`}
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
 
-          <span>{isLoading ? '...' : user?.last_name}</span>
+          <span className="text-left truncate">{lastName}</span>
         </div>
       </div>
 
@@ -95,12 +70,7 @@ export const ProfileLayout = () => {
         `}
       >
         <ProfileNavigation />
-
-        {isLoading ? (
-          <Loader text="Loading profile..." />
-        ) : (
-          <Outlet context={{ user }} />
-        )}
+        <Outlet context={{ user }} />
       </main>
     </div>
   );

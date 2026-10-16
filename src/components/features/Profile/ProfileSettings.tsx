@@ -121,12 +121,20 @@ export const ProfileSettings = () => {
       <form className="border border-b-0 border-primary">
         <div className="flex flex-col gap-[32px]">
           <div className="flex justify-center mt-[30px]">
-            <div className="border border-primary p-[16px] w-[162px] h-[186px]">
-              <img
-                src={image}
-                alt="Profile Avatar"
-                className="w-full h-full object-cover"
-              />
+            <div className="flex justify-center mt-[30px]">
+              <div className="border border-primary p-[16px] w-[162px] h-[186px]">
+                {image ? (
+                  <img
+                    src={image}
+                    alt="Profile Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-muted/20 flex items-center justify-center text-muted text-[10px] font-[500] uppercase tracking-[1px] text-center">
+                    no photo
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
