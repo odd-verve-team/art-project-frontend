@@ -55,8 +55,8 @@ export const LoginPage = () => {
     if (newCode.length === 6) {
       setIsLoading(true);
       try {
-        const tokens = await authApi.verifyCode({ email, code: newCode });
-        setTokens(tokens.access, tokens.refresh);
+        const { tokens, user } = await authApi.verifyCode({ email, code: newCode });
+        setTokens(tokens.access_token, tokens.refresh_token, user);
         navigate(from, { replace: true });
       } catch (error) {
         console.error('Authentication failed (invalid code):', error);
