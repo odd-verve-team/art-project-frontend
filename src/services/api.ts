@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
-import type { AuthCodeRequest, AuthVerifyRequest, AuthTokens } from '@/types/auth';
+import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173/api',
@@ -29,10 +29,10 @@ export interface GetArtworksParams {
   status?: string;
   price_lte?: number;
   year_lte?: number;
-  category?: string; 
+  category?: string;
   medium?: string;
   size?: string;
-  sort?: ArtworkSort; 
+  sort?: ArtworkSort;
   page?: number;
   limit?: number;
   artist?: number;
@@ -68,7 +68,7 @@ export const authApi = {
     return response.data;
   },
 
-  verifyCode: async (data: AuthVerifyRequest): Promise<AuthTokens> => {
+  verifyCode: async (data: AuthVerifyRequest): Promise<AuthResponse> => {
     const response = await api.post('/users/authenticate/', data);
     return response.data;
   },

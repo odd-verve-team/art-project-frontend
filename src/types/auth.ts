@@ -1,3 +1,5 @@
+import type { UserDetail } from './user';
+
 export interface AuthCodeRequest {
   email: string;
 }
@@ -8,6 +10,11 @@ export interface AuthVerifyRequest {
 }
 
 export interface AuthTokens {
-  access: string;
-  refresh: string;
+  access_token: string;
+  refresh_token: string;
+}
+
+export interface AuthResponse {
+  tokens: AuthTokens;
+  user: UserDetail;
 }

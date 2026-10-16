@@ -14,17 +14,19 @@ export interface UserListItem {
   art_categories: ArtworkCategory[];
 }
 
-export interface UserDetail extends UserListItem {
+export interface UserDetail extends Partial<UserListItem> {
+  id: number;
   email: string;
-  bio: string;
-  last_login: string | null;
-  is_superuser: boolean;
-  is_staff: boolean;
-  is_active: boolean;
-  date_joined: string;
-  created_at: string;
+  role: UserRole;
   application_status: ApplicationStatus | null;
-  number_of_paid_cell: number;
-  groups: number[];
-  user_permissions: number[];
+  bio?: string;
+  last_login?: string | null;
+  is_superuser?: boolean;
+  is_staff?: boolean;
+  is_active?: boolean;
+  date_joined?: string;
+  created_at?: string;
+  number_of_paid_cell?: number;
+  groups?: number[];
+  user_permissions?: number[];
 }
