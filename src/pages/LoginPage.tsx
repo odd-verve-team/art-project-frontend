@@ -5,6 +5,7 @@ import { authApi } from "@/services/api";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import { OtpInput } from "@/components/ui/OtpInput";
+import { BackButton } from "@/components/ui/BackButton";
 
 type Step = 'email' | 'code';
 
@@ -12,6 +13,7 @@ export const LoginPage = () => {
   const [step, setStep] = useState<Step>('email');
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
 
@@ -50,6 +52,7 @@ export const LoginPage = () => {
   };
 
   const handleCodeChange = async (newCode: string) => {
+    if (error) setError(null);
     setCode(newCode);
 
     if (newCode.length === 6) {
@@ -60,10 +63,19 @@ export const LoginPage = () => {
         navigate(from, { replace: true });
       } catch (error) {
         console.error('Authentication failed (invalid code):', error);
+        setError('Incorrect code, please try again');
         setCode('');
       } finally {
         setIsLoading(false);
       }
+    }
+  };
+
+  const handleBack = () => {
+    if (step === 'code') {
+      setStep('email');
+    } else {
+      navigate(-1);
     }
   };
 
@@ -84,6 +96,10 @@ export const LoginPage = () => {
         items-center h-[100vh] px-global
       `}
     >
+      <BackButton
+        onClick={handleBack}
+        className="absolute top-[32px] left-global w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
+      />
       <h2
         className={`
           flex flex-col items-center gap-[25px] mb-[132px]
@@ -129,16 +145,26 @@ export const LoginPage = () => {
       )}
 
       {step === 'code' && (
-        <div className="flex flex-col">
-          <p className="mb-[8px] text-primary text-[20px] font-[400] uppercase text-center">
+        <div className="flex flex-col w-full">
+          <p className="mb-[16px] text-primary text-[20px] font-[400] uppercase text-center">
             enter code from email
           </p>
+
           <OtpInput value={code} onChange={handleCodeChange} />
+
+          <div className="mt-[6px] h-[24px] flex items-center justify-center">
+            {error && (
+              <p className="text-red-500 text-[12px] lowercase font-[500] tracking-[1px] text-center">
+                {error}
+              </p>
+            )}
+          </div>
+
           <button
             type="button"
             onClick={handleResendCode}
             className={`
-              mt-[24px] uppercase text-center cursor-pointer
+              uppercase text-center cursor-pointer
               text-border text-[12px] tracking-[1px] font-[500]
               transition-colors duration-500 ease-in-out
               hover:text-primary

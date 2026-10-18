@@ -4,15 +4,16 @@ import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 interface Props {
   className?: string;
+  onClick?: () => void;
 }
 
-export const BackButton = ({ className = '' }: Props) => {
+export const BackButton = ({ className = '', onClick }: Props) => {
   const navigate = useNavigate();
 
   return (
     <button
       type="button"
-      onClick={() => navigate(-1)}
+      onClick={onClick || (() => navigate(-1))}
       aria-label="Go back"
       className={`
         flex items-center justify-center cursor-pointer shrink-0
