@@ -25,16 +25,24 @@ export const ProfileArtsGrid = ({ artworks, artistName }: Props) => {
   const usedSlots = 2;
 
   return (
-    <div className="flex flex-col p-[8px] border border-primary">
+    <div
+      className={`
+        flex flex-col p-[8px] border border-primary
+        md:p-[16px]
+        lg:border-none lg:p-0
+      `}
+    >
       <div
         className={`
           mb-[8px] text-primary text-[12px]/[24px] 
           font-[500] tracking-[1px] uppercase
+          md:text-[14px]/[24px]
+          lg:mb-[12px] lg:text-[16px]/[24px]
         `}
       >
         <span>{`arts ${usedSlots} / ${availableSlots}`}</span>
       </div>
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-[12px] md:gap-[18px] lg:gap-[24px]">
         {sortedArtworks.map((artwork) => (
           <ProfileArtCard
             key={artwork.id}

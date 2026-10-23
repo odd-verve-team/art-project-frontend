@@ -21,6 +21,8 @@ const INPUT_GROUP = `
 
 const INPUT_LABEL = `
   text-[12px] text-primary uppercase font-[400] tracking-[1px] shrink-0
+  md:text-[14px]
+  lg:text-[16px]
 `;
 
 const NUMBER_INPUT = `
@@ -28,6 +30,7 @@ const NUMBER_INPUT = `
   bg-transparent outline-none border border-primary transition-colors
   text-center text-primary font-[500] text-[16px]/[24px]
   focus:border-primary/50
+  md:w-[48px] md:h-[28px]
 `;
 
 const MULTIPLIER_TEXT = `
@@ -144,170 +147,191 @@ export const ProfileNewArt = () => {
       className={`
         flex flex-col gap-[32px] 
         p-[16px_8px] border border-primary
+        md:p-[24px]
+        lg:flex-row lg:justify-between lg:items-stretch lg:gap-[64px] lg:border-none lg:p-0
       `}
     >
-      <ProfileArtUploader
-        currentImage={currentImage}
-        onImageSelect={(fileList) =>
-          setValue('image', fileList, { shouldValidate: true })
-        }
-      />
-
-      <div className={INPUT_GROUP}>
-        <label className={INPUT_LABEL}>
-          Name
-        </label>
-        <input
-          type="text"
-          placeholder="TITLE"
-          {...register('title', { required: true })}
-          onKeyDown={handleInputKeyDown}
-          className={`
-            flex-1 ml-[16px] truncate
-            bg-transparent outline-none 
-            text-right text-primary font-[500] text-[16px]/[24px] 
-            placeholder:text-primary/50 focus:placeholder:text-transparent
-          `}
-        />
-
-        {!titleValue && (
-          <img
-            src={PencilIcon}
-            alt="Edit"
-            className="w-[12px] h-[12px] ml-[8px] pointer-events-none group-focus-within:hidden"
-          />
-        )}
-      </div>
-
-      <div className={INPUT_GROUP}>
-        <label className={INPUT_LABEL}>
-          Size
-        </label>
-
-        <div className="flex items-center justify-end gap-[6px] ml-[16px]">
+      <div
+        className={`
+          order-2 flex flex-col gap-[32px]
+          lg:order-1 lg:flex-1 lg:max-w-[600px]
+        `}
+      >
+        <div className={INPUT_GROUP}>
+          <label className={INPUT_LABEL}>
+            Name
+          </label>
           <input
             type="text"
-            inputMode="numeric"
-            maxLength={4}
-            {...widthRegister}
+            placeholder="TITLE"
+            {...register('title', { required: true })}
             onKeyDown={handleInputKeyDown}
-            onChange={(e) => {
-              e.target.value = e.target.value.replace(/\D/g, '');
-              widthOnChange(e);
-            }}
-            className={NUMBER_INPUT}
-          />
-          <span className={MULTIPLIER_TEXT}>×</span>
-          <input
-            type="text"
-            inputMode="numeric"
-            maxLength={4}
-            {...lengthRegister}
-            onKeyDown={handleInputKeyDown}
-            onChange={(e) => {
-              e.target.value = e.target.value.replace(/\D/g, '');
-              lengthOnChange(e);
-            }}
-            className={NUMBER_INPUT}
-          />
-          <span className={MULTIPLIER_TEXT}>cm</span>
-        </div>
-      </div>
-
-      <input type="hidden" {...register('year', { required: true })} />
-      <input type="hidden" {...register('medium', { required: true })} />
-      <input type="hidden" {...register('category', { required: true })} />
-
-      <ProfileFormDropdown
-        label="Year"
-        value={selectedYear}
-        options={yearOptions}
-        onSelect={(val) =>
-          setValue('year', val as number, { shouldValidate: true })
-        }
-      />
-      <ProfileFormDropdown
-        label="Medium"
-        value={selectedMedium}
-        options={MEDIUM_OPTIONS}
-        onSelect={(val) =>
-          setValue('medium', val as string, { shouldValidate: true })
-        }
-      />
-      <ProfileFormDropdown
-        label="Category"
-        value={selectedCategory}
-        options={CATEGORY_OPTIONS}
-        onSelect={(val) =>
-          setValue('category', val as string, { shouldValidate: true })
-        }
-      />
-
-      <div className="flex flex-col gap-[12px]">
-        <label className={INPUT_LABEL}>
-          Description
-        </label>
-        <textarea
-          {...descRegister}
-          onChange={(e) => {
-            descOnChange(e);
-            e.target.style.height = 'auto';
-            e.target.style.height = `${e.target.scrollHeight}px`;
-          }}
-          onKeyDown={handleTextareaKeyDown}
-          placeholder="CONCEPT, INSPIRATION OR ARTWORK DETAILS..."
-          className={`
-            w-full min-h-[120px] p-[12px_16px] 
-            bg-transparent outline-none border border-primary transition-colors
-            resize-none overflow-hidden
-            text-primary font-[500] text-[12px]/[18px]
-            focus:border-primary/50
-          `}
-        />
-      </div>
-
-      <div className={INPUT_GROUP}>
-        <label className={INPUT_LABEL}>
-          Price
-        </label>
-
-        <div className="flex flex-1 items-center justify-end ml-[16px] gap-[4px]">
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="0"
-            {...priceRegister}
-            onKeyDown={handleInputKeyDown}
-            onChange={(e) => {
-              const onlyNumbers = e.target.value.replace(/\D/g, '');
-              e.target.value = onlyNumbers.replace(
-                /\B(?=(\d{3})+(?!\d))/g,
-                '.',
-              );
-              priceOnChange(e);
-            }}
             className={`
-              w-full bg-transparent outline-none 
+              flex-1 ml-[16px] truncate
+              bg-transparent outline-none 
               text-right text-primary font-[500] text-[16px]/[24px] 
-              placeholder:text-primary/50
+              placeholder:text-primary/50 focus:placeholder:text-transparent
             `}
           />
-          <span className={MULTIPLIER_TEXT}>€</span>
+
+          {!titleValue && (
+            <img
+              src={PencilIcon}
+              alt="Edit"
+              className="w-[12px] h-[12px] ml-[8px] pointer-events-none group-focus-within:hidden"
+            />
+          )}
+        </div>
+
+        <div className={INPUT_GROUP}>
+          <label className={INPUT_LABEL}>
+            Size
+          </label>
+
+          <div className="flex items-center justify-end gap-[6px] ml-[16px]">
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={4}
+              {...widthRegister}
+              onKeyDown={handleInputKeyDown}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                widthOnChange(e);
+              }}
+              className={NUMBER_INPUT}
+            />
+            <span className={MULTIPLIER_TEXT}>×</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={4}
+              {...lengthRegister}
+              onKeyDown={handleInputKeyDown}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                lengthOnChange(e);
+              }}
+              className={NUMBER_INPUT}
+            />
+            <span className={MULTIPLIER_TEXT}>cm</span>
+          </div>
+        </div>
+
+        <input type="hidden" {...register('year', { required: true })} />
+        <input type="hidden" {...register('medium', { required: true })} />
+        <input type="hidden" {...register('category', { required: true })} />
+
+        <ProfileFormDropdown
+          label="Year"
+          value={selectedYear}
+          options={yearOptions}
+          onSelect={(val) =>
+            setValue('year', val as number, { shouldValidate: true })
+          }
+        />
+        <ProfileFormDropdown
+          label="Medium"
+          value={selectedMedium}
+          options={MEDIUM_OPTIONS}
+          onSelect={(val) =>
+            setValue('medium', val as string, { shouldValidate: true })
+          }
+        />
+        <ProfileFormDropdown
+          label="Category"
+          value={selectedCategory}
+          options={CATEGORY_OPTIONS}
+          onSelect={(val) =>
+            setValue('category', val as string, { shouldValidate: true })
+          }
+        />
+
+        <div className="flex flex-col gap-[12px]">
+          <label className={INPUT_LABEL}>
+            Description
+          </label>
+          <textarea
+            {...descRegister}
+            onChange={(e) => {
+              descOnChange(e);
+              e.target.style.height = 'auto';
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
+            onKeyDown={handleTextareaKeyDown}
+            placeholder="CONCEPT, INSPIRATION OR ARTWORK DETAILS..."
+            className={`
+              w-full min-h-[120px] p-[12px_16px] 
+              bg-transparent outline-none border border-primary transition-colors
+              resize-none overflow-hidden
+              text-primary font-[500] text-[12px]/[18px]
+              focus:border-primary/50
+              md:text-[14px]/[20px]
+              lg:min-h-[160px]
+            `}
+          />
+        </div>
+
+        <div className={INPUT_GROUP}>
+          <label className={INPUT_LABEL}>
+            Price
+          </label>
+
+          <div className="flex flex-1 items-center justify-end ml-[16px] gap-[4px]">
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="0"
+              {...priceRegister}
+              onKeyDown={handleInputKeyDown}
+              onChange={(e) => {
+                const onlyNumbers = e.target.value.replace(/\D/g, '');
+                e.target.value = onlyNumbers.replace(
+                  /\B(?=(\d{3})+(?!\d))/g,
+                  '.',
+                );
+                priceOnChange(e);
+              }}
+              className={`
+                w-full bg-transparent outline-none 
+                text-right text-primary font-[500] text-[16px]/[24px] 
+                placeholder:text-primary/50
+              `}
+            />
+            <span className={MULTIPLIER_TEXT}>€</span>
+          </div>
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={!isFormReady}
-        className={cn(
-          `w-full mt-[16px] py-[14px] text-[14px] font-[500] tracking-[1px] uppercase transition-all duration-300`,
-          isFormReady
-            ? 'bg-primary text-background cursor-pointer hover:opacity-80'
-            : 'bg-primary/50 text-background/80 cursor-not-allowed'
-        )}
+      <div
+        className={`
+          contents
+          lg:order-2 lg:flex lg:flex-col lg:justify-between lg:shrink-0
+          lg:w-[360px] xl:w-[400px]
+        `}
       >
-        Submit for approval
-      </button>
+        <div className="order-1 lg:order-none">
+          <ProfileArtUploader
+            currentImage={currentImage}
+            onImageSelect={(fileList) =>
+              setValue('image', fileList, { shouldValidate: true })
+            }
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={!isFormReady}
+          className={cn(
+            `order-3 w-full mt-[16px] py-[14px] text-[14px] font-[500] tracking-[1px] uppercase transition-all duration-300 lg:order-none lg:mt-[32px]`,
+            isFormReady
+              ? 'bg-primary text-background cursor-pointer hover:opacity-80'
+              : 'bg-primary/50 text-background/80 cursor-not-allowed'
+          )}
+        >
+          Submit for approval
+        </button>
+      </div>
     </form>
   );
 };

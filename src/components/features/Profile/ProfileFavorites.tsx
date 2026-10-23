@@ -5,6 +5,8 @@ import type { UserDetail } from '@/types/user';
 import { useArtworkStore } from '@/store/useArtworkStore';
 import { ArtworkGrid } from '../Artworks/ArtworkGrid';
 import { Loader } from '@/components/ui/Loader';
+//! TODO: DELETE MOCKDATA import when backend is ready
+import { MOCK_PROFILE_ARTWORKS } from './profileMockData';
 
 export const ProfileFavorites = () => {
   const { user } = useOutletContext<{ user: UserDetail | null }>();
@@ -14,7 +16,10 @@ export const ProfileFavorites = () => {
   const isLoading = useArtworkStore((state) => state.isLoading);
 
   //! TODO: replace with user.favorites endpoint in future
-  const favorites = featuredArtworks.slice(0, 5);
+  const favorites =
+    featuredArtworks.length > 0
+      ? featuredArtworks.slice(0, 5)
+      : MOCK_PROFILE_ARTWORKS;
 
   useEffect(() => {
     if (featuredArtworks.length === 0) {
@@ -46,7 +51,15 @@ export const ProfileFavorites = () => {
 
   return (
     <section id="profile-favorites">
-      <div className="border border-primary p-[16px_8px]">{content}</div>
+      <div
+        className={`
+          border border-primary p-[16px_8px]
+          md:p-[24px]
+          lg:border-none lg:p-0
+        `}
+      >
+        {content}
+      </div>
 
       {/* 
         //! TODO: Uncomment when backend supports user.favorites 

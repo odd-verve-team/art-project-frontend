@@ -1,0 +1,35 @@
+<svg width="800" height="480" viewBox="0 0 800 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sky background -->
+  <rect width="800" height="480" fill="#325096"/>
+  
+  <!-- Subtle gradient on sky -->
+  <rect width="800" height="320" fill="url(#sky-grad)" opacity="0.4"/>
+  
+  <!-- Far mountain range (dark blue) -->
+  <path d="M0 320L45 305L110 315L170 295L240 310L310 285L390 305L470 280L560 300L640 285L720 305L800 290V380H0V320Z" fill="#1C2D5A"/>
+  
+  <!-- Snow peaks on mountains -->
+  <path d="M295 292L310 285L325 293L320 297L310 288L300 296L295 292Z" fill="#FFFFFF"/>
+  <path d="M455 287L470 280L485 288L478 293L470 284L462 291L455 287Z" fill="#FFFFFF"/>
+  <path d="M625 292L640 285L655 293L648 297L640 289L632 295L625 292Z" fill="#FFFFFF"/>
+  <path d="M155 301L170 295L185 302L178 306L170 298L162 304L155 301Z" fill="#FFFFFF"/>
+
+  <!-- Middle ground foothills -->
+  <path d="M0 340C120 335 210 345 350 340C490 335 620 345 800 338V480H0V340Z" fill="#4B3A2C"/>
+
+  <!-- Foreground ochre earth -->
+  <path d="M0 365C160 360 310 375 480 368C620 362 710 372 800 365V480H0V365Z" fill="#C99355"/>
+  <path d="M0 395C180 390 340 405 520 398C680 392 750 400 800 395V480H0V395Z" fill="#BA8244"/>
+
+  <!-- Small silhouettes on plains -->
+  <ellipse cx="230" cy="385" rx="8" ry="4" fill="#1A1815" opacity="0.7"/>
+  <ellipse cx="245" cy="387" rx="10" ry="5" fill="#1A1815" opacity="0.8"/>
+  <ellipse cx="260" cy="386" rx="7" ry="4" fill="#1A1815" opacity="0.6"/>
+
+  <defs>
+    <linearGradient id="sky-grad" x1="400" y1="0" x2="400" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B2D5D"/>
+      <stop offset="1" stop-color="#325096" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
