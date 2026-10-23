@@ -7,10 +7,13 @@ import { cn } from '@/utils/cn';
 
 import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
 import { Loader } from '@/components/ui/Loader';
+//! TODO: DELETE MOCKDATA import when backend is ready
+import { MOCK_PROFILE_USER } from '../features/Profile/profileMockData';
 
 // #region Constants & Styles
 const AVATAR_BASE = `
   w-[32px] h-[32px] rounded-full
+  md:w-[64px] md:h-[64px]
 `;
 
 const AVATAR_SKELETON = cn(
@@ -34,7 +37,9 @@ export const ProfileLayout = () => {
         const data = await usersApi.getById(10);
         setUser(data);
       } catch (error) {
-        console.error('Failed to fetch temp user', error);
+        console.warn('Backend user 10 not found, using MOCK_PROFILE_USER:', error);
+        //! TODO: DELETE MOCKDATA fallback when backend is ready
+        setUser(MOCK_PROFILE_USER);
       } finally {
         setIsLoading(false);
       }
@@ -55,8 +60,8 @@ export const ProfileLayout = () => {
       >
         <h2
           className={`
-            text-[42px] md:text-[100px] lg:text-[140px] leading-none
-            font-[700] uppercase text-center
+            text-[52px] md:text-[80px] lg:text-[110px] xl:text-[140px]
+            font-[700] uppercase text-center whitespace-nowrap
           `}
         >
           your profile
@@ -64,8 +69,9 @@ export const ProfileLayout = () => {
 
         <div
           className={`
-            flex items-center gap-[12px] 
+            flex items-center gap-[12px]
             text-[10px] font-[500] uppercase tracking-[1px]
+            md:gap-[20px] md:text-[16px]
           `}
         >
           <span>{isLoading ? '...' : user?.first_name}</span>
@@ -90,17 +96,26 @@ export const ProfileLayout = () => {
 
       <main
         className={`
-          w-full max-w-[1440px] mx-auto px-global
+          w-full px-global
           pt-[16px] pb-[32px]
+          md:pt-[32px] md:pb-[48px]
+          lg:pt-[48px] lg:pb-[64px]
         `}
       >
-        <ProfileNavigation />
+        <div
+          className={`
+            w-full max-w-[1440px] mx-auto
+            lg:border lg:border-primary lg:p-[40px_32px]
+          `}
+        >
+          <ProfileNavigation />
 
-        {isLoading ? (
-          <Loader text="Loading profile..." />
-        ) : (
-          <Outlet context={{ user }} />
-        )}
+          {isLoading ? (
+            <Loader text="Loading profile..." />
+          ) : (
+            <Outlet context={{ user }} />
+          )}
+        </div>
       </main>
     </div>
   );
