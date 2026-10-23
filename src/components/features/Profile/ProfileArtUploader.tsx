@@ -116,6 +116,9 @@ export const ProfileArtUploader = ({ currentImage, onImageSelect }: Props) => {
           flex items-center justify-center
           w-[257px] h-[326px] m-auto
           bg-background border border-primary
+          md:w-[300px] md:h-[380px]
+          lg:w-[360px] lg:h-[440px]
+          xl:w-[400px] xl:h-[480px]
         `}
       >
         <input

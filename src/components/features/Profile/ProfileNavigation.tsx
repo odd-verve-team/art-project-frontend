@@ -7,16 +7,18 @@ import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 // #region Constants & Styles
 const PROFILE_TABS = [
-  { name: 'My Arts', href: '/profile/arts' },
   { name: 'Favorites', href: '/profile/favorites' },
+  { name: 'My Arts', href: '/profile/arts' },
   { name: 'Profile Settings', href: '/profile/settings' },
-  { name: 'Prefereces & Notifications', href: '/profile/notifications' },
+  { name: 'Preferences & Notifications', href: '/profile/notifications' },
 ];
 
 const TAB_LINK_BASE = `
   text-[12px]/[24px] font-[500] tracking-[1px] uppercase
   transition-opacity duration-300
   hover:opacity-70
+  md:text-[14px]/[24px]
+  xl:text-[16px]/[24px]
 `;
 // #endregion
 
@@ -26,7 +28,7 @@ export const ProfileNavigation = () => {
   const { pathname } = useLocation();
 
   const activeTab =
-    PROFILE_TABS.find((tab) => tab.href === pathname) || PROFILE_TABS[0];
+    PROFILE_TABS.find((tab) => pathname.startsWith(tab.href)) || PROFILE_TABS[0];
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -60,6 +62,7 @@ export const ProfileNavigation = () => {
       ref={menuRef}
       className={`
         relative w-full mb-[16px] z-[100]
+        lg:mb-[48px]
       `}
     >
       <div className="flex justify-end lg:hidden">
@@ -126,6 +129,24 @@ export const ProfileNavigation = () => {
           )}
         </AnimatePresence>
       </div>
+
+      <nav className="hidden lg:flex lg:items-center lg:justify-between">
+        {PROFILE_TABS.map((tab) => {
+          const isActive = activeTab === tab;
+          return (
+            <Link
+              key={tab.name}
+              to={tab.href}
+              className={cn(
+                TAB_LINK_BASE,
+                isActive && 'underline underline-offset-[4px]'
+              )}
+            >
+              {tab.name}
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 };
