@@ -65,7 +65,11 @@ export const ProfileFormDropdown = <T extends number | string>({
       onClick={() => setIsOpen(!isOpen)}
     >
       <label
-        className="text-[12px] text-primary uppercase font-[400] tracking-[1px] shrink-0 cursor-pointer"
+        className={`
+          text-[12px] text-primary uppercase font-[400] tracking-[1px] shrink-0 cursor-pointer
+          md:text-[14px]
+          lg:text-[16px]
+        `}
       >
         {label}
       </label>
