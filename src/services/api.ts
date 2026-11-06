@@ -6,8 +6,14 @@ import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+if (!baseURL) {
+  throw new Error('VITE_API_BASE_URL environment variable is required');
+}
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
