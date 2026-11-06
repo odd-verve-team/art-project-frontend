@@ -51,7 +51,7 @@ export const ArtworkAuthorInfo = ({ artistId, className = '' }: Props) => {
       bio,
     } = currentUser as UserDetail;
     const name = `${first_name} ${last_name}`;
-    const categories = art_categories.join(' / ');
+    const categories = art_categories?.join(' / ') || '';
     const isDefaultAvatar = image === DEFAULT_AVATAR;
 
     // --- МОБІЛЬНА ВЕРСІЯ ---

@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
 import type { Artwork } from '@/types/artwork';
 import EuroIcon from '@/assets/euro_icon.svg';
 
@@ -7,6 +9,10 @@ interface Props {
 }
 
 export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const size = `${artwork.painting_length}x${artwork.painting_width} cm`;
   const price = Number(artwork.price).toLocaleString('de-DE');
 
@@ -32,6 +38,13 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
   ];
 
   const scrollToForm = () => {
+    if (!isAuthenticated) {
+      navigate('/login', {
+        state: { from: `${location.pathname}#order-form` },
+      });
+      return;
+    }
+
     const formElement = document.getElementById('order-form');
     if (formElement) {
       formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });

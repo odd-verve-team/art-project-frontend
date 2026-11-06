@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
+import { useAuthStore } from '@/store/useAuthStore';
 import { useArtworkStore } from '@/store/useArtworkStore';
-import { Loader } from '@/components/ui/Loader';
 
 import { ArtworkImage } from '@/components/features/ArtworkDetails/ArtworkImage';
 import { ArtworkInfo } from '@/components/features/ArtworkDetails/ArtworkInfo';
@@ -10,10 +10,14 @@ import { RecommendedArtworks } from '@/components/features/ArtworkDetails/Recomm
 import { ArtworkDescription } from '@/components/features/ArtworkDetails/ArtworkDescription';
 import { ArtworkOrderForm } from '@/components/features/ArtworkDetails/ArtworkOrderForm';
 import { ArtworkAuthorInfo } from '@/components/features/ArtworkDetails/ArtworkAuthorInfo';
+
+import { Loader } from '@/components/ui/Loader';
 import { BackButton } from '@/components/ui/BackButton';
 
 export const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const currentArtwork = useArtworkStore((state) => state.currentArtwork);
   const fetchArtworkById = useArtworkStore((state) => state.fetchArtworkById);
@@ -25,6 +29,15 @@ export const ArtworkPage = () => {
     if (id) fetchArtworkById(Number(id));
     return () => clearCurrentArtwork();
   }, [id, fetchArtworkById, clearCurrentArtwork]);
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && currentArtwork && location.hash === '#order-form') {
+      const formElement = document.getElementById('order-form');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [isLoading, isAuthenticated, currentArtwork, location.hash]);
 
   if (isLoading) {
     return <Loader />;
@@ -127,12 +140,14 @@ export const ArtworkPage = () => {
         </div>
       </div>
 
-      <ArtworkOrderForm
-        artwork={currentArtwork}
-        className={`
-          lg:max-w-[1440px] lg:mx-auto
-        `}
-      />
+      {isAuthenticated && (
+        <ArtworkOrderForm
+          artwork={currentArtwork}
+          className={`
+            lg:max-w-[1440px] lg:mx-auto
+          `}
+        />
+      )}
     </div>
   );
 };

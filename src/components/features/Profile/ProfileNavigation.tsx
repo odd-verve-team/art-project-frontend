@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/utils/cn';
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
@@ -20,12 +21,20 @@ const TAB_LINK_BASE = `
   md:text-[14px]/[24px]
   xl:text-[16px]/[24px]
 `;
+
+const LOGOUT_BUTTON = cn(
+  TAB_LINK_BASE,
+  `w-full py-[5px] text-center cursor-pointer outline-none
+  bg-primary text-background border-t border-primary
+  hover:opacity-80`,
+);
 // #endregion
 
 export const ProfileNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const activeTab =
     PROFILE_TABS.find((tab) => pathname.startsWith(tab.href)) || PROFILE_TABS[0];
@@ -57,6 +66,15 @@ export const ProfileNavigation = () => {
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
+  const clearTokens = useAuthStore(state => state.clearTokens);
+ function handleLogout() {
+   closeMenu();
+   navigate('/', { replace: true });
+   setTimeout(() => {
+     clearTokens();
+   }, 100);
+ }
+
   return (
     <div
       ref={menuRef}
@@ -70,7 +88,7 @@ export const ProfileNavigation = () => {
           onClick={toggleMenu}
           className={cn(
             'flex items-center gap-[6px] outline-none',
-            TAB_LINK_BASE
+            TAB_LINK_BASE,
           )}
         >
           <img
@@ -79,7 +97,7 @@ export const ProfileNavigation = () => {
             className={cn(
               `w-[8px] h-[8px] invert transition-transform duration-300 ease-in-out`,
               '-rotate-45',
-              isOpen && 'rotate-[135deg]'
+              isOpen && 'rotate-[135deg]',
             )}
           />
           <span className="underline underline-offset-[4px]">
@@ -117,7 +135,7 @@ export const ProfileNavigation = () => {
                       onClick={closeMenu}
                       className={cn(
                         TAB_LINK_BASE,
-                        isActive && 'underline underline-offset-[4px]'
+                        isActive && 'underline underline-offset-[4px]',
                       )}
                     >
                       {tab.name}
@@ -125,6 +143,13 @@ export const ProfileNavigation = () => {
                   );
                 })}
               </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={LOGOUT_BUTTON}
+              >
+                log out
+              </button>
             </motion.div>
           )}
         </AnimatePresence>

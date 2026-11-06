@@ -41,9 +41,9 @@ export const MOCK_PROFILE_USER: UserDetail & { phone?: string } = {
 
 const MOCK_ARTIST = {
   id: MOCK_PROFILE_USER.id,
-  first_name: MOCK_PROFILE_USER.first_name,
-  last_name: MOCK_PROFILE_USER.last_name,
-  avatar_url: MOCK_PROFILE_USER.avatar_url,
+  first_name: 'Mary',
+  last_name: 'Jayn',
+  avatar_url: Slide03,
 };
 
 export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
