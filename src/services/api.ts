@@ -6,6 +6,8 @@ import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
 
+import { normalizeApiError } from '@/utils/apiErrors';
+
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 if (!baseURL) {
@@ -29,6 +31,14 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const normalizedError = normalizeApiError(error);
+    return Promise.reject(normalizedError);
+  },
+);
 
 export interface GetArtworksParams {
   is_featured?: boolean;
