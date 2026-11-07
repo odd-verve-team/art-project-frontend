@@ -8,7 +8,7 @@ import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
 import {
   MOCK_PROFILE_USER,
   MOCK_USER_PROFILE,
-} from '../features/Profile/profileMockData';
+} from '@/mocks/data/profileMockData';
 
 // #region Constants & Styles
 const AVATAR_BASE = `

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
-import { MOCK_PROFILE_NOTIFICATIONS } from './profileMockData';
+import { MOCK_PROFILE_NOTIFICATIONS } from '@/mocks/data/profileMockData';
 
 // #region Constants & Styles
 const TEXT_BASE = 'font-[500] tracking-[1px] uppercase';

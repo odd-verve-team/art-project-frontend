@@ -8,7 +8,7 @@ import { getFullName } from '@/utils/getFullName';
 
 import { ProfileArtsGrid } from './ProfileArtsGrid';
 //! TODO: DELETE MOCKDATA import when backend is ready
-import { MOCK_PROFILE_ARTWORKS } from './profileMockData';
+import { MOCK_PROFILE_ARTWORKS } from '@/mocks/data/profileMockData';
 
 export const ProfileMyArts = () => {
   const { user, profile } = useOutletContext<{
@@ -33,7 +33,10 @@ export const ProfileMyArts = () => {
           response.data.length > 0 ? response.data : MOCK_PROFILE_ARTWORKS,
         );
       } catch (error) {
-        console.warn('Failed to fetch user artworks, using MOCK_PROFILE_ARTWORKS:', error);
+        console.warn(
+          'Failed to fetch user artworks, using MOCK_PROFILE_ARTWORKS:',
+          error,
+        );
         //! TODO: DELETE MOCKDATA fallback when backend is ready
         setArtworks(MOCK_PROFILE_ARTWORKS);
       } finally {
