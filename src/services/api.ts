@@ -3,7 +3,9 @@ import type { InternalAxiosRequestConfig } from 'axios';
 
 import { useAuthStore } from '@/store/useAuthStore';
 
-import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
+import type { UserProfile } from '@/types/user';
+import type { ArtistDetail, ArtistProfile } from '@/types/artist';
+import type { ArtistArtworkListItem, Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse, RefreshResponse, RefreshRequest } from '@/types/auth';
 
 import { normalizeApiError } from '@/utils/apiErrors';
@@ -152,5 +154,50 @@ export const authApi = {
 
   logout: async (): Promise<void> => {
     await api.post('/users/logout/');
+  },
+};
+
+export const profileApi = {
+  getProfile: async (): Promise<UserProfile> => {
+    const response = await api.get('/users/profile/');
+    return response.data;
+  },
+
+  updateProfile: async (data: Partial<UserProfile>): Promise<UserProfile> => {
+    const response = await api.patch('/users/profile/', data);
+    return response.data;
+  }
+};
+
+export const artistsApi = {
+  getProfile: async (): Promise<ArtistProfile> => {
+    const response = await api.get('/artists/profile/');
+    return response.data;
+  },
+
+  updateProfile: async (
+    data: Partial<ArtistProfile>,
+  ): Promise<ArtistProfile> => {
+    const response = await api.patch('/artists/profile/', data);
+    return response.data;
+  },
+
+  getArtworks: async (): Promise<ArtistArtworkListItem[]> => {
+    const response = await api.get('/artists/artworks/');
+    return response.data;
+  },
+
+  createArtwork: async (data: FormData): Promise<Artwork> => {
+    const response = await api.post<Artwork>('/artists/artworks/', data);
+    return response.data;
+  },
+
+  deleteArtwork: async (id: number): Promise<void> => {
+    await api.delete(`/artists/artworks/${id}/`);
+  },
+
+  getArtistById: async (id: number): Promise<ArtistDetail> => {
+    const response = await api.get(`/artists/${id}/`);
+    return response.data;
   },
 };

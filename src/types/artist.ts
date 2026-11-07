@@ -1,0 +1,36 @@
+import type { UserProfile } from './user';
+
+export interface SocialMedia {
+  instagram: string | null;
+  twitter: string | null;
+  telegram: string | null;
+  facebook: string | null;
+}
+
+export interface PublicAddress {
+  country: string;
+  city: string;
+}
+
+// GET /artists/{id}/
+export interface ArtistDetail {
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
+  bio: string | null;
+  style: string | null;
+  statement: string | null;
+  image_url: string | null;
+  address: PublicAddress;
+  social_media: SocialMedia;
+  artworks: number[];
+}
+
+// GET/PUT/PATCH /artists/profile/
+export interface ArtistProfile extends UserProfile {
+  id: number;
+  bio: string | null;
+  style: string | null;
+  statement: string | null;
+  social_media: SocialMedia;
+}

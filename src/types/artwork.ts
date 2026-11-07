@@ -29,6 +29,27 @@ export interface Artwork {
   medium: ArtworkMedium;
 }
 
+export interface ArtworkAuthorDetail extends Artist {
+  art_categories?: string[];
+  bio?: string | null;
+}
+
+export interface ArtworkDetail extends Omit<Artwork, 'artist'> {
+  artist: ArtworkAuthorDetail;
+}
+
+export interface ArtistArtworkListItem {
+  id: number;
+  title: string;
+  painting_length: number;
+  painting_width: number;
+  year: number;
+  medium: ArtworkMedium;
+  status: ArtworkStatus;
+  created_at: string;
+  image_url: string;
+}
+
 export interface PaginationMeta {
   total: number;
   page: number;
@@ -39,4 +60,16 @@ export interface PaginationMeta {
 export interface ArtworksResponse {
   data: Artwork[];
   meta: PaginationMeta;
+}
+
+export interface CreateArtworkRequest {
+  title: string;
+  painting_length: number;
+  painting_width: number;
+  year: number;
+  medium: ArtworkMedium;
+  category: ArtworkCategory;
+  description: string;
+  price: string;
+  image: File | Blob;
 }
