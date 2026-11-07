@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { UserDetail } from '@/types/user';
+import type { AuthTokens } from '@/types/auth';
 
 interface AuthState {
   accessToken: string | null;
@@ -18,7 +19,8 @@ const initialState: AuthState = {
 };
 
 interface AuthActions {
-  setTokens: (access: string, refresh: string, user: UserDetail) => void;
+  setTokens: (tokens: AuthTokens, user: UserDetail) => void;
+  updateTokens: (tokens: { access_token: string; refresh_token?: string }) => void;
   setUser: (user: UserDetail) => void;
   clearTokens: () => void;
 }
@@ -28,13 +30,22 @@ export const useAuthStore = create<AuthState & AuthActions>()(
     (set) => ({
       ...initialState,
 
-      setTokens: (access, refresh, user) => {
+      setTokens: (tokens, user) => {
         set({
-          accessToken: access,
-          refreshToken: refresh,
+          accessToken: tokens.access_token,
+          refreshToken: tokens.refresh_token,
           user,
           isAuthenticated: true,
         });
+      },
+
+      updateTokens: (tokens) => {
+        set((state) => ({
+          accessToken: tokens.access_token,
+          refreshToken: tokens.refresh_token
+            ? tokens.refresh_token
+            : state.refreshToken,
+        }));
       },
 
       setUser: (user) => {

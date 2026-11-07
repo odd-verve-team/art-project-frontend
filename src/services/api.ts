@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { InternalAxiosRequestConfig } from 'axios';
 
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -6,8 +7,26 @@ import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { UserDetail, UserListItem } from '@/types/user';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
 
+import { normalizeApiError } from '@/utils/apiErrors';
+import {
+  getIsRefreshing,
+  setIsRefreshing,
+  addToQueue,
+  processQueue,
+} from '@/utils/tokenQueue';
+
+export interface RetryConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+if (!baseURL) {
+  throw new Error('VITE_API_BASE_URL environment variable is required');
+}
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -21,8 +40,75 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
+  if (config.data instanceof FormData && config.headers) {
+    config.headers.delete('Content-Type');
+  }
+
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config as RetryConfig;
+
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+
+      if (getIsRefreshing()) {
+        return new Promise<string>((resolve, reject) => {
+          addToQueue(resolve, reject);
+        })
+          .then((token) => {
+            if (originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+            }
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      setIsRefreshing(true);
+
+      const refreshToken = useAuthStore.getState().refreshToken;
+
+      if (!refreshToken) {
+        setIsRefreshing(false);
+        return Promise.reject(normalizeApiError(error));
+      }
+
+      try {
+        const { data } = await axios.post<{
+          access_token: string;
+          refresh_token?: string;
+        }>(`${baseURL}/users/refresh/`, { refresh_token: refreshToken });
+
+        useAuthStore.getState().updateTokens(data);
+        processQueue(null, data.access_token);
+
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+        }
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        useAuthStore.getState().clearTokens();
+        window.location.href = '/login';
+        return Promise.reject(normalizeApiError(refreshError));
+      } finally {
+        setIsRefreshing(false);
+      }
+    }
+
+    const normalizedError = normalizeApiError(error);
+    return Promise.reject(normalizedError);
+  },
+);
 
 export interface GetArtworksParams {
   is_featured?: boolean;

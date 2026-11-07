@@ -59,7 +59,7 @@ export const LoginPage = () => {
       setIsLoading(true);
       try {
         const { tokens, user } = await authApi.verifyCode({ email, code: newCode });
-        setTokens(tokens.access_token, tokens.refresh_token, user);
+        setTokens(tokens, user);
         navigate(from, { replace: true });
       } catch (error) {
         console.error('Authentication failed (invalid code):', error);
