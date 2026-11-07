@@ -19,7 +19,6 @@ const initialState: AuthState = {
 };
 
 interface AuthActions {
-  // setTokens: (access: string, refresh: string, user: UserDetail) => void;
   setTokens: (tokens: AuthTokens, user: UserDetail) => void;
   updateTokens: (tokens: { access_token: string; refresh_token?: string }) => void;
   setUser: (user: UserDetail) => void;
