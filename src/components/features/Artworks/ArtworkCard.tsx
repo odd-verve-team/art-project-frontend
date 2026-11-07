@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { Artwork } from '@/types/artwork';
+import { getFullName } from '@/utils/getFullName';
 import HeartIcon from '@/assets/heart-icon.svg';
 import { Link } from 'react-router-dom';
 
@@ -8,7 +9,10 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const size = `${artwork.image_width} / ${artwork.image_height}`;
-  const authorName = `${artwork.artist.first_name} ${artwork.artist.last_name}`;
+  const authorName = getFullName(
+    artwork.artist.first_name,
+    artwork.artist.last_name,
+  );
 
   return (
     <Link

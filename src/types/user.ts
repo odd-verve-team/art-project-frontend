@@ -1,32 +1,26 @@
-import type { ArtworkCategory } from './artwork';
-
 export type UserRole = 'user' | 'artist' | 'admin';
 export type ApplicationStatus = 'pending' | 'approved' | 'rejected';
 
-export interface UserListItem {
-  id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-  avatar_url: string;
-  role: UserRole;
-  artworks: number[];
-  art_categories: ArtworkCategory[];
-}
-
-export interface UserDetail extends Partial<UserListItem> {
-  id: number;
+// Returned by POST /users/authenticate/
+export interface UserDetail {
+  id: string;
   email: string;
   role: UserRole;
   application_status: ApplicationStatus | null;
-  bio?: string;
-  last_login?: string | null;
-  is_superuser?: boolean;
-  is_staff?: boolean;
-  is_active?: boolean;
-  date_joined?: string;
-  created_at?: string;
-  number_of_paid_cell?: number;
-  groups?: number[];
-  user_permissions?: number[];
+}
+
+export interface Address {
+  country: string;
+  city: string;
+  postal_code: string;
+}
+
+// Returned by GET /users/profile/
+export interface UserProfile {
+  first_name: string | null;
+  last_name: string | null;
+  email: string;
+  phone_number: string | null;
+  avatar_url: string | null;
+  address?: Address;
 }

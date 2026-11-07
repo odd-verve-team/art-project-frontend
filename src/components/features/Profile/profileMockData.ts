@@ -1,5 +1,5 @@
-import type { UserDetail } from '@/types/user';
-import type { Artwork } from '@/types/artwork';
+import type { UserDetail, UserProfile } from '@/types/user';
+import type { Artist, Artwork } from '@/types/artwork';
 
 import Slide01 from '@/assets/hero-slider/slide-01.webp';
 import Slide03 from '@/assets/hero-slider/slide-03.webp';
@@ -15,32 +15,24 @@ export interface ProfileNotification {
   content?: string;
 }
 
-export const MOCK_PROFILE_USER: UserDetail & { phone?: string } = {
-  id: 10,
-  username: 'mary_jayn',
-  first_name: 'Mary',
-  last_name: 'Jayn',
+export const MOCK_PROFILE_USER: UserDetail = {
+  id: '10',
   email: 'mary.jayn@gmail.com',
-  phone: '+380 99 123 45 67',
-  avatar_url: Slide03,
   role: 'artist',
-  bio: 'Contemporary visual artist exploring stillness, light, and architectural form.',
-  artworks: [101, 102, 103, 104, 105, 106],
-  art_categories: ['modern', 'landscape', 'impressionism', 'portrait'],
-  last_login: '2026-10-22T12:00:00Z',
-  is_superuser: false,
-  is_staff: false,
-  is_active: true,
-  date_joined: '2025-05-12T10:00:00Z',
-  created_at: '2025-05-12T10:00:00Z',
   application_status: 'approved',
-  number_of_paid_cell: 5,
-  groups: [],
-  user_permissions: [],
 };
 
-const MOCK_ARTIST = {
-  id: MOCK_PROFILE_USER.id,
+// Empty profile, as the backend returns it right after the first login
+export const MOCK_USER_PROFILE: UserProfile = {
+  first_name: null,
+  last_name: null,
+  email: 'mary.jayn@gmail.com',
+  phone_number: null,
+  avatar_url: null,
+};
+
+const MOCK_ARTIST: Artist = {
+  id: 10,
   first_name: 'Mary',
   last_name: 'Jayn',
   avatar_url: Slide03,

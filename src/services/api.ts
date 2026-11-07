@@ -4,7 +4,6 @@ import type { InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '@/store/useAuthStore';
 
 import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
-import type { UserDetail, UserListItem } from '@/types/user';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
 
 import { normalizeApiError } from '@/utils/apiErrors';
@@ -121,7 +120,6 @@ export interface GetArtworksParams {
   sort?: ArtworkSort;
   page?: number;
   limit?: number;
-  artist?: number;
 }
 
 export const artworksApi = {
@@ -132,18 +130,6 @@ export const artworksApi = {
 
   getById: async (id: number): Promise<Artwork> => {
     const response = await api.get(`/artworks/${id}/`);
-    return response.data;
-  },
-};
-
-export const usersApi = {
-  getAll: async (): Promise<UserListItem[]> => {
-    const response = await api.get('/users/');
-    return response.data;
-  },
-
-  getById: async (id: number): Promise<UserDetail> => {
-    const response = await api.get(`/users/${id}/`);
     return response.data;
   },
 };
