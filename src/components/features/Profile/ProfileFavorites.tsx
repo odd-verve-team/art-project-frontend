@@ -6,7 +6,7 @@ import { useArtworkStore } from '@/store/useArtworkStore';
 import { ArtworkGrid } from '../Artworks/ArtworkGrid';
 import { Loader } from '@/components/ui/Loader';
 //! TODO: DELETE MOCKDATA import when backend is ready
-import { MOCK_PROFILE_ARTWORKS } from './profileMockData';
+import { MOCK_PROFILE_ARTWORKS } from '@/mocks/data/profileMockData';
 
 export const ProfileFavorites = () => {
   const { user } = useOutletContext<{ user: UserDetail | null }>();
