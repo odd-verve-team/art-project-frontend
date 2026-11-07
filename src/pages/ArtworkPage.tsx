@@ -101,7 +101,7 @@ export const ArtworkPage = () => {
             `}
           />
           <ArtworkAuthorInfo
-            artistId={currentArtwork.artist.id}
+            artist={currentArtwork.artist}
             className={`
               order-4
               lg:order-none lg:h-[min(40.97vw,590px)]

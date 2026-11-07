@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { cn } from '@/utils/cn';
 
-import type { UserDetail } from '@/types/user';
+import type { UserDetail, UserProfile } from '@/types/user';
 import type { ArtworkCategory } from '@/types/artwork';
 import { CATEGORY_OPTIONS } from '../Gallery/galleryConstants';
 
@@ -37,7 +37,7 @@ const PERSONAL_FIELDS = [
     disabled: true,
   },
   {
-    name: 'phone',
+    name: 'phone_number',
     type: 'tel',
     placeholder: 'phone number',
     required: false,
@@ -102,14 +102,24 @@ const ACTION_BUTTON_BASE =
 //#endregion
 
 export const ProfileSettings = () => {
-  const { user } = useOutletContext<{user: UserDetail | null}>();
+  const { user, profile } = useOutletContext<{
+    user: UserDetail | null;
+    profile: UserProfile;
+  }>();
 
   const [isArtistForm, setIsArtistForm] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<ArtworkCategory[]>([]);
 
   if (!user) return null;
 
-  const { avatar_url: image } = user;
+  const { avatar_url: image } = profile;
+
+  const personalValues: Record<string, string | null> = {
+    first_name: profile.first_name,
+    last_name: profile.last_name,
+    email: user.email,
+    phone_number: profile.phone_number,
+  };
 
   //! DELETE MOCKDATA in future
   const mockAddressData: Record<string, string> = {
@@ -177,7 +187,7 @@ export const ProfileSettings = () => {
             >
               <div className="flex flex-col gap-[24px] px-[8px] md:px-[24px] lg:px-0">
                 {PERSONAL_FIELDS.map((input) => {
-                  const value = user[input.name as keyof UserDetail];
+                  const value = personalValues[input.name];
                   const isEmail = input.name === 'email';
 
                   return (

@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import type { Artwork } from '@/types/artwork';
+import { getFullName } from '@/utils/getFullName';
 import EuroIcon from '@/assets/euro_icon.svg';
 
 interface Props {
@@ -32,7 +33,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
     },
     {
       label: 'artist',
-      value: `${artwork.artist.first_name} ${artwork.artist.last_name}`,
+      value: getFullName(artwork.artist.first_name, artwork.artist.last_name),
       className: 'font-[700] uppercase',
     },
   ];

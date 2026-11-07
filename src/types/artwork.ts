@@ -5,8 +5,8 @@ export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' 
 
 export interface Artist {
   id: number;
-  first_name: string;
-  last_name: string;
+  first_name: string | null;
+  last_name: string | null;
   avatar_url: string | null;
 }
 

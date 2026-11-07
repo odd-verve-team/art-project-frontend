@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 
-import type { UserDetail } from '@/types/user';
+import type { UserDetail, UserProfile } from '@/types/user';
 import type { Artwork } from '@/types/artwork';
 import { artworksApi } from '@/services/api';
+import { getFullName } from '@/utils/getFullName';
 
 import { ProfileArtsGrid } from './ProfileArtsGrid';
 //! TODO: DELETE MOCKDATA import when backend is ready
 import { MOCK_PROFILE_ARTWORKS } from './profileMockData';
 
 export const ProfileMyArts = () => {
-  const { user } = useOutletContext<{ user: UserDetail | null }>();
+  const { user, profile } = useOutletContext<{
+    user: UserDetail | null;
+    profile: UserProfile;
+  }>();
 
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,7 +26,6 @@ export const ProfileMyArts = () => {
       setIsLoading(true);
       try {
         const response = await artworksApi.getAll({
-          artist: user.id,
           status: 'pending,approved,sold,rejected',
         });
 
@@ -66,7 +69,11 @@ export const ProfileMyArts = () => {
       ) : artworks.length > 0 ? (
         <ProfileArtsGrid
           artworks={artworks}
-          artistName={`${user.first_name} ${user.last_name}`}
+          artistName={getFullName(
+            profile.first_name,
+            profile.last_name,
+            'User Name',
+          )}
         />
       ) : (
         <div className="border border-primary p-[24px] text-center lg:border-none">

@@ -5,7 +5,10 @@ import { cn } from '@/utils/cn';
 
 import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
 //! TODO: DELETE MOCKDATA import when backend is ready
-import { MOCK_PROFILE_USER } from '../features/Profile/profileMockData';
+import {
+  MOCK_PROFILE_USER,
+  MOCK_USER_PROFILE,
+} from '../features/Profile/profileMockData';
 
 // #region Constants & Styles
 const AVATAR_BASE = `
@@ -27,8 +30,11 @@ export const ProfileLayout = () => {
   //! TODO: DELETE MOCKDATA fallback when backend is ready
   const user = authUser || MOCK_PROFILE_USER;
 
-  const firstName = user?.first_name || 'User';
-  const lastName = user?.last_name || 'Name';
+  //! TODO: replace with data from GET /users/profile/ (useProfileStore)
+  const profile = MOCK_USER_PROFILE;
+
+  const firstName = profile.first_name || 'User';
+  const lastName = profile.last_name || 'Name';
 
   const handleLogout = () => {
     navigate('/', { replace: true });
@@ -67,9 +73,9 @@ export const ProfileLayout = () => {
             <span className="text-right truncate">{firstName}</span>
 
             <div className={AVATAR_CONTAINER}>
-              {user?.avatar_url && (
+              {profile.avatar_url && (
                 <img
-                  src={user.avatar_url}
+                  src={profile.avatar_url}
                   alt={`${firstName} ${lastName}`}
                   className="w-full h-full object-cover"
                 />
@@ -109,7 +115,7 @@ export const ProfileLayout = () => {
           `}
         >
           <ProfileNavigation />
-          <Outlet context={{ user }} />
+          <Outlet context={{ user, profile }} />
         </div>
       </main>
     </div>
