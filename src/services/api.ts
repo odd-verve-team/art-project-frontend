@@ -4,7 +4,7 @@ import type { InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '@/store/useAuthStore';
 
 import type { Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
-import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse } from '@/types/auth';
+import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse, RefreshResponse, RefreshRequest } from '@/types/auth';
 
 import { normalizeApiError } from '@/utils/apiErrors';
 import {
@@ -143,5 +143,14 @@ export const authApi = {
   verifyCode: async (data: AuthVerifyRequest): Promise<AuthResponse> => {
     const response = await api.post('/users/authenticate/', data);
     return response.data;
+  },
+
+  refresh: async (data: RefreshRequest): Promise<RefreshResponse> => {
+    const response = await api.post('/users/refresh/', data)
+    return response.data;
+  },
+
+  logout: async (): Promise<void> => {
+    await api.post('/users/logout/');
   },
 };
