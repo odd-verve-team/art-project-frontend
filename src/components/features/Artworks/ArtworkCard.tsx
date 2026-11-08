@@ -1,18 +1,21 @@
 import { useState } from 'react';
-
-import type { Artwork } from '@/types/artwork';
-import { getFullName } from '@/utils/getFullName';
-import HeartIcon from '@/assets/heart-icon.svg';
 import { Link } from 'react-router-dom';
+
+import { getFullName } from '@/utils/getFullName';
+import type { Artwork } from '@/types/artwork';
+
+import { DEFAULT_AVATAR } from '@/constants/common';
+import HeartIcon from '@/assets/heart-icon.svg';
 
 export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const size = `${artwork.image_width} / ${artwork.image_height}`;
   const authorName = getFullName(
-    artwork.artist.first_name,
-    artwork.artist.last_name,
+    artwork.artist?.first_name,
+    artwork.artist?.last_name,
   );
+  const avatarUrl = artwork.artist?.avatar_url || DEFAULT_AVATAR;
 
   return (
     <Link
@@ -44,8 +47,8 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
         <div className="w-full flex items-center justify-between pointer-events-auto">
           <div className="flex items-center gap-[8px] bg-white p-[8px]">
             <img
-              src={artwork.artist.avatar_url || undefined}
-              alt="Artist avatar"
+              src={avatarUrl}
+              alt={authorName}
               className="w-[24px] h-[24px] rounded-full object-cover"
             />
             <span
