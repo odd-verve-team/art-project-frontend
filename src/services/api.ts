@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 import type { UserProfile } from '@/types/user';
 import type { ArtistDetail, ArtistProfile } from '@/types/artist';
-import type { ArtistArtworkListItem, Artwork, ArtworkSort, ArtworksResponse } from '@/types/artwork';
+import type { ArtistArtworkListItem, Artwork, ArtworkDetail, ArtworkSort, ArtworksResponse } from '@/types/artwork';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse, RefreshResponse, RefreshRequest } from '@/types/auth';
 
 import { normalizeApiError } from '@/utils/apiErrors';
@@ -130,8 +130,13 @@ export const artworksApi = {
     return response.data;
   },
 
-  getById: async (id: number): Promise<Artwork> => {
+  getById: async (id: number): Promise<ArtworkDetail> => {
     const response = await api.get(`/artworks/${id}/`);
+    return response.data;
+  },
+
+  search: async (text: string): Promise<Artwork[]> => {
+    const response = await api.get('/artworks/search/', { params: { text } });
     return response.data;
   },
 };
