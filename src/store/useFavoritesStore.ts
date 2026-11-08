@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { favoritesApi } from '@/services/api';
-
+import { useAuthStore } from '@/store/useAuthStore';
 import type { Artwork, FavoriteItem } from '@/types/artwork';
 
 interface FavoritesState {
@@ -25,70 +25,80 @@ interface FavoritesActions {
 }
 
 export const useFavoritesStore = create<FavoritesState & FavoritesActions>((set, get) => ({
-    ...initialState,
+  ...initialState,
 
-    fetchFavorites: async () => {
-      set({ isLoading: true, error: null });
-      try {
-        const response = await favoritesApi.getFavorites();
-        const items = Array.isArray(response) ? response : response.data;
+  fetchFavorites: async () => {
+    const authUser = useAuthStore.getState().user;
+    if (!authUser) {
+      return;
+    }
 
-        set({
-          favorites: items,
-          favoriteArtworkIds: new Set(items.map((item) => item.artwork.id)),
-        });
-      } catch (error) {
-        const errorMessage =
-          (error as { message?: string })?.message ||
-          'Failed to fetch favorites';
-        set({ error: errorMessage });
-      } finally {
-        set({ isLoading: false });
-      }
-    },
+    const startedForUserId = authUser.id;
+    set({ isLoading: true, error: null });
 
-    toggleFavorite: async (artwork) => {
-      const prevFavorites = get().favorites;
-      const prevIds = get().favoriteArtworkIds;
+    try {
+      const response = await favoritesApi.getFavorites();
 
-      const isFavorite = prevIds.has(artwork.id);
-
-      let nextFavorites: FavoriteItem[];
-      const nextIds = new Set(prevIds);
-
-      if (isFavorite) {
-        nextIds.delete(artwork.id);
-        nextFavorites = prevFavorites.filter(
-          (item) => item.artwork.id !== artwork.id,
-        );
-      } else {
-        nextIds.add(artwork.id);
-        nextFavorites = [...prevFavorites, { profile: 0, artwork }];
+      if (useAuthStore.getState().user?.id !== startedForUserId) {
+        return;
       }
 
+      const items = Array.isArray(response) ? response : response.data;
       set({
-        favorites: nextFavorites,
-        favoriteArtworkIds: nextIds,
-        error: null,
+        favorites: items,
+        favoriteArtworkIds: new Set(items.map((item) => item.artwork.id)),
       });
+    } catch (error) {
+      const errorMessage =
+        (error as { message?: string })?.message ||
+        'Failed to fetch favorites';
+      set({ error: errorMessage });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 
-      try {
-        if (isFavorite) {
-          await favoritesApi.removeFavorite(artwork.id);
-        } else {
-          await favoritesApi.addFavorite(artwork.id);
-        }
-      } catch (error) {
-        set({
-          favorites: prevFavorites,
-          favoriteArtworkIds: prevIds,
-          error:
-            (error as { message?: string })?.message ||
-            'Failed to update favorite',
-        });
+  toggleFavorite: async (artwork) => {
+    const prevFavorites = get().favorites;
+    const prevIds = get().favoriteArtworkIds;
+
+    const isFavorite = prevIds.has(artwork.id);
+
+    let nextFavorites: FavoriteItem[];
+    const nextIds = new Set(prevIds);
+
+    if (isFavorite) {
+      nextIds.delete(artwork.id);
+      nextFavorites = prevFavorites.filter(
+        (item) => item.artwork.id !== artwork.id,
+      );
+    } else {
+      nextIds.add(artwork.id);
+      nextFavorites = [...prevFavorites, { profile: 0, artwork }];
+    }
+
+    set({
+      favorites: nextFavorites,
+      favoriteArtworkIds: nextIds,
+      error: null,
+    });
+
+    try {
+      if (isFavorite) {
+        await favoritesApi.removeFavorite(artwork.id);
+      } else {
+        await favoritesApi.addFavorite(artwork.id);
       }
-    },
+    } catch (error) {
+      set({
+        favorites: prevFavorites,
+        favoriteArtworkIds: prevIds,
+        error:
+          (error as { message?: string })?.message ||
+          'Failed to update favorite',
+      });
+    }
+  },
 
-    clearFavorites: () => set(initialState),
-  }),
-);
+  clearFavorites: () => set(initialState),
+}));

@@ -28,22 +28,37 @@ export const useProfileStore = create<ProfileState & ProfileActions>((set) => ({
   ...initialState,
 
   fetchProfile: async () => {
+    const authUser = useAuthStore.getState().user;
+    if (!authUser) {
+        return;
+    }
+
+    const startedForUserId = authUser.id;
     set({ isLoading: true, error: null });
+
     try {
       const role = useAuthStore.getState().user?.role;
       const profile = role === 'artist'
         ? await artistsApi.getProfile()
         : await profileApi.getProfile();
+      
+      if (useAuthStore.getState().user?.id !== startedForUserId) {
+        return;
+      }
 
       set({ profile });
     } catch (error) {
-      set({
-        error: error instanceof Error
-          ? error.message
-          : 'Failed to fetch profile'
-      });
+      if (useAuthStore.getState().user?.id !== startedForUserId) {
+        return;
+      }
+
+      const errorMessage =
+        (error as { message?: string })?.message || 'Failed to fetch profile';
+      set({ error: errorMessage });
     } finally {
-      set({ isLoading: false });
+      if (useAuthStore.getState().user?.id === startedForUserId) {
+        set({ isLoading: false });
+      }
     }
   },
 
