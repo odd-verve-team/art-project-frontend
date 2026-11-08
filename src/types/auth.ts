@@ -18,3 +18,12 @@ export interface AuthResponse {
   tokens: AuthTokens;
   user: UserDetail;
 }
+
+export interface RefreshRequest {
+  refresh_token: string;
+}
+
+export interface RefreshResponse {
+  access_token: string;
+  refresh_token?: string;
+}

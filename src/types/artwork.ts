@@ -1,7 +1,31 @@
-export type ArtworkCategory = 'modern' | 'portrait' | 'abstractionism' | 'cubism' | 'surrealism' | 'pop_art' | 'impressionism' | 'landscape' | 'still_life' | 'romanticism';
-export type ArtworkMedium = 'oil' | 'acrylic' | 'watercolor' | 'graphics' | 'mixed_media' | 'lithography';
+export type ArtworkCategory =
+  | 'modern'
+  | 'portrait'
+  | 'abstractionism'
+  | 'cubism'
+  | 'surrealism'
+  | 'pop_art'
+  | 'impressionism'
+  | 'landscape'
+  | 'still_life'
+  | 'romanticism';
+export type ArtworkMedium =
+  | 'oil'
+  | 'acrylic'
+  | 'watercolor'
+  | 'graphics'
+  | 'mixed_media'
+  | 'lithography';
 export type ArtworkStatus = 'approved' | 'sold' | 'pending' | 'rejected';
-export type ArtworkSort = 'price_asc' | 'price_desc' | 'date_asc' | 'date_desc' | 'year_asc' | 'year_desc' | 'size_asc' | 'size_desc';
+export type ArtworkSort =
+  | 'price_asc'
+  | 'price_desc'
+  | 'date_asc'
+  | 'date_desc'
+  | 'year_asc'
+  | 'year_desc'
+  | 'size_asc'
+  | 'size_desc';
 
 export interface Artist {
   id: number;
@@ -29,6 +53,27 @@ export interface Artwork {
   medium: ArtworkMedium;
 }
 
+export interface ArtworkAuthorDetail extends Artist {
+  art_categories?: string[];
+  bio?: string | null;
+}
+
+export interface ArtworkDetail extends Omit<Artwork, 'artist'> {
+  artist: ArtworkAuthorDetail;
+}
+
+export interface ArtistArtworkListItem {
+  id: number;
+  title: string;
+  painting_length: number;
+  painting_width: number;
+  year: number;
+  medium: ArtworkMedium;
+  status: ArtworkStatus;
+  created_at: string;
+  image_url: string;
+}
+
 export interface PaginationMeta {
   total: number;
   page: number;
@@ -40,3 +85,27 @@ export interface ArtworksResponse {
   data: Artwork[];
   meta: PaginationMeta;
 }
+
+export interface CreateArtworkRequest {
+  title: string;
+  painting_length: number;
+  painting_width: number;
+  year: number;
+  medium: ArtworkMedium;
+  category: ArtworkCategory;
+  description: string;
+  price: string;
+  image: File | Blob;
+}
+
+export interface FavoriteItem {
+  profile: number;
+  artwork: Artwork;
+}
+
+export type FavoritesResponse =
+  | FavoriteItem[]
+  | {
+      data: FavoriteItem[];
+      meta: PaginationMeta;
+    };
