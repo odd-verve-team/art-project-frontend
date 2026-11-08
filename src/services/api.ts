@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 import type { UserProfile } from '@/types/user';
 import type { ArtistDetail, ArtistProfile } from '@/types/artist';
-import type { ArtistArtworkListItem, Artwork, ArtworkDetail, ArtworkSort, ArtworksResponse } from '@/types/artwork';
+import type { ArtistArtworkListItem, Artwork, ArtworkDetail, ArtworkSort, ArtworksResponse, FavoriteItem, FavoritesResponse } from '@/types/artwork';
 import type { AuthCodeRequest, AuthVerifyRequest, AuthResponse, RefreshResponse, RefreshRequest } from '@/types/auth';
 
 import { normalizeApiError } from '@/utils/apiErrors';
@@ -124,23 +124,6 @@ export interface GetArtworksParams {
   limit?: number;
 }
 
-export const artworksApi = {
-  getAll: async (params?: GetArtworksParams): Promise<ArtworksResponse> => {
-    const response = await api.get('/artworks/', { params });
-    return response.data;
-  },
-
-  getById: async (id: number): Promise<ArtworkDetail> => {
-    const response = await api.get(`/artworks/${id}/`);
-    return response.data;
-  },
-
-  search: async (text: string): Promise<Artwork[]> => {
-    const response = await api.get('/artworks/search/', { params: { text } });
-    return response.data;
-  },
-};
-
 export const authApi = {
   sendCode: async (data: AuthCodeRequest): Promise<string> => {
     const response = await api.post('/users/code/', data);
@@ -153,7 +136,7 @@ export const authApi = {
   },
 
   refresh: async (data: RefreshRequest): Promise<RefreshResponse> => {
-    const response = await api.post('/users/refresh/', data)
+    const response = await api.post('/users/refresh/', data);
     return response.data;
   },
 
@@ -161,6 +144,7 @@ export const authApi = {
     await api.post('/users/logout/');
   },
 };
+
 
 export const profileApi = {
   getProfile: async (): Promise<UserProfile> => {
@@ -171,7 +155,7 @@ export const profileApi = {
   updateProfile: async (data: Partial<UserProfile>): Promise<UserProfile> => {
     const response = await api.patch('/users/profile/', data);
     return response.data;
-  }
+  },
 };
 
 export const artistsApi = {
@@ -204,5 +188,38 @@ export const artistsApi = {
   getArtistById: async (id: number): Promise<ArtistDetail> => {
     const response = await api.get(`/artists/${id}/`);
     return response.data;
+  },
+};
+
+export const artworksApi = {
+  getAll: async (params?: GetArtworksParams): Promise<ArtworksResponse> => {
+    const response = await api.get('/artworks/', { params });
+    return response.data;
+  },
+
+  getById: async (id: number): Promise<ArtworkDetail> => {
+    const response = await api.get(`/artworks/${id}/`);
+    return response.data;
+  },
+
+  search: async (text: string): Promise<Artwork[]> => {
+    const response = await api.get('/artworks/search/', { params: { text } });
+    return response.data;
+  },
+};
+
+export const favoritesApi = {
+  getFavorites: async (): Promise<FavoritesResponse> => {
+    const response = await api.get('/favorites/');
+    return response.data;
+  },
+
+  addFavorite: async (artworkId: number): Promise<FavoriteItem> => {
+    const response = await api.post('/favorites/', { artwork: artworkId });
+    return response.data;
+  },
+
+  removeFavorite: async (artworkId: number): Promise<void> => {
+    await api.delete(`/favorites/${artworkId}/`);
   },
 };
