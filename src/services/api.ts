@@ -15,6 +15,7 @@ import {
   addToQueue,
   processQueue,
 } from '@/utils/tokenQueue';
+import type { NotificationItem } from '@/types/notifications';
 
 export interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -221,5 +222,20 @@ export const favoritesApi = {
 
   removeFavorite: async (artworkId: number): Promise<void> => {
     await api.delete(`/favorites/${artworkId}/`);
+  },
+};
+
+export const notificationsApi = {
+  getNotifications: async (): Promise<NotificationItem[]> => {
+    const response = await api.get('/notifications/');
+    return response.data;
+  },
+
+  buyArtwork: async (artworkId: number): Promise<void> => {
+    await api.post('/notifications/buy-artwork/', { artwork: artworkId });
+  },
+
+  becomeArtist: async (): Promise<void> => {
+    await api.post('/notifications/become-artist/');
   },
 };
