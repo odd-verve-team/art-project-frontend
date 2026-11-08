@@ -25,7 +25,7 @@ const AVATAR_CONTAINER = cn(
 export const ProfileLayout = () => {
   const navigate = useNavigate();
   const authUser = useAuthStore((state) => state.user);
-  const clearTokens = useAuthStore((state) => state.clearTokens);
+  const logout = useAuthStore((state) => state.logout);
 
   //! TODO: DELETE MOCKDATA fallback when backend is ready
   const user = authUser || MOCK_PROFILE_USER;
@@ -38,9 +38,7 @@ export const ProfileLayout = () => {
 
   const handleLogout = () => {
     navigate('/', { replace: true });
-    setTimeout(() => {
-      clearTokens();
-    }, 100);
+    logout();
   };
 
   return (
