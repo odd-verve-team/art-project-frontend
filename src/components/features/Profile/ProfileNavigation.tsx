@@ -66,14 +66,12 @@ export const ProfileNavigation = () => {
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
 
-  const clearTokens = useAuthStore(state => state.clearTokens);
- function handleLogout() {
-   closeMenu();
-   navigate('/', { replace: true });
-   setTimeout(() => {
-     clearTokens();
-   }, 100);
- }
+  const logout = useAuthStore((state) => state.logout);
+  const handleLogout = () => {
+    closeMenu();
+    navigate('/', { replace: true });
+    logout();
+  };
 
   return (
     <div

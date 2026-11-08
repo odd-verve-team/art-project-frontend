@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { authApi } from '@/services/api';
+
 import type { UserDetail } from '@/types/user';
 import type { AuthTokens } from '@/types/auth';
 
@@ -23,6 +25,7 @@ interface AuthActions {
   updateTokens: (tokens: { access_token: string; refresh_token?: string }) => void;
   setUser: (user: UserDetail) => void;
   clearTokens: () => void;
+  logout: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -55,9 +58,20 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       clearTokens: () => {
         set(initialState);
       },
+
+      logout: async () => {
+        try {
+          await authApi.logout();
+        } catch (error) {
+          console.error('Logout failed', error);
+        } finally {
+          set(initialState);
+        }
+      },
     }),
     {
       name: 'auth-storage',
+      version: 1,
     },
   ),
 );

@@ -24,6 +24,20 @@ export const artistsHandlers = [
     return HttpResponse.json(updated, { status: 200 });
   }),
 
+  http.get(`${baseURL}/artists/profile/`, async () => {
+    await delay(300);
+    const artistInfo = MOCK_ARTISTS_DETAILS[10];
+    return HttpResponse.json(
+      {
+        ...artistInfo,
+        email: mockUserProfile.email,
+        phone_number: mockUserProfile.phone_number,
+        avatar_url: artistInfo.image_url,
+      },
+      { status: 200 },
+    );
+  }),
+  
   http.get(`${baseURL}/artists/:id/`, async ({ params }) => {
     await delay(350);
     const id = Number(params.id);
@@ -37,20 +51,6 @@ export const artistsHandlers = [
     }
 
     return HttpResponse.json(artist, { status: 200 });
-  }),
-
-  http.get(`${baseURL}/artists/profile/`, async () => {
-    await delay(300);
-    const artistInfo = MOCK_ARTISTS_DETAILS[10];
-    return HttpResponse.json(
-      {
-        ...artistInfo,
-        email: mockUserProfile.email,
-        phone_number: mockUserProfile.phone_number,
-        avatar_url: artistInfo.image_url,
-      },
-      { status: 200 },
-    );
   }),
 
   http.get(`${baseURL}/artists/artworks/`, async () => {
