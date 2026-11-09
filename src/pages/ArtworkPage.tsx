@@ -140,14 +140,12 @@ export const ArtworkPage = () => {
         </div>
       </div>
 
-      {isAuthenticated && (
-        <ArtworkOrderForm
-          artwork={currentArtwork}
-          className={`
-            lg:max-w-[1440px] lg:mx-auto
-          `}
-        />
-      )}
+      <ArtworkOrderForm
+        artwork={currentArtwork}
+        className={`
+          lg:max-w-[1440px] lg:mx-auto
+        `}
+      />
     </div>
   );
 };
