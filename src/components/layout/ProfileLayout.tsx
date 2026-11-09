@@ -1,14 +1,13 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '@/store/useAuthStore';
-import { cn } from '@/utils/cn';
+import { useProfileStore } from '@/store/useProfileStore';
 
-import { ProfileNavigation } from '../features/Profile/ProfileNavigation';
-//! TODO: DELETE MOCKDATA import when backend is ready
-import {
-  MOCK_PROFILE_USER,
-  MOCK_USER_PROFILE,
-} from '@/mocks/data/profileMockData';
+import { ProfileNavigation } from '@/components/features/Profile/ProfileNavigation';
+import { Loader } from '@/components/ui/Loader';
+
+import { DEFAULT_AVATAR } from '@/constants/common';
+import { cn } from '@/utils/cn';
 
 // #region Constants & Styles
 const AVATAR_BASE = `
@@ -24,17 +23,16 @@ const AVATAR_CONTAINER = cn(
 
 export const ProfileLayout = () => {
   const navigate = useNavigate();
-  const authUser = useAuthStore((state) => state.user);
+
+  const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  //! TODO: DELETE MOCKDATA fallback when backend is ready
-  const user = authUser || MOCK_PROFILE_USER;
+  const profile = useProfileStore((state) => state.profile);
+  const isLoading = useProfileStore((state) => state.isLoading);
 
-  //! TODO: replace with data from GET /users/profile/ (useProfileStore)
-  const profile = MOCK_USER_PROFILE;
-
-  const firstName = profile.first_name || 'User';
-  const lastName = profile.last_name || 'Name';
+  const firstName = profile?.first_name || 'User';
+  const lastName = profile?.last_name || 'Name';
+  const avatar = profile?.avatar_url || DEFAULT_AVATAR;
 
   const handleLogout = () => {
     navigate('/', { replace: true });
@@ -66,18 +64,17 @@ export const ProfileLayout = () => {
               grid grid-cols-[1fr_auto_1fr] items-center gap-[12px] w-full max-w-[400px]
               text-[10px] font-[500] uppercase tracking-[1px]
               md:gap-[20px] md:text-[16px]
+              ${isLoading && !profile ? 'animate-pulse opacity-60' : ''}
             `}
           >
             <span className="text-right truncate">{firstName}</span>
 
             <div className={AVATAR_CONTAINER}>
-              {profile.avatar_url && (
-                <img
-                  src={profile.avatar_url}
-                  alt={`${firstName} ${lastName}`}
-                  className="w-full h-full object-cover"
-                />
-              )}
+              <img
+                src={avatar}
+                alt={`${firstName} ${lastName}`}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <span className="text-left truncate">{lastName}</span>
@@ -113,7 +110,11 @@ export const ProfileLayout = () => {
           `}
         >
           <ProfileNavigation />
-          <Outlet context={{ user, profile }} />
+          {isLoading && !profile ? (
+            <Loader text='Loading profile...'/>
+          ) : (
+            <Outlet context={{ user, profile }} />
+          )} 
         </div>
       </main>
     </div>
