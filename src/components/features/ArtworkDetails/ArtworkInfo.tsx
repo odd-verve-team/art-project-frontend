@@ -33,7 +33,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
     },
     {
       label: 'artist',
-      value: getFullName(artwork.artist.first_name, artwork.artist.last_name),
+      value: getFullName(artwork.artist?.first_name, artwork.artist?.last_name),
       className: 'font-[700] uppercase',
     },
   ];

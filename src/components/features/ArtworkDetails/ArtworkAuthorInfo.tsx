@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 
-import type { Artist } from '@/types/artwork';
+import type { Artist, ArtworkAuthorDetail } from '@/types/artwork';
 import { getFullName } from '@/utils/getFullName';
 
+import { DEFAULT_AVATAR } from '@/constants/common';
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
-const DEFAULT_AVATAR = 'https://res.cloudinary.com/mpczkqqv/image/upload/default_avatar.png';
 
 interface Props {
-  artist: Artist;
+  artist: Artist | ArtworkAuthorDetail;
   className?: string;
 }
 
@@ -16,31 +16,33 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
   const name = getFullName(artist.first_name, artist.last_name);
   const image = artist.avatar_url || DEFAULT_AVATAR;
   const isDefaultAvatar = image === DEFAULT_AVATAR;
+  const artistHref = artist.id ? `/artists/${artist.id}` : '#';
 
   //! TODO: bio and categories will come from the extended Artist type (artwork detail response)
-  const bio = '';
-  const categories = '';
+  const bio = 'bio' in artist ? artist.bio || '' : '';
+  const categories = 'art_categories' in artist && artist.art_categories
+    ? artist.art_categories.join(' / ')
+    : '';
 
-  // --- МОБІЛЬНА ВЕРСІЯ ---
   const mobileView = (
     <div className="flex flex-col">
-      <span 
+      <span
         className={`
           text-muted text-[12px] font-[300] uppercase
         `}
       >
         artist
       </span>
-      
+
       <div className="flex flex-col gap-[3px] mt-[16px]">
-        <span 
+        <span
           className={`
             text-primary text-[16px] font-[600] uppercase
           `}
         >
           {name}
         </span>
-        <span 
+        <span
           className={`
             text-muted text-[10px]/[20px] font-[500] 
             tracking-[1px] uppercase text-justify
@@ -51,10 +53,10 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
       </div>
 
       <Link
-        to={`/artists/${artist.id}`}
+        to={artistHref}
         className="group flex flex-col mt-[16px]"
       >
-        <div 
+        <div
           className={`
             w-[177px] h-[229px] mx-auto 
             overflow-hidden mb-[16px]
@@ -72,7 +74,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
         </div>
 
         <div className="flex gap-[16px] items-end">
-          <span 
+          <span
             className={`
               text-primary text-[16px]/[18px] font-[300] text-justify 
               line-clamp-2 grow transition-colors duration-300 group-hover:text-primary/70
@@ -93,7 +95,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
       </Link>
 
       <Link
-        to={`/artists/${artist.id}`}
+        to={artistHref}
         className="group flex items-center gap-[8px] mt-[24px] w-fit"
       >
         <img
@@ -102,7 +104,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
           aria-hidden="true"
           className="w-[24px] h-[24px] rounded-full object-cover"
         />
-        <span 
+        <span
           className={`
             text-primary text-[12px] font-[600] uppercase 
             transition-colors duration-300 group-hover:text-primary/70
@@ -116,13 +118,13 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
 
   const desktopView = (
     <>
-      <div 
+      <div
         className={`
           flex flex-col min-h-0 border-r border-primary 
           pt-[16px] p-[24px] lg:p-[min(3.33vw,48px)]
         `}
       >
-        <span 
+        <span
           className={`
             text-muted text-[16px] lg:text-[min(1.11vw,16px)] font-[300] uppercase mb-[16px]
           `}
@@ -132,19 +134,18 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
 
         {isDefaultAvatar ? (
           <div className="flex items-center ml-[24px] flex-1 border-primary">
-            <span 
+            <span
               className={`
                 text-primary text-[min(10.41vw,150px)] leading-[min(9.02vw,130px)] font-[600] uppercase
               `}
             >
-              art<br/>ist
+              art
+              <br />
+              ist
             </span>
           </div>
         ) : (
-          <Link
-            to={`/artists/${artist.id}`}
-            className="group flex flex-col flex-1 min-h-0"
-          >
+          <Link to={artistHref} className="group flex flex-col flex-1 min-h-0">
             <div className="w-full h-full border-primary overflow-hidden">
               <img
                 src={image}
@@ -160,7 +161,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
         )}
       </div>
 
-      <div 
+      <div
         className={`
           flex flex-col justify-between 
           px-[24px] pb-[24px] pt-[56px]
@@ -171,7 +172,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
           <span className="text-primary text-[24px] lg:text-[min(1.66vw,24px)] font-[600] uppercase">
             {name}
           </span>
-          <span 
+          <span
             className={`
               text-muted text-[12px]/[24px] lg:text-[min(0.83vw,12px)] lg:leading-[min(1.66vw,24px)] font-[500] 
               tracking-[1px] uppercase text-justify
@@ -182,11 +183,8 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
         </div>
 
         <div>
-          <Link
-            to={`/artists/${artist.id}`}
-            className="group flex flex-col"
-          >
-            <span 
+          <Link to={artistHref} className="group flex flex-col">
+            <span
               className={`
                 text-primary text-[18px]/[24px] lg:text-[min(1.25vw,18px)] lg:leading-[min(1.66vw,24px)] font-[300] text-justify 
                 line-clamp-3 mb-[24px] transition-colors duration-300 group-hover:text-primary/70
@@ -197,7 +195,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
           </Link>
 
           <Link
-            to={`/artists/${artist.id}`}
+            to={artistHref}
             className="group flex items-center gap-[8px] w-fit"
           >
             <img
@@ -206,7 +204,7 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
               aria-hidden="true"
               className="w-[24px] h-[24px] rounded-full object-cover"
             />
-            <span 
+            <span
               className={`
                 text-primary text-[12px] font-[600] uppercase 
                 transition-colors duration-300 group-hover:text-primary/70

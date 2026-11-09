@@ -1,18 +1,44 @@
 import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import type { Artwork } from '@/types/artwork';
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { useAuthStore } from '@/store/useAuthStore';
+
 import { getFullName } from '@/utils/getFullName';
+import type { Artwork } from '@/types/artwork';
+
+import { DEFAULT_AVATAR } from '@/constants/common';
 import HeartIcon from '@/assets/heart-icon.svg';
-import { Link } from 'react-router-dom';
+import HeartActiveIcon from '@/assets/heart-filled-icon.svg';
 
 export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const favoriteArtworkIds = useFavoritesStore((state) => state.favoriteArtworkIds);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const isFavorite = favoriteArtworkIds.has(artwork.id);
   const size = `${artwork.image_width} / ${artwork.image_height}`;
   const authorName = getFullName(
-    artwork.artist.first_name,
-    artwork.artist.last_name,
+    artwork.artist?.first_name,
+    artwork.artist?.last_name,
   );
+  const avatarUrl = artwork.artist?.avatar_url || DEFAULT_AVATAR;
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location.pathname } });
+      return;
+    }
+
+    toggleFavorite(artwork);
+  };
 
   return (
     <Link
@@ -44,8 +70,8 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
         <div className="w-full flex items-center justify-between pointer-events-auto">
           <div className="flex items-center gap-[8px] bg-white p-[8px]">
             <img
-              src={artwork.artist.avatar_url || undefined}
-              alt="Artist avatar"
+              src={avatarUrl}
+              alt={authorName}
               className="w-[24px] h-[24px] rounded-full object-cover"
             />
             <span
@@ -58,13 +84,10 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
           </div>
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-            }}
+            onClick={handleFavoriteClick}
             className="p-[5px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110"
           >
-            <img src={HeartIcon} alt="Add to favourite" />
+            <img src={isFavorite ? HeartActiveIcon : HeartIcon} alt="Add to favourite" />
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { http, HttpResponse, delay } from 'msw';
 import { MOCK_ARTWORKS } from '../data/artworksData';
-import type { ArtworksResponse } from '@/types/artwork';
+import { MOCK_ARTISTS_DETAILS } from '../data/artistsData';
+import type { ArtworksResponse, ArtworkDetail } from '@/types/artwork';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -38,7 +39,22 @@ export const artworksHandlers = [
       );
     }
 
-    return HttpResponse.json(artwork, { status: 200 });
+    const artistDetail = artwork.artist?.id
+      ? MOCK_ARTISTS_DETAILS[artwork.artist.id]
+      : undefined;
+
+    const detailedArtwork: ArtworkDetail = {
+      ...artwork,
+      artist: {
+        ...artwork.artist,
+        bio:
+          artistDetail?.bio ??
+          'Passionate visual artist exploring contemporary mediums and forms.',
+        art_categories: [artwork.category, 'modern'],
+      },
+    };
+
+    return HttpResponse.json(detailedArtwork, { status: 200 });
   }),
 
   http.get(`${baseURL}/artworks/`, async ({ request }) => {

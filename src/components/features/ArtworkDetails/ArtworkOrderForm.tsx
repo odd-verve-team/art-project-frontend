@@ -1,8 +1,12 @@
-import type { SyntheticEvent } from 'react';
+import { useState, type SyntheticEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import { cn } from '@/utils/cn';
+import { notificationsApi } from '@/services/api';
+import { useAuthStore } from '@/store/useAuthStore';
+
 import type { Artwork } from '@/types/artwork';
+import { cn } from '@/utils/cn';
 
 // #region Constants & Styles
 const FORM_FIELDS = [
@@ -30,18 +34,41 @@ interface Props {
 }
 
 export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const { id, title, image_url: image } = artwork;
 
-  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    formData.append('artwork_id', id.toString());
-    const data = Object.fromEntries(formData.entries());
-    const params = new URLSearchParams(
-      data as Record<string, string>,
-    ).toString();
-    window.open(`/fake-order?${params}`, '_blank');
-    e.currentTarget.reset();
+
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: `${location.pathname}#order-form` } });
+      return;
+    }
+
+    const form = e.currentTarget;
+    setIsSubmitting(true);
+    setIsSuccess(false);
+    setErrorMessage(null);
+
+    try {
+      await notificationsApi.buyArtwork(id);
+      setIsSuccess(true);
+      form.reset();
+    } catch (error) {
+      const message = error instanceof Error
+        ? error.message
+        : 'Failed to send purchase request'
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -106,6 +133,7 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
                   required={input.required}
                   placeholder={input.placeholder}
                   className={INPUT_CLASS}
+                  disabled={isSubmitting}
                 />
                 {input.required && (
                   <span className="absolute right-0 top-0 text-[24px]">*</span>
@@ -116,6 +144,7 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
               name="message"
               placeholder="message"
               className={TEXTAREA_CLASS}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -149,16 +178,32 @@ export const ArtworkOrderForm = ({ artwork, className = '' }: Props) => {
               </span>
             </div>
 
-            <button 
-              type="submit" 
-              className={`
-                w-full py-[10px] bg-primary text-background 
-                text-[16px] font-[500] uppercase tracking-[1px]
-                hover:opacity-80 transition-opacity duration-300 cursor-pointer
-              `}
-            >
-              send
-            </button>
+            <div className="flex flex-col gap-[10px] w-full">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`
+                  w-full py-[10px] bg-primary text-background 
+                  text-[16px] font-[500] uppercase tracking-[1px]
+                  hover:opacity-80 transition-opacity duration-300 cursor-pointer
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                `}
+              >
+                {isSubmitting ? 'sending...' : 'send'}
+              </button>
+
+              {isSuccess && (
+                <p className="text-[12px] uppercase tracking-wide font-[400] text-center">
+                  Request sent! The artist has been notified.
+                </p>
+              )}
+
+              {errorMessage && (
+                <p className="text-[12px] text-red-500 font-[400] text-center">
+                  {`${errorMessage}.`}
+                </p>
+              )}
+            </div>
           </div>
         </form>
       </div>

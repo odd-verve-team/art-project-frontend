@@ -1,6 +1,12 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+import { useAuthStore } from '@/store/useAuthStore';
+
 import type { Artwork } from '@/types/artwork';
 
 import HeartIcon from '@/assets/heart-icon.svg';
+import HeartActiveIcon from '@/assets/heart-filled-icon.svg';
 
 interface Props {
   artwork: Artwork;
@@ -8,10 +14,29 @@ interface Props {
 }
 
 export const ArtworkImage = ({ artwork, className = '' }: Props) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const favoriteArtworkIds = useFavoritesStore((state => state.favoriteArtworkIds));
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const isFavorite = favoriteArtworkIds.has(artwork.id);
   const { title, image_url } = artwork;
   const date = artwork.created_at
     ? new Date(artwork.created_at).toLocaleDateString('en-GB')
     : 'xx/xx/xxxx';
+  
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location.pathname } });
+    } else {
+      toggleFavorite(artwork);
+    }
+  }
 
   return (
     <section
@@ -55,13 +80,17 @@ export const ArtworkImage = ({ artwork, className = '' }: Props) => {
             lg:hidden
           `}
         >
-          <button type="button">
+          <button
+            type="button"
+            className='cursor-pointer'
+            onClick={handleFavoriteClick}
+          >
             <img
-              src={HeartIcon}
+              src={isFavorite ? HeartActiveIcon : HeartIcon}
               alt="Add to favorite"
               className={`
-                invert opacity-40 transition-opacity
-                hover:opacity-100
+                transition-transform duration-300 ease-in-out hover:scale-110
+                ${isFavorite ? '' : 'invert opacity-40 transition-opacity hover:opacity-100'}
               `}
             />
           </button>
