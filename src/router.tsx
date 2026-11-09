@@ -39,7 +39,7 @@ export const router = createBrowserRouter(
         <Route
           path="profile"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user', 'artist', 'admin']}>
               <ProfileLayout />
             </ProtectedRoute>
           }
@@ -48,14 +48,31 @@ export const router = createBrowserRouter(
           <Route path="settings" element={<ProfileSettings />} />
           <Route path="favorites" element={<ProfileFavorites />} />
           <Route path="notifications" element={<ProfileNotifications />} />
-          <Route path="arts" element={<ProfileMyArts />} />
-          <Route path="arts/new" element={<ProfileNewArt />} />
+
+          {/* Artist Only Routes */}
+          <Route
+            path="arts"
+            element={
+              <ProtectedRoute allowedRoles={['artist']}>
+                <ProfileMyArts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="arts/new"
+            element={
+              <ProtectedRoute allowedRoles={['artist']}>
+                <ProfileNewArt />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
+        {/* Admin Route */}
         <Route
           path="admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
               <AdminPage />
             </ProtectedRoute>
           }
