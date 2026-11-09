@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import type { Artist } from '@/types/artwork';
+import type { Artist, ArtworkAuthorDetail } from '@/types/artwork';
 import { getFullName } from '@/utils/getFullName';
 
 import { DEFAULT_AVATAR } from '@/constants/common';
@@ -8,7 +8,7 @@ import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 
 interface Props {
-  artist: Artist;
+  artist: Artist | ArtworkAuthorDetail;
   className?: string;
 }
 
@@ -19,8 +19,10 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
   const artistHref = artist.id ? `/artists/${artist.id}` : '#';
 
   //! TODO: bio and categories will come from the extended Artist type (artwork detail response)
-  const bio = '';
-  const categories = '';
+  const bio = 'bio' in artist ? artist.bio || '' : '';
+  const categories = 'art_categories' in artist && artist.art_categories
+    ? artist.art_categories.join(' / ')
+    : '';
 
   const mobileView = (
     <div className="flex flex-col">

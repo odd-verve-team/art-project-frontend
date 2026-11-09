@@ -2,14 +2,14 @@ import { create } from 'zustand';
 
 import { artworksApi, type GetArtworksParams } from '@/services/api';
 
-import type { Artwork, ArtworkSort, PaginationMeta } from '@/types/artwork';
+import type { Artwork, ArtworkDetail, ArtworkSort, PaginationMeta } from '@/types/artwork';
 import type { GalleryFilterState } from '@/types/gallery';
 import { DEFAULT_FILTERS } from '@/components/features/Gallery/galleryConstants';
 
 interface ArtworkState {
   galleryArtworks: Artwork[];
   featuredArtworks: Artwork[];
-  currentArtwork: Artwork | null;
+  currentArtwork: Artwork | ArtworkDetail | null;
   meta: PaginationMeta | null;
   filters: GalleryFilterState,
   sort?: ArtworkSort,
@@ -85,8 +85,7 @@ export const useArtworkStore = create<ArtworkState & ArtworkActions>((set, get) 
         state.featuredArtworks.find((art) => art.id === id);
       
       if (cachedArtwork) {
-        set({ currentArtwork: cachedArtwork, isLoading: false });
-        return;
+        set({ currentArtwork: cachedArtwork });
       }
 
       const artwork = await artworksApi.getById(id);
