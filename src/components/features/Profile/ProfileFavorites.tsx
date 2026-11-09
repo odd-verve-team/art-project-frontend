@@ -1,31 +1,25 @@
 import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import type { UserDetail } from '@/types/user';
-import { useArtworkStore } from '@/store/useArtworkStore';
-import { ArtworkGrid } from '../Artworks/ArtworkGrid';
+import { useFavoritesStore } from '@/store/useFavoritesStore';
+
 import { Loader } from '@/components/ui/Loader';
-//! TODO: DELETE MOCKDATA import when backend is ready
-import { MOCK_PROFILE_ARTWORKS } from '@/mocks/data/profileMockData';
+import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
+
+import type { UserDetail } from '@/types/user';
 
 export const ProfileFavorites = () => {
   const { user } = useOutletContext<{ user: UserDetail | null }>();
 
-  const featuredArtworks = useArtworkStore((state) => state.featuredArtworks);
-  const fetchArtworks = useArtworkStore((state) => state.fetchFeaturedArtworks);
-  const isLoading = useArtworkStore((state) => state.isLoading);
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const isLoading = useFavoritesStore((state) => state.isLoading);
+  const fetchFavorites = useFavoritesStore((state) => state.fetchFavorites);
 
-  //! TODO: replace with user.favorites endpoint in future
-  const favorites =
-    featuredArtworks.length > 0
-      ? featuredArtworks.slice(0, 5)
-      : MOCK_PROFILE_ARTWORKS;
+  const artworks = favorites.map((item) => item.artwork);
 
   useEffect(() => {
-    if (featuredArtworks.length === 0) {
-      fetchArtworks();
-    }
-  }, [featuredArtworks.length, fetchArtworks]);
+    fetchFavorites();
+  }, [fetchFavorites]);
 
   if (!user) return null;
 
@@ -34,7 +28,7 @@ export const ProfileFavorites = () => {
   if (isLoading) {
     content = (
       <div className="min-h-[100px] flex justify-center items-center">
-        <Loader text="Loading..." compact />
+        <Loader text="Loading favorites..." compact />
       </div>
     );
   } else if (favorites.length === 0) {
@@ -46,7 +40,7 @@ export const ProfileFavorites = () => {
       </div>
     );
   } else {
-    content = <ArtworkGrid artworks={favorites} />;
+    content = <ArtworkGrid artworks={artworks} />;
   }
 
   return (
