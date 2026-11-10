@@ -1,11 +1,13 @@
 import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 
-import { cn } from '@/utils/cn';
+import { notificationsApi } from '@/services/api';
+import { useAuthStore } from '@/store/useAuthStore';
 
 import type { UserDetail, UserProfile } from '@/types/user';
 import type { ArtworkCategory } from '@/types/artwork';
 import { CATEGORY_OPTIONS } from '../Gallery/galleryConstants';
+import { cn } from '@/utils/cn';
 
 import ImageIcon from '@/assets/image-icon.svg';
 import InstagramIcon from '@/assets/socials/instagram-icon.svg';
@@ -106,11 +108,18 @@ export const ProfileSettings = () => {
     user: UserDetail | null;
     profile: UserProfile;
   }>();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const [isArtistForm, setIsArtistForm] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<ArtworkCategory[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!user) return null;
+
+  const isArtist = user.role?.toLowerCase() === 'artist';
+  const isPending = user.application_status === 'pending';
+  const isRejected = user.application_status === 'rejected';
 
   const { avatar_url: image } = profile;
 
@@ -143,9 +152,35 @@ export const ProfileSettings = () => {
     target.style.height = `${target.scrollHeight}px`;
   };
 
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isArtistForm) {
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      try {
+        await notificationsApi.becomeArtist();
+        setUser({ ...user, application_status: 'pending' });
+        setIsArtistForm(false);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Failed to send become-artist request';
+        setSubmitError(message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   return (
     <section id="profile-settings">
-      <form className="border border-b-0 border-primary lg:border-none">
+      <form
+        onSubmit={handleSubmit}
+        className="border border-b-0 border-primary lg:border-none"
+      >
         <div className="flex flex-col gap-[32px] lg:gap-[40px]">
           <div
             className={`
@@ -250,7 +285,7 @@ export const ProfileSettings = () => {
             </div>
           </div>
 
-          {isArtistForm && (
+          {(isArtist || isArtistForm) && (
             <div className="flex flex-col gap-[24px] px-[8px] md:px-[24px] lg:px-0 lg:gap-[32px]">
               {ARTIST_TEXT_FIELDS.map((field) => (
                 <div key={field.name} className="flex flex-col gap-[12px]">
@@ -323,28 +358,54 @@ export const ProfileSettings = () => {
               lg:w-[320px] lg:ml-auto
             `}
           >
-            {!isArtistForm && (
-              <button
-                type="button"
-                onClick={() => setIsArtistForm(true)}
-                className={cn(
-                  ACTION_BUTTON_BASE,
-                  'text-[14px] font-[500] hover:opacity-70',
-                )}
-              >
-                To become an artist
-              </button>
-            )}
+            {!isArtist &&
+              (isPending ? (
+                <button
+                  type="button"
+                  disabled
+                  className={cn(
+                    ACTION_BUTTON_BASE,
+                    'text-[14px] font-[500] opacity-60 cursor-not-allowed',
+                  )}
+                >
+                  Application under review
+                </button>
+              ) : !isArtistForm ? (
+                <button
+                  type="button"
+                  onClick={() => setIsArtistForm(true)}
+                  className={cn(
+                    ACTION_BUTTON_BASE,
+                    'text-[14px] font-[500] hover:opacity-70',
+                  )}
+                >
+                  {isRejected
+                    ? 'Re-apply to become an artist'
+                    : 'To become an artist'}
+                </button>
+              ) : null)}
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className={cn(
                 ACTION_BUTTON_BASE,
                 'bg-primary text-background py-[10px] text-[16px] font-[600] hover:opacity-70',
+                isSubmitting && 'opacity-70 cursor-not-allowed',
               )}
             >
-              {isArtistForm ? 'Submit for approval' : 'Save'}
+              {isSubmitting
+                ? 'Submitting...'
+                : isArtistForm
+                  ? 'Submit for approval'
+                  : 'Save'}
             </button>
+
+            {submitError && (
+              <p className="text-red-500 text-[12px] text-center lg:text-right mt-[4px]">
+                {submitError}
+              </p>
+            )}
           </div>
         </div>
       </form>
