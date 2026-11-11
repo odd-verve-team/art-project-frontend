@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 
-import type { UserDetail, UserProfile } from '@/types/user';
-import type { Artwork } from '@/types/artwork';
-import { artworksApi } from '@/services/api';
+import { artistsApi } from '@/services/api'; 
 import { getFullName } from '@/utils/getFullName';
 
+import { Loader } from '@/components/ui/Loader';
 import { ProfileArtsGrid } from './ProfileArtsGrid';
-//! TODO: DELETE MOCKDATA import when backend is ready
-import { MOCK_PROFILE_ARTWORKS } from '@/mocks/data/profileMockData';
+
+import type { UserDetail, UserProfile } from '@/types/user';
+import type { ArtistArtworkListItem } from '@/types/artwork';
 
 export const ProfileMyArts = () => {
   const { user, profile } = useOutletContext<{
@@ -16,37 +16,42 @@ export const ProfileMyArts = () => {
     profile: UserProfile;
   }>();
 
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [artworks, setArtworks] = useState<ArtistArtworkListItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
 
-    const fetchUserArtworks = async () => {
-      setIsLoading(true);
-      try {
-        const response = await artworksApi.getAll({
-          status: 'pending,approved,sold,rejected',
-        });
+    let isCancelled = false;
 
-        setArtworks(
-          response.data.length > 0 ? response.data : MOCK_PROFILE_ARTWORKS,
-        );
-      } catch (error) {
-        console.warn(
-          'Failed to fetch user artworks, using MOCK_PROFILE_ARTWORKS:',
-          error,
-        );
-        //! TODO: DELETE MOCKDATA fallback when backend is ready
-        setArtworks(MOCK_PROFILE_ARTWORKS);
+    const fetchArtistArtworks = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await artistsApi.getArtworks();
+        if (!isCancelled) {
+          setArtworks(data);
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          const message =
+            err instanceof Error ? err.message : 'Failed to load artworks';
+          setError(message);
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
-    fetchUserArtworks();
+    fetchArtistArtworks();
 
-    //! TODO: implement AbortController or cleanup function to prevent race conditions later
+    return () => {
+      isCancelled = true;
+    };
   }, [user]);
 
   if (!user) return null;
@@ -68,7 +73,13 @@ export const ProfileMyArts = () => {
       </Link>
 
       {isLoading ? (
-        <p>Loading...</p>
+        <Loader text="Loading artworks..." />
+      ) : error ? (
+        <div className="border border-primary p-[24px] text-center lg:border-none">
+          <p className="text-red-500 text-[12px] uppercase font-[500] tracking-[1px]">
+            {error}
+          </p>
+        </div>
       ) : artworks.length > 0 ? (
         <ProfileArtsGrid
           artworks={artworks}

@@ -1,12 +1,12 @@
 import { ProfileArtCard } from '@/components/features/Profile/ProfileArtCard'
-import type { Artwork } from '@/types/artwork'
+import type { ArtistArtworkListItem } from '@/types/artwork';
 
 interface Props {
-  artworks: Artwork[];
+  artworks: ArtistArtworkListItem[];
   artistName: string;
 }
 
-const getSortedArtworks = (artworksList: Artwork[]) => {
+const getSortedArtworks = (artworksList: ArtistArtworkListItem[]) => {
   return [
     ...artworksList.filter((artwork) => artwork.status === 'approved'),
     ...artworksList.filter((artwork) => artwork.status === 'pending'),
