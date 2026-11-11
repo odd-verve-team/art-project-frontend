@@ -9,7 +9,7 @@ import ArrowIcon from '@/assets/social-arrow-icon.svg';
 // #region Constants & Styles
 const PROFILE_TABS = [
   { name: 'Favorites', href: '/profile/favorites' },
-  { name: 'My Arts', href: '/profile/arts' },
+  { name: 'My Arts', href: '/profile/arts', artistOnly: true },
   { name: 'Profile Settings', href: '/profile/settings' },
   { name: 'Preferences & Notifications', href: '/profile/notifications' },
 ];
@@ -36,8 +36,11 @@ export const ProfileNavigation = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const activeTab =
-    PROFILE_TABS.find((tab) => pathname.startsWith(tab.href)) || PROFILE_TABS[0];
+  const user = useAuthStore((state) => state.user);
+  const isArtist = user?.role?.toLowerCase() === 'artist';
+
+  const visibleTabs = PROFILE_TABS.filter((tab) => !tab.artistOnly || isArtist);
+  const activeTab = visibleTabs.find((tab) => pathname.startsWith(tab.href)) || visibleTabs[0];
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -124,7 +127,7 @@ export const ProfileNavigation = () => {
               `}
             >
               <div className="flex flex-col items-end gap-[16px] p-[16px]">
-                {PROFILE_TABS.map((tab) => {
+                {visibleTabs.map((tab) => {
                   const isActive = activeTab === tab;
                   return (
                     <Link
@@ -154,7 +157,7 @@ export const ProfileNavigation = () => {
       </div>
 
       <nav className="hidden lg:flex lg:items-center lg:justify-between">
-        {PROFILE_TABS.map((tab) => {
+        {visibleTabs.map((tab) => {
           const isActive = activeTab === tab;
           return (
             <Link
@@ -162,7 +165,7 @@ export const ProfileNavigation = () => {
               to={tab.href}
               className={cn(
                 TAB_LINK_BASE,
-                isActive && 'underline underline-offset-[4px]'
+                isActive && 'underline underline-offset-[4px]',
               )}
             >
               {tab.name}

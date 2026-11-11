@@ -1,7 +1,10 @@
-import { useState } from 'react';
-import { cn } from '@/utils/cn';
+import { useEffect, useState } from 'react';
+import { useNotificationsStore } from '@/store/useNotificationsStore';
+import { Loader } from '@/components/ui/Loader';
+
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
-import { MOCK_PROFILE_NOTIFICATIONS } from '@/mocks/data/profileMockData';
+import { formatDate } from '@/utils/formatDate';
+import { cn } from '@/utils/cn';
 
 // #region Constants & Styles
 const TEXT_BASE = 'font-[500] tracking-[1px] uppercase';
@@ -25,11 +28,90 @@ const CONTENT_CLASS = cn(
 // #endregion
 
 export const ProfileNotifications = () => {
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const toggleNotification = (id: number) => {
-    setExpandedId((prev) => (prev === id ? null : id));
+  const fetchNotifications = useNotificationsStore((state => state.fetchNotifications));
+  const notifications = useNotificationsStore((state => state.notifications));
+  const isLoading = useNotificationsStore((state) => state.isLoading);
+
+  const toggleNotification = (index: number) => {
+    setExpandedIndex((prev) => (prev === index ? null : index));
   };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  let content;
+
+  if (isLoading && notifications.length === 0) {
+    content = (
+      <div className="min-h-[100px] flex justify-center items-center">
+        <Loader text="Loading notifications..." compact />
+      </div>
+    );
+  } else if (notifications.length === 0) {
+    content = (
+      <div className="min-h-[100px] flex items-center justify-center text-center p-[24px]">
+        <p className="text-primary text-[12px] uppercase font-[500] tracking-[1px]">
+          You have no notifications yet
+        </p>
+      </div>
+    );
+  } else {
+    content = notifications.map((item, index) => {
+      const isOpen = expandedIndex === index;
+      const hasBorder = index !== notifications.length - 1;
+
+      return (
+        <div
+          key={`${item.created_at}-${index}`}
+          onClick={() => toggleNotification(index)}
+          className={`
+            flex flex-col items-start p-[8px_16px] cursor-pointer
+            lg:py-[16px] lg:px-[8px]
+            ${hasBorder ? 'border-b border-primary' : ''}
+          `}
+        >
+          <div
+            className={`
+              w-full flex flex-col items-start
+              md:flex-row md:items-center md:gap-[20px]
+              lg:gap-[24px]
+            `}
+          >
+            <span className={DATE_CLASS}>{formatDate(item.created_at)}</span>
+
+            <div className="w-full flex justify-between items-start gap-[8px] flex-1 min-w-0">
+              <div
+                className={`
+                  ${TITLE_CLASS}
+                  ${isOpen ? 'text-muted whitespace-normal' : 'text-primary truncate'}
+                `}
+              >
+                {item.title}
+              </div>
+
+              {item.message_body && (
+                <img
+                  src={ArrowIcon}
+                  aria-hidden="true"
+                  className={`
+                    w-[8px] h-[8px] mt-[8px] shrink-0 invert transition-transform duration-200
+                    ${isOpen ? 'rotate-135' : '-rotate-45'}
+                  `}
+                />
+              )}
+            </div>
+          </div>
+
+          {isOpen && item.message_body && (
+            <div className={CONTENT_CLASS}>{item.message_body}</div>
+          )}
+        </div>
+      );
+    });
+  }
 
   return (
     <section id="profile-notifications" className="mb-[32px] lg:mb-0">
@@ -40,58 +122,7 @@ export const ProfileNotifications = () => {
           lg:border-none lg:p-0
         `}
       >
-        {MOCK_PROFILE_NOTIFICATIONS.map((item, index) => {
-          const isOpen = expandedId === item.id;
-          const hasBorder = index !== MOCK_PROFILE_NOTIFICATIONS.length - 1;
-
-          return (
-            <div
-              key={item.id}
-              onClick={() => toggleNotification(item.id)}
-              className={`
-                flex flex-col items-start p-[8px_16px] cursor-pointer
-                lg:py-[16px] lg:px-[8px]
-                ${hasBorder ? 'border-b border-primary' : ''}
-              `}
-            >
-              <div
-                className={`
-                  w-full flex flex-col items-start
-                  md:flex-row md:items-center md:gap-[20px]
-                  lg:gap-[24px]
-                `}
-              >
-                <span className={DATE_CLASS}>{item.date}</span>
-
-                <div className="w-full flex justify-between items-start gap-[8px] flex-1 min-w-0">
-                  <div
-                    className={`
-                      ${TITLE_CLASS}
-                      ${isOpen ? 'text-muted whitespace-normal' : 'text-primary truncate'}
-                    `}
-                  >
-                    {item.title}
-                  </div>
-
-                  {item.content && (
-                    <img
-                      src={ArrowIcon}
-                      aria-hidden="true"
-                      className={`
-                        w-[8px] h-[8px] mt-[8px] shrink-0 invert transition-transform duration-200
-                        ${isOpen ? 'rotate-135' : '-rotate-45'}
-                      `}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {isOpen && item.content && (
-                <div className={CONTENT_CLASS}>{item.content}</div>
-              )}
-            </div>
-          );
-        })}
+        {content}
       </div>
     </section>
   );

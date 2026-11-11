@@ -1,11 +1,10 @@
-import { getArtworkStatusMeta } from "@/utils/getArtworkStatusMeta";
-import { cn } from "@/utils/cn";
-
-import type { Artwork } from "@/types/artwork";
+import { getArtworkStatusMeta } from '@/utils/getArtworkStatusMeta';
+import { cn } from '@/utils/cn';
+import type { ArtistArtworkListItem } from '@/types/artwork';
 
 interface Props {
-  artwork: Artwork,
-  artistName: string,
+  artwork: ArtistArtworkListItem;
+  artistName: string;
 }
 
 export const ProfileArtCard = ({ artwork, artistName }: Props) => {
@@ -16,11 +15,11 @@ export const ProfileArtCard = ({ artwork, artistName }: Props) => {
     medium,
     status,
     created_at,
-    image_width,
-    image_height,
+    painting_width,
+    painting_length,
   } = artwork;
 
-  const size = `${image_width}x${image_height} cm`;
+  const size = `${painting_width}x${painting_length} cm`;
   const date = created_at
     ? new Date(created_at).toLocaleDateString('en-GB')
     : 'xx/xx/xxxx';

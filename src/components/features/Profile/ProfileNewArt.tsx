@@ -1,6 +1,9 @@
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 
+import { artistsApi } from '@/services/api';
 import { cn } from '@/utils/cn';
+
 import { ProfileFormDropdown } from './ProfileFormDropdown';
 import { ProfileArtUploader } from './ProfileArtUploader';
 
@@ -51,22 +54,25 @@ export interface NewArtFormData {
 }
 
 export const ProfileNewArt = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     reset,
+    control,
     formState: { isValid },
   } = useForm<NewArtFormData>({
     mode: 'onChange',
   });
 
-  const titleValue = watch('title');
-  const selectedYear = watch('year');
-  const selectedMedium = watch('medium');
-  const selectedCategory = watch('category');
-  const currentImage = watch('image');
+  const titleValue = useWatch({ control, name: 'title' });
+  const selectedYear = useWatch({ control, name: 'year' });
+  const selectedMedium = useWatch({ control, name: 'medium' });
+  const selectedCategory = useWatch({ control, name: 'category' });
+  const currentImage = useWatch({ control, name: 'image' });
 
   const yearOptions = Array.from(
     { length: FILTER_LIMITS.MAX_YEAR - FILTER_LIMITS.MIN_YEAR + 1 },
@@ -76,21 +82,35 @@ export const ProfileNewArt = () => {
     },
   );
 
-  const onSubmit = (data: NewArtFormData) => {
-    console.log('Form successfully submitted!');
-    console.log('Data for backend:', {
-      title: data.title,
-      painting_width: data.painting_width,
-      painting_length: data.painting_length,
-      year: data.year,
-      medium: data.medium,
-      category: data.category,
-      description: data.description,
-      price: data.price,
-      image: data.image ? data.image[0] : null,
-    });
+  const onSubmit = async (data: NewArtFormData) => {
+    if (!data.image || data.image.length === 0) return;
 
-    reset();
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    const file = data.image[0];
+    const formData = new FormData();
+
+    formData.append('title', data.title);
+    formData.append('painting_width', String(data.painting_width));
+    formData.append('painting_length', String(data.painting_length));
+    formData.append('year', String(data.year));
+    formData.append('medium', data.medium);
+    formData.append('category', data.category);
+    formData.append('description', data.description);
+    formData.append('price', String(data.price));
+    formData.append('image', file);
+
+    try {
+      await artistsApi.createArtwork(formData);
+      reset();
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to create artwork';
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleTextareaKeyDown = (
@@ -138,8 +158,8 @@ export const ProfileNewArt = () => {
   const { onChange: descOnChange, ...descRegister } = register('description', {
     required: true,
   });
-  
-  const isFormReady = isValid && currentImage;
+
+  const isFormReady = isValid && currentImage && !isSubmitting;
 
   return (
     <form
@@ -158,9 +178,7 @@ export const ProfileNewArt = () => {
         `}
       >
         <div className={INPUT_GROUP}>
-          <label className={INPUT_LABEL}>
-            Name
-          </label>
+          <label className={INPUT_LABEL}>Name</label>
           <input
             type="text"
             placeholder="TITLE"
@@ -184,9 +202,7 @@ export const ProfileNewArt = () => {
         </div>
 
         <div className={INPUT_GROUP}>
-          <label className={INPUT_LABEL}>
-            Size
-          </label>
+          <label className={INPUT_LABEL}>Size</label>
 
           <div className="flex items-center justify-end gap-[6px] ml-[16px]">
             <input
@@ -248,9 +264,7 @@ export const ProfileNewArt = () => {
         />
 
         <div className="flex flex-col gap-[12px]">
-          <label className={INPUT_LABEL}>
-            Description
-          </label>
+          <label className={INPUT_LABEL}>Description</label>
           <textarea
             {...descRegister}
             onChange={(e) => {
@@ -273,9 +287,7 @@ export const ProfileNewArt = () => {
         </div>
 
         <div className={INPUT_GROUP}>
-          <label className={INPUT_LABEL}>
-            Price
-          </label>
+          <label className={INPUT_LABEL}>Price</label>
 
           <div className="flex flex-1 items-center justify-end ml-[16px] gap-[4px]">
             <input
@@ -326,11 +338,17 @@ export const ProfileNewArt = () => {
             `order-3 w-full mt-[16px] py-[14px] text-[14px] font-[500] tracking-[1px] uppercase transition-all duration-300 lg:order-none lg:mt-[32px]`,
             isFormReady
               ? 'bg-primary text-background cursor-pointer hover:opacity-80'
-              : 'bg-primary/50 text-background/80 cursor-not-allowed'
+              : 'bg-primary/50 text-background/80 cursor-not-allowed',
           )}
         >
-          Submit for approval
+          {isSubmitting ? 'Submitting...' : 'Submit for approval'}
         </button>
+
+        {submitError && (
+          <p className="order-4 mt-2 text-red-500 text-[12px] text-center uppercase tracking-[1px] lg:order-none">
+            {submitError}
+          </p>
+        )}
       </div>
     </form>
   );

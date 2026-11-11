@@ -1,11 +1,15 @@
 import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 
-import { cn } from '@/utils/cn';
+import { notificationsApi } from '@/services/api';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useProfileStore } from '@/store/useProfileStore';
 
-import type { UserDetail, UserProfile } from '@/types/user';
+import type { Address, UserDetail, UserProfile } from '@/types/user';
+import type { ArtistProfile, SocialMedia } from '@/types/artist';
 import type { ArtworkCategory } from '@/types/artwork';
 import { CATEGORY_OPTIONS } from '../Gallery/galleryConstants';
+import { cn } from '@/utils/cn';
 
 import ImageIcon from '@/assets/image-icon.svg';
 import InstagramIcon from '@/assets/socials/instagram-icon.svg';
@@ -53,7 +57,7 @@ const ADDRESS_FIELDS = [
 
 const ARTIST_TEXT_FIELDS = [
   {
-    name: 'about',
+    name: 'bio',
     label: 'about you',
     placeholder: 'tell us about yourself...',
   },
@@ -62,7 +66,11 @@ const ARTIST_TEXT_FIELDS = [
     label: 'your statement',
     placeholder: 'your artist statement...',
   },
-  { name: 'style', label: 'your style', placeholder: 'describe your style...' },
+  {
+    name: 'style',
+    label: 'your style',
+    placeholder: 'describe your style...'
+  },
 ];
 
 const SOCIAL_FIELDS = [
@@ -106,11 +114,22 @@ export const ProfileSettings = () => {
     user: UserDetail | null;
     profile: UserProfile;
   }>();
+  const setUser = useAuthStore((state) => state.setUser);
+  const updateProfile = useProfileStore((state) => state.updateProfile)
 
   const [isArtistForm, setIsArtistForm] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<ArtworkCategory[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   if (!user) return null;
+
+  const isArtist = user.role?.toLowerCase() === 'artist';
+  const isPending = user.application_status === 'pending';
+  const isRejected = user.application_status === 'rejected';
 
   const { avatar_url: image } = profile;
 
@@ -121,13 +140,7 @@ export const ProfileSettings = () => {
     phone_number: profile.phone_number,
   };
 
-  //! DELETE MOCKDATA in future
-  const mockAddressData: Record<string, string> = {
-    country: 'Ukraine',
-    city: 'Kyiv',
-    postal_code: '01001',
-  };
-  //! DELETE MOCKDATA in future
+  const artistProfile = isArtist ? (profile as ArtistProfile) : null;
 
   const handleCategoryToggle = (category: ArtworkCategory) => {
     setSelectedCategories((prev) =>
@@ -143,9 +156,96 @@ export const ProfileSettings = () => {
     target.style.height = `${target.scrollHeight}px`;
   };
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isArtistForm) {
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      try {
+        await notificationsApi.becomeArtist();
+        setUser({ ...user, application_status: 'pending' });
+        setIsArtistForm(false);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Failed to send become-artist request';
+        setSubmitError(message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      setIsSubmitting(true);
+      setSubmitError(null);
+      setIsSaved(false);
+
+      const formData = new FormData(e.currentTarget);
+      const dataToUpdate: Partial<UserProfile | ArtistProfile> = {
+        first_name: String(formData.get('first_name') || ''),
+        last_name: String(formData.get('last_name') || ''),
+        phone_number: String(formData.get('phone_number') || ''),
+        address: {
+          country: String(formData.get('country') || ''),
+          city: String(formData.get('city') || ''),
+          postal_code: String(formData.get('postal_code') || ''),
+        },
+        ...(isArtist && {
+          bio: String(formData.get('bio') || ''),
+          style: String(formData.get('style') || ''),
+          statement: String(formData.get('statement') || ''),
+          social_media: {
+            instagram: (formData.get('instagram') as string) || null,
+            telegram: (formData.get('telegram') as string) || null,
+            twitter: (formData.get('twitter') as string) || null,
+            facebook: (formData.get('facebook') as string) || null,
+          },
+        }),
+      };
+
+      if (avatarFile) {
+        (dataToUpdate).avatar = avatarFile;
+      }
+
+      try {
+        await updateProfile(dataToUpdate);
+        setIsSaved(true);
+        setTimeout(() => setIsSaved(false), 5000);
+
+        if (avatarPreview) {
+          URL.revokeObjectURL(avatarPreview);
+          setAvatarPreview(null);
+          setAvatarFile(null);
+        }
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Failed to update your profile';
+        setSubmitError(message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   return (
     <section id="profile-settings">
-      <form className="border border-b-0 border-primary lg:border-none">
+      <form
+        onSubmit={handleSubmit}
+        className="border border-b-0 border-primary lg:border-none"
+      >
         <div className="flex flex-col gap-[32px] lg:gap-[40px]">
           <div
             className={`
@@ -159,24 +259,41 @@ export const ProfileSettings = () => {
                 lg:order-2 lg:mt-0 lg:shrink-0
               `}
             >
-              <div
+              <label
                 className={`
-                  flex items-center justify-center
+                  relative flex items-center justify-center cursor-pointer group overflow-hidden
                   border border-primary p-[16px] w-[162px] h-[186px]
                   md:w-[220px] md:h-[250px] md:p-[20px]
                   lg:w-[320px] lg:h-[360px] lg:p-[24px]
                 `}
               >
-                {image ? (
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/webp"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+
+                {avatarPreview || image ? (
                   <img
-                    src={image}
+                    src={avatarPreview || image!}
                     alt="Profile Avatar"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-opacity group-hover:opacity-70"
                   />
                 ) : (
-                  <img src={ImageIcon} alt="No Avatar" />
+                  <img
+                    src={ImageIcon}
+                    alt="No Avatar"
+                    className="transition-opacity group-hover:opacity-70"
+                  />
                 )}
-              </div>
+
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-[12px] uppercase tracking-[1px] font-[500]">
+                    Change Photo
+                  </span>
+                </div>
+              </label>
             </div>
 
             <div
@@ -221,7 +338,8 @@ export const ProfileSettings = () => {
                 <span className={TEXT_BASE}>address</span>
                 <div className={BOX_CONTAINER_CLASS}>
                   {ADDRESS_FIELDS.map((field) => {
-                    const value = mockAddressData[field.name];
+                    const value =
+                      profile.address?.[field.name as keyof Address];
 
                     return (
                       <div
@@ -250,19 +368,25 @@ export const ProfileSettings = () => {
             </div>
           </div>
 
-          {isArtistForm && (
+          {(isArtist || isArtistForm) && (
             <div className="flex flex-col gap-[24px] px-[8px] md:px-[24px] lg:px-0 lg:gap-[32px]">
-              {ARTIST_TEXT_FIELDS.map((field) => (
-                <div key={field.name} className="flex flex-col gap-[12px]">
-                  <span className={TEXT_BASE}>{field.label}</span>
-                  <textarea
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    onInput={handleTextareaInput}
-                    className={TEXTAREA_CLASS}
-                  />
-                </div>
-              ))}
+              {ARTIST_TEXT_FIELDS.map((field) => {
+                const value =
+                  artistProfile?.[field.name as 'bio' | 'statement' | 'style'];
+
+                return (
+                  <div key={field.name} className="flex flex-col gap-[12px]">
+                    <span className={TEXT_BASE}>{field.label}</span>
+                    <textarea
+                      name={field.name}
+                      placeholder={field.placeholder}
+                      defaultValue={value || ''}
+                      onInput={handleTextareaInput}
+                      className={TEXTAREA_CLASS}
+                    />
+                  </div>
+                );
+              })}
 
               <div className="flex flex-col gap-[12px]">
                 <span className={TEXT_BASE}>category</span>
@@ -294,24 +418,32 @@ export const ProfileSettings = () => {
               <div className="flex flex-col gap-[16px] lg:max-w-[600px]">
                 <span className={TEXT_BASE}>social</span>
                 <div className="flex flex-col gap-[24px]">
-                  {SOCIAL_FIELDS.map((social) => (
-                    <div
-                      key={social.name}
-                      className="relative flex items-center w-full"
-                    >
-                      <input
-                        type="text"
-                        name={social.name}
-                        placeholder={social.placeholder}
-                        className={cn(INPUT_CLASS, 'pr-[28px]')}
-                      />
-                      <img
-                        src={social.icon}
-                        alt={social.name}
-                        className="absolute right-0 bottom-[6px] w-[16px] h-[16px] pointer-events-none"
-                      />
-                    </div>
-                  ))}
+                  {SOCIAL_FIELDS.map((social) => {
+                    const value =
+                      artistProfile?.social_media?.[
+                        social.name as keyof SocialMedia
+                      ];
+
+                    return (
+                      <div
+                        key={social.name}
+                        className="relative flex items-center w-full"
+                      >
+                        <input
+                          type="text"
+                          name={social.name}
+                          placeholder={social.placeholder}
+                          defaultValue={value || ''}
+                          className={cn(INPUT_CLASS, 'pr-[28px]')}
+                        />
+                        <img
+                          src={social.icon}
+                          alt={social.name}
+                          className="absolute right-0 bottom-[6px] w-[16px] h-[16px] pointer-events-none"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -323,28 +455,58 @@ export const ProfileSettings = () => {
               lg:w-[320px] lg:ml-auto
             `}
           >
-            {!isArtistForm && (
-              <button
-                type="button"
-                onClick={() => setIsArtistForm(true)}
-                className={cn(
-                  ACTION_BUTTON_BASE,
-                  'text-[14px] font-[500] hover:opacity-70',
-                )}
-              >
-                To become an artist
-              </button>
-            )}
+            {!isArtist &&
+              (isPending ? (
+                <button
+                  type="button"
+                  disabled
+                  className={cn(
+                    ACTION_BUTTON_BASE,
+                    'text-[14px] font-[500] opacity-60 cursor-not-allowed',
+                  )}
+                >
+                  Application under review
+                </button>
+              ) : !isArtistForm ? (
+                <button
+                  type="button"
+                  onClick={() => setIsArtistForm(true)}
+                  className={cn(
+                    ACTION_BUTTON_BASE,
+                    'text-[14px] font-[500] hover:opacity-70',
+                  )}
+                >
+                  {isRejected
+                    ? 'Re-apply to become an artist'
+                    : 'To become an artist'}
+                </button>
+              ) : null)}
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className={cn(
                 ACTION_BUTTON_BASE,
                 'bg-primary text-background py-[10px] text-[16px] font-[600] hover:opacity-70',
+                isSubmitting && 'opacity-70 cursor-not-allowed',
               )}
             >
-              {isArtistForm ? 'Submit for approval' : 'Save'}
+              {isSubmitting
+                ? isArtistForm
+                  ? 'Submitting...'
+                  : 'Saving...'
+                : isSaved
+                  ? 'Saved!'
+                  : isArtistForm
+                    ? 'Submit for approval'
+                    : 'Save'}
             </button>
+
+            {submitError && (
+              <p className="text-red-500 text-[12px] text-center lg:text-right mt-[4px]">
+                {submitError}
+              </p>
+            )}
           </div>
         </div>
       </form>

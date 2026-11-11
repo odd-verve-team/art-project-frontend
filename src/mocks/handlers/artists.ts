@@ -37,20 +37,23 @@ export const artistsHandlers = [
       { status: 200 },
     );
   }),
-  
-  http.get(`${baseURL}/artists/:id/`, async ({ params }) => {
-    await delay(350);
-    const id = Number(params.id);
-    const artist = MOCK_ARTISTS_DETAILS[id];
 
-    if (!artist) {
-      return HttpResponse.json(
-        { message: 'Artist not found' },
-        { status: 404 },
-      );
-    }
+  http.patch(`${baseURL}/artists/profile/`, async ({ request }) => {
+    await delay(400);
+    const body = (await request.json()) as Record<string, unknown>;
 
-    return HttpResponse.json(artist, { status: 200 });
+    const artistInfo = MOCK_ARTISTS_DETAILS[10];
+
+    const currentProfile = {
+      ...artistInfo,
+      email: mockUserProfile.email,
+      phone_number: mockUserProfile.phone_number,
+      avatar_url: artistInfo.image_url,
+    };
+
+    const updated = { ...currentProfile, ...body };
+
+    return HttpResponse.json(updated, { status: 200 });
   }),
 
   http.get(`${baseURL}/artists/artworks/`, async () => {
@@ -105,5 +108,20 @@ export const artistsHandlers = [
       { message: 'Artwork deleted successfully' },
       { status: 200 },
     );
+  }),
+
+  http.get(`${baseURL}/artists/:id/`, async ({ params }) => {
+    await delay(350);
+    const id = Number(params.id);
+    const artist = MOCK_ARTISTS_DETAILS[id];
+
+    if (!artist) {
+      return HttpResponse.json(
+        { message: 'Artist not found' },
+        { status: 404 },
+      );
+    }
+
+    return HttpResponse.json(artist, { status: 200 });
   }),
 ];

@@ -12,6 +12,18 @@ export interface PublicAddress {
   city: string;
 }
 
+export interface ArtistArtworkMin {
+  id: number;
+  image_url: string;
+  image_width: number | string;
+  image_length: number | string;
+  artist: {
+    first_name: string | null;
+    last_name: string | null;
+    avatar_url: string | null;
+  };
+}
+
 // GET /artists/{id}/
 export interface ArtistDetail {
   id: number;
@@ -23,7 +35,7 @@ export interface ArtistDetail {
   image_url: string | null;
   address: PublicAddress;
   social_media: SocialMedia;
-  artworks: number[];
+  artworks: ArtistArtworkMin[];
 }
 
 // GET/PUT/PATCH /artists/profile/

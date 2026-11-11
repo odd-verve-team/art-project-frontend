@@ -23,4 +23,5 @@ export interface UserProfile {
   phone_number: string | null;
   avatar_url: string | null;
   address?: Address;
+  avatar?: File;
 }
