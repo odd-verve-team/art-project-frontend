@@ -122,6 +122,8 @@ export const ProfileSettings = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   if (!user) return null;
 
@@ -152,6 +154,16 @@ export const ProfileSettings = () => {
     const target = e.currentTarget;
     target.style.height = 'auto';
     target.style.height = `${target.scrollHeight}px`;
+  };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -202,10 +214,20 @@ export const ProfileSettings = () => {
         }),
       };
 
+      if (avatarFile) {
+        (dataToUpdate).avatar = avatarFile;
+      }
+
       try {
         await updateProfile(dataToUpdate);
         setIsSaved(true);
         setTimeout(() => setIsSaved(false), 5000);
+
+        if (avatarPreview) {
+          URL.revokeObjectURL(avatarPreview);
+          setAvatarPreview(null);
+          setAvatarFile(null);
+        }
       } catch (error) {
         const message =
           error instanceof Error
@@ -237,24 +259,41 @@ export const ProfileSettings = () => {
                 lg:order-2 lg:mt-0 lg:shrink-0
               `}
             >
-              <div
+              <label
                 className={`
-                  flex items-center justify-center
+                  relative flex items-center justify-center cursor-pointer group overflow-hidden
                   border border-primary p-[16px] w-[162px] h-[186px]
                   md:w-[220px] md:h-[250px] md:p-[20px]
                   lg:w-[320px] lg:h-[360px] lg:p-[24px]
                 `}
               >
-                {image ? (
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/webp"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+
+                {avatarPreview || image ? (
                   <img
-                    src={image}
+                    src={avatarPreview || image!}
                     alt="Profile Avatar"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-opacity group-hover:opacity-70"
                   />
                 ) : (
-                  <img src={ImageIcon} alt="No Avatar" />
+                  <img
+                    src={ImageIcon}
+                    alt="No Avatar"
+                    className="transition-opacity group-hover:opacity-70"
+                  />
                 )}
-              </div>
+
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-[12px] uppercase tracking-[1px] font-[500]">
+                    Change Photo
+                  </span>
+                </div>
+              </label>
             </div>
 
             <div
@@ -453,7 +492,9 @@ export const ProfileSettings = () => {
               )}
             >
               {isSubmitting
-                ? isArtistForm ? 'Submitting...' : 'Saving...'
+                ? isArtistForm
+                  ? 'Submitting...'
+                  : 'Saving...'
                 : isSaved
                   ? 'Saved!'
                   : isArtistForm
