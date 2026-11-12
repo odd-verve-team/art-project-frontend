@@ -1,9 +1,23 @@
+import { useState } from 'react';
+
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
-import { GalleryToolbar } from '@/components/features/Gallery/GalleryToolbar';
+import { SearchBar } from '@/components/features/Search/SearchBar';
 
 import { MOCK_ARTWORKS } from '@/mocks/data/artworksData';
 
 export const SearchPage = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const trimmedQuery = searchQuery.trim().toLowerCase();
+
+  const matchedArtworks = trimmedQuery
+    ? MOCK_ARTWORKS.filter((art) =>
+        art.title.toLowerCase().includes(trimmedQuery),
+      ).slice(0, 4)
+    : [];
+
+  const displayedArtworks = trimmedQuery ? matchedArtworks : MOCK_ARTWORKS;
+
   return (
     <div>
       <div className="bg-primary text-background px-global">
@@ -18,6 +32,12 @@ export const SearchPage = () => {
           >
             search
           </h2>
+
+          <SearchBar
+            query={searchQuery}
+            onQueryChange={setSearchQuery}
+            results={matchedArtworks}
+          />
         </div>
       </div>
 
@@ -30,8 +50,6 @@ export const SearchPage = () => {
               lg:my-[32px] lg:p-[32px]
             `}
           >
-            <GalleryToolbar />
-
             <div
               className={`
                 bg-background md:bg-transparent
@@ -39,7 +57,18 @@ export const SearchPage = () => {
                 md:border-none md:p-0
               `}
             >
-              <ArtworkGrid artworks={MOCK_ARTWORKS} />
+              {displayedArtworks.length > 0 ? (
+                <ArtworkGrid artworks={displayedArtworks} />
+              ) : (
+                <div className="flex flex-col items-center justify-center py-[80px] md:py-[120px] text-center text-primary select-none">
+                  <span className="text-[20px] md:text-[28px] font-[200] uppercase tracking-[1px]">
+                    No artworks found
+                  </span>
+                  <span className="text-[12px] md:text-[14px] font-[300] mt-[12px] opacity-60">
+                    Try adjusting your search query to discover more works.
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
