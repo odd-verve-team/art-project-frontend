@@ -12,6 +12,7 @@ import { HomePage } from '@/pages/HomePage';
 import { GalleryPage } from '@/pages/GalleryPage';
 import { ArtworkPage } from '@/pages/ArtworkPage';
 import { ArtistProfilePage } from '@/pages/ArtistProfilePage';
+import { SearchPage } from '@/pages/SearchPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { AdminPage } from '@/pages/AdminPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -34,6 +35,7 @@ export const router = createBrowserRouter(
         <Route path="gallery" element={<GalleryPage />} />
         <Route path="gallery/:id" element={<ArtworkPage />} />
         <Route path="artists/:id" element={<ArtistProfilePage />} />
+        <Route path="search" element={<SearchPage />} />
 
         {/* Protected Profile & Admin Routes */}
         <Route
