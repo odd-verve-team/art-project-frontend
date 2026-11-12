@@ -1,12 +1,19 @@
-import ArtistBio from "@/components/features/ArtistProfile/ArtistBio";
-import ArtistContactInfo from "@/components/features/ArtistProfile/ArtistContactInfo";
-import ArtistStatement from "@/components/features/ArtistProfile/ArtistStatement";
-import ArtistStyle from "@/components/features/ArtistProfile/ArtistStyle";
-import ArtistPortrait from "@/components/features/ArtistProfile/ArtistPortrait";
-import type { ArtistDetail } from "@/types/artist";
-import type { Artwork } from "@/types/artwork";
+import { ArtistPortrait } from '@/components/features/ArtistProfile/ArtistPortrait';
+import { ArtistContactInfo } from '@/components/features/ArtistProfile/ArtistContactInfo';
+import { ArtistBio } from '@/components/features/ArtistProfile/ArtistBio';
+import { ArtistStyle } from '@/components/features/ArtistProfile/ArtistStyle';
+import { ArtistStatement } from '@/components/features/ArtistProfile/ArtistStatement';
+import { ArtistArtworks } from '@/components/features/ArtistProfile/ArtistArtworks';
+import { BackButton } from '@/components/ui/BackButton';
 
-export interface ArtistPageData extends Omit<ArtistDetail, "artworks"> {
+import { getFullName } from '@/utils/getFullName';
+import { MOCK_ARTWORKS } from '@/mocks/data/artworksData';
+import type { ArtistDetail } from '@/types/artist';
+import type { Artwork } from '@/types/artwork';
+
+import Slide03 from '@/assets/hero-slider/slide-03.webp';
+
+export interface ArtistPageData extends Omit<ArtistDetail, 'artworks'> {
   email?: string;
   created_at?: string;
   art_categories?: string[];
@@ -14,59 +21,149 @@ export interface ArtistPageData extends Omit<ArtistDetail, "artworks"> {
 }
 
 const MOCK_ARTIST: ArtistPageData = {
-  id: 1,
-  username: "Toy Failor",
-  avatar:
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1000&auto=format&fit=crop&q=80",
-  country: "Athens, Greece",
-  email: "studio@toyfailor.com",
-  created_at: "2024-03-15T10:00:00Z",
-  bio: "Toy Failor is a contemporary artist working across figurative painting and conceptual landscapes. His practice explores the tension between stillness and movement, memory and place, through carefully composed scenes that invite quiet reflection.",
+  id: 10,
+  first_name: 'Toy',
+  last_name: 'Failor',
+  bio: 'Toy Failor is a contemporary artist working across figurative painting and conceptual landscapes. His practice explores the tension between stillness and movement, memory and place, through carefully composed scenes that invite quiet reflection.',
   style:
     "Toy Failor's work sits between contemporary impressionism and figurative landscape. He uses oil on canvas to build layered atmospheres, blending expressive brushwork with subtle narrative elements.",
-  artistic_statement:
-    "My work is about the quiet moments we often overlook — a shadow on a hill, a figure in the distance, a tree that remembers more than we do. I paint to hold onto those moments.",
+  statement:
+    'My work is about the quiet moments we often overlook — a shadow on a hill, a figure in the distance, a tree that remembers more than we do. I paint to hold onto those moments.',
+  image_url: Slide03,
+  email: 'studio@toyfailor.com',
+  created_at: '2026-12-23T12:00:00Z',
   art_categories: [
-    "FIGURATIVE",
-    "LANDSCAPE",
-    "NARRATIVE",
-    "CONTEMPORARY IMPRESSIONISM",
+    'figurative',
+    'landscape',
+    'narrative',
+    'contemporary impressionism',
   ],
-  social_media: {
-    instagram: "https://www.instagram.com/nike/",
-    twitter: "https://x.com/Nike",
-    telegram: "https://t.me/nikeuzb",
-    facebook: "https://www.facebook.com/nike/?locale=pl_PL",
+  address: {
+    country: 'Greece',
+    city: 'Athens',
   },
-  artworks: [],
+  social_media: {
+    instagram: 'https://www.instagram.com/nike/',
+    twitter: 'https://x.com/Nike',
+    telegram: 'https://t.me/nikeuzb',
+    facebook: 'https://www.facebook.com/nike/?locale=pl_PL',
+  },
+  artworks: MOCK_ARTWORKS.slice(0, 9),
 };
 
-export default function ArtistProfilePage() {
+export const ArtistProfilePage = () => {
+  const fullName = getFullName(MOCK_ARTIST.first_name, MOCK_ARTIST.last_name);
+
   return (
-    <div className="bg-main text-primary border-primary mx-auto max-w-[1440px] border-t px-[8px] md:px-[24px] lg:border-b lg:px-[32px]">
-      <div className="lg:border-primary flex flex-col lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:border-x lg:border-b">
-        <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-stretch">
-          <ArtistPortrait artist={MOCK_ARTIST} />
+    <div
+      className={`
+        relative px-global min-h-[calc(100svh-var(--header-height))]
+      `}
+    >
+      <div
+        className={`
+          border-b-[1px] border-primary -mx-global px-global
+          mt-[65px] mb-[0px]
+          lg:mt-[80px] lg:mb-[0px]
+        `}
+      >
+        <div className="relative w-full max-w-[1440px] mx-auto">
+          <BackButton
+            className={`
+              hidden md:flex absolute
+              left-0 w-[16px] h-[16px] -top-[24px]
+              lg:w-[24px] lg:h-[24px] lg:-top-[32px]
+            `}
+          />
+          <h2
+            className={`
+              font-[500] text-[52px] text-center uppercase
+              lg:text-[min(6.25vw,90px)] lg:leading-[min(6.94vw,100px)]
+            `}
+          >
+            {fullName}
+          </h2>
+        </div>
+      </div>
+
+      <div
+        className={`
+          flex flex-col
+          lg:grid lg:grid-cols-[2fr_1fr] lg:max-w-[1440px] lg:mx-auto
+          lg:border-x lg:border-b lg:border-primary lg:mb-[48px]
+        `}
+      >
+        <div
+          className={`
+            contents
+            lg:flex lg:flex-col
+          `}
+        >
+          <ArtistPortrait
+            artist={MOCK_ARTIST}
+            className={`
+              order-1 h-[420px]
+              lg:order-none lg:h-[min(52.08vw,750px)]
+            `}
+          />
+
+          <ArtistArtworks
+            artworks={MOCK_ARTIST.artworks}
+            variant="desktop-left"
+          />
         </div>
 
-        <div className="lg:border-primary contents lg:col-start-2 lg:row-start-1 lg:-ml-[1px] lg:flex lg:flex-col lg:border-l">
-          <div className="order-2 lg:order-1">
-            <ArtistBio artist={MOCK_ARTIST} />
+        <ArtistArtworks
+          artworks={MOCK_ARTIST.artworks}
+          variant="mobile"
+          className="order-4"
+        />
+
+        <div
+          className={`
+            contents
+            lg:flex lg:flex-col
+          `}
+        >
+          <div
+            className={`
+              contents
+              lg:flex lg:flex-col lg:border-l lg:border-primary lg:-ml-[1px]
+            `}
+          >
+            <ArtistBio
+              artist={MOCK_ARTIST}
+              className="order-3 lg:order-none"
+            />
+            <ArtistContactInfo
+              artist={MOCK_ARTIST}
+              className="order-2 lg:order-none"
+            />
+            <ArtistStyle
+              artist={MOCK_ARTIST}
+              className="order-5 lg:order-none"
+            />
+            <ArtistStatement
+              artist={MOCK_ARTIST}
+              className="order-6 lg:order-none"
+            />
           </div>
 
-          <div className="order-3 lg:order-2">
-            <ArtistContactInfo artist={MOCK_ARTIST} />
-          </div>
-
-          <div className="order-5 lg:order-3">
-            <ArtistStyle artist={MOCK_ARTIST} />
-          </div>
-
-          <div className="order-6 lg:order-4">
-            <ArtistStatement artist={MOCK_ARTIST} />
-          </div>
+          <ArtistArtworks
+            artworks={MOCK_ARTIST.artworks}
+            variant="desktop-right"
+          />
         </div>
+
+        <div
+          aria-hidden="true"
+          className={`
+            order-7 h-[24px] border-x border-primary
+            md:h-[32px]
+            lg:hidden
+          `}
+        />
       </div>
     </div>
   );
-}
+};
