@@ -1,3 +1,4 @@
+import ArtistContactInfo from "@/components/features/ArtistProfile/ArtistContactInfo";
 import ArtistPortrait from "@/components/features/ArtistProfile/ArtistPortrait";
 import type { ArtistDetail } from "@/types/artist";
 import type { Artwork } from "@/types/artwork";
@@ -43,6 +44,12 @@ export default function ArtistProfilePage() {
       <div className="lg:border-primary flex flex-col lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:border-x lg:border-b">
         <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-stretch">
           <ArtistPortrait artist={MOCK_ARTIST} />
+        </div>
+
+        <div className="contents lg:col-start-2 lg:row-start-1 lg:flex lg:flex-col">
+          <div className="order-3 lg:order-2">
+            <ArtistContactInfo artist={MOCK_ARTIST} />
+          </div>
         </div>
       </div>
     </div>
