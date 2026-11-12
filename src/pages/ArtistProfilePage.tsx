@@ -1,4 +1,7 @@
+import ArtistBio from "@/components/features/ArtistProfile/ArtistBio";
 import ArtistContactInfo from "@/components/features/ArtistProfile/ArtistContactInfo";
+import ArtistStatement from "@/components/features/ArtistProfile/ArtistStatement";
+import ArtistStyle from "@/components/features/ArtistProfile/ArtistStyle";
 import ArtistPortrait from "@/components/features/ArtistProfile/ArtistPortrait";
 import type { ArtistDetail } from "@/types/artist";
 import type { Artwork } from "@/types/artwork";
@@ -46,9 +49,21 @@ export default function ArtistProfilePage() {
           <ArtistPortrait artist={MOCK_ARTIST} />
         </div>
 
-        <div className="contents lg:col-start-2 lg:row-start-1 lg:flex lg:flex-col">
+        <div className="lg:border-primary contents lg:col-start-2 lg:row-start-1 lg:-ml-[1px] lg:flex lg:flex-col lg:border-l">
+          <div className="order-2 lg:order-1">
+            <ArtistBio artist={MOCK_ARTIST} />
+          </div>
+
           <div className="order-3 lg:order-2">
             <ArtistContactInfo artist={MOCK_ARTIST} />
+          </div>
+
+          <div className="order-5 lg:order-3">
+            <ArtistStyle artist={MOCK_ARTIST} />
+          </div>
+
+          <div className="order-6 lg:order-4">
+            <ArtistStatement artist={MOCK_ARTIST} />
           </div>
         </div>
       </div>
