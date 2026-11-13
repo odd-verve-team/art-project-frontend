@@ -3,9 +3,10 @@ import { useMemo } from 'react';
 import { ArtworkCard } from '@/components/features/Artworks/ArtworkCard';
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
 import type { Artwork } from '@/types/artwork';
+import type { ArtistArtworkMin } from '@/types/artist';
 
 interface Props {
-  artworks: Artwork[];
+  artworks: (Artwork | ArtistArtworkMin)[];
   variant: 'mobile' | 'desktop-left' | 'desktop-right';
   className?: string;
 }
@@ -15,10 +16,10 @@ export const ArtistArtworks = ({
   variant,
   className = '',
 }: Props) => {
-  const desktopColumns: Artwork[][] = useMemo(() => {
+  const desktopColumns: (Artwork | ArtistArtworkMin)[][] = useMemo(() => {
     if (!Array.isArray(artworks)) return [[], [], []];
 
-    const columnWrappers: Artwork[][] = [[], [], []];
+    const columnWrappers: (Artwork | ArtistArtworkMin)[][] = [[], [], []];
     const columnHeights: number[] = [0, 0, 1];
 
     artworks.forEach((art) => {

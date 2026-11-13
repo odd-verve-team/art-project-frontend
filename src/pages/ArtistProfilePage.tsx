@@ -7,49 +7,10 @@ import { ArtistArtworks } from '@/components/features/ArtistProfile/ArtistArtwor
 import { BackButton } from '@/components/ui/BackButton';
 
 import { getFullName } from '@/utils/getFullName';
-import { MOCK_ARTWORKS } from '@/mocks/data/artworksData';
-import type { ArtistDetail } from '@/types/artist';
-import type { Artwork } from '@/types/artwork';
 
-import Slide03 from '@/assets/hero-slider/slide-03.webp';
+import { MOCK_ARTISTS_DETAILS } from '@/mocks/data/artistsData';
 
-export interface ArtistPageData extends Omit<ArtistDetail, 'artworks'> {
-  email?: string;
-  created_at?: string;
-  art_categories?: string[];
-  artworks: Artwork[];
-}
-
-const MOCK_ARTIST: ArtistPageData = {
-  id: 10,
-  first_name: 'Toy',
-  last_name: 'Failor',
-  bio: 'Toy Failor is a contemporary artist working across figurative painting and conceptual landscapes. His practice explores the tension between stillness and movement, memory and place, through carefully composed scenes that invite quiet reflection.',
-  style:
-    "Toy Failor's work sits between contemporary impressionism and figurative landscape. He uses oil on canvas to build layered atmospheres, blending expressive brushwork with subtle narrative elements.",
-  statement:
-    'My work is about the quiet moments we often overlook — a shadow on a hill, a figure in the distance, a tree that remembers more than we do. I paint to hold onto those moments.',
-  image_url: Slide03,
-  email: 'studio@toyfailor.com',
-  created_at: '2026-12-23T12:00:00Z',
-  art_categories: [
-    'figurative',
-    'landscape',
-    'narrative',
-    'contemporary impressionism',
-  ],
-  address: {
-    country: 'Greece',
-    city: 'Athens',
-  },
-  social_media: {
-    instagram: 'https://www.instagram.com/nike/',
-    twitter: 'https://x.com/Nike',
-    telegram: 'https://t.me/nikeuzb',
-    facebook: 'https://www.facebook.com/nike/?locale=pl_PL',
-  },
-  artworks: MOCK_ARTWORKS.slice(0, 9),
-};
+const MOCK_ARTIST = MOCK_ARTISTS_DETAILS[10];
 
 export const ArtistProfilePage = () => {
   const fullName = getFullName(MOCK_ARTIST.first_name, MOCK_ARTIST.last_name);

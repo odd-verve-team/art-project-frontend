@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import type { ArtistPageData } from '@/pages/ArtistProfilePage';
+import type { ArtistDetail } from '@/types/artist';
 import { cn } from '@/utils/cn';
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 interface Props {
-  artist: ArtistPageData;
+  artist: ArtistDetail;
   className?: string;
 }
 

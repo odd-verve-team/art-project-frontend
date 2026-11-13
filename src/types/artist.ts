@@ -35,6 +35,9 @@ export interface ArtistDetail {
   style: string | null;
   statement: string | null;
   image_url: string | null;
+  email?: string;
+  created_at?: string;
+  art_categories?: string[];
   address: PublicAddress;
   social_media: SocialMedia;
   artworks: ArtistArtworkMin[];

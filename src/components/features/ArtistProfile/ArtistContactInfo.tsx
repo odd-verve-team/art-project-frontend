@@ -1,5 +1,4 @@
-import type { ArtistPageData } from '@/pages/ArtistProfilePage';
-import type { SocialMedia } from '@/types/artist';
+import type { ArtistDetail, SocialMedia } from '@/types/artist';
 
 import InstagramIcon from '@/assets/socials/instagram-icon.svg';
 import TwitterIcon from '@/assets/socials/twitter-icon.svg';
@@ -20,7 +19,7 @@ const getSocialUsername = (url: string) => {
 };
 
 interface Props {
-  artist: ArtistPageData;
+  artist: ArtistDetail;
   className?: string;
 }
 
