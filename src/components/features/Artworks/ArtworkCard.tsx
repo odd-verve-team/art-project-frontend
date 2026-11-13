@@ -6,12 +6,13 @@ import { useAuthStore } from '@/store/useAuthStore';
 
 import { getFullName } from '@/utils/getFullName';
 import type { Artwork } from '@/types/artwork';
+import type { ArtistArtworkMin } from '@/types/artist';
 
 import { DEFAULT_AVATAR } from '@/constants/common';
 import HeartIcon from '@/assets/heart-icon.svg';
 import HeartActiveIcon from '@/assets/heart-filled-icon.svg';
 
-export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
+export const ArtworkCard = ({ artwork }: { artwork: Artwork | ArtistArtworkMin }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,7 +38,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
       return;
     }
 
-    toggleFavorite(artwork);
+    toggleFavorite(artwork as Artwork);
   };
 
   return (
@@ -48,7 +49,7 @@ export const ArtworkCard = ({ artwork }: { artwork: Artwork }) => {
     >
       <img
         src={artwork.image_url}
-        alt={artwork.title}
+        alt={artwork.title || authorName}
         onLoad={() => setIsLoaded(true)}
         className={`
           absolute inset-0 w-full h-full object-cover border-[1px] border-primary transition-opacity duration-700 ease-in-out

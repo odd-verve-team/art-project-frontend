@@ -45,7 +45,7 @@ export interface NewArtFormData {
   image: FileList | null;
   title: string;
   painting_width: number;
-  painting_length: number;
+  painting_height: number;
   year: number;
   medium: string;
   category: string;
@@ -93,7 +93,7 @@ export const ProfileNewArt = () => {
 
     formData.append('title', data.title);
     formData.append('painting_width', String(data.painting_width));
-    formData.append('painting_length', String(data.painting_length));
+    formData.append('painting_height', String(data.painting_height));
     formData.append('year', String(data.year));
     formData.append('medium', data.medium);
     formData.append('category', data.category);
@@ -146,8 +146,8 @@ export const ProfileNewArt = () => {
     },
   );
 
-  const { onChange: lengthOnChange, ...lengthRegister } = register(
-    'painting_length',
+  const { onChange: heightOnChange, ...heightRegister } = register(
+    'painting_height',
     {
       required: true,
       setValueAs: (v) =>
@@ -222,11 +222,11 @@ export const ProfileNewArt = () => {
               type="text"
               inputMode="numeric"
               maxLength={4}
-              {...lengthRegister}
+              {...heightRegister}
               onKeyDown={handleInputKeyDown}
               onChange={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, '');
-                lengthOnChange(e);
+                heightOnChange(e);
               }}
               className={NUMBER_INPUT}
             />

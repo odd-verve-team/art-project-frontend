@@ -1,5 +1,4 @@
-import type { ArtistPageData } from '@/pages/ArtistProfilePage';
-import type { SocialMedia } from '@/types/artist';
+import type { ArtistDetail, SocialMedia } from '@/types/artist';
 
 import InstagramIcon from '@/assets/socials/instagram-icon.svg';
 import TwitterIcon from '@/assets/socials/twitter-icon.svg';
@@ -20,13 +19,13 @@ const getSocialUsername = (url: string) => {
 };
 
 interface Props {
-  artist: ArtistPageData;
+  artist: ArtistDetail;
   className?: string;
 }
 
 export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
   const { address, email, social_media } = artist;
-  const location = `${address.city}, ${address.country}`;
+  const location = [address?.city, address?.country].filter(Boolean).join(', ') || '—';
 
   return (
     <section
@@ -72,7 +71,12 @@ export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
               >
                 email
               </span>
-              <span className="truncate">{email}</span>
+              <a
+                href={`mailto:${email}`}
+                className="truncate transition-opacity duration-300 hover:opacity-50"
+              >
+                {email}
+              </a>
             </div>
           )}
         </div>
@@ -104,12 +108,12 @@ export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
 
           <div
             className={`
-              flex flex-col gap-[10px]
+              flex flex-col gap-[10px] min-w-0
               lg:gap-[min(0.83vw,12px)]
             `}
           >
             {SOCIAL_ITEMS.map((item) => {
-              const url = social_media[item.key];
+              const url = social_media?.[item.key];
               if (!url) return null;
 
               return (
@@ -119,7 +123,7 @@ export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`
-                    flex items-center gap-[8px] w-fit
+                    flex items-center gap-[8px] w-fit max-w-full
                     hover:opacity-70 transition-opacity duration-300
                     lg:gap-[min(0.69vw,10px)]
                   `}
@@ -132,7 +136,7 @@ export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
                       lg:w-[min(1.11vw,16px)] lg:h-[min(1.11vw,16px)]
                     `}
                   />
-                  <span>{getSocialUsername(url)}</span>
+                  <span className="truncate">{getSocialUsername(url)}</span>
                 </a>
               );
             })}

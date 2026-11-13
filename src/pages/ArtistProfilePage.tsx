@@ -1,3 +1,11 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { artistsApi } from '@/services/api';
+import { getFullName } from '@/utils/getFullName';
+
+import type { ArtistDetail } from '@/types/artist';
+
 import { ArtistPortrait } from '@/components/features/ArtistProfile/ArtistPortrait';
 import { ArtistContactInfo } from '@/components/features/ArtistProfile/ArtistContactInfo';
 import { ArtistBio } from '@/components/features/ArtistProfile/ArtistBio';
@@ -5,54 +13,81 @@ import { ArtistStyle } from '@/components/features/ArtistProfile/ArtistStyle';
 import { ArtistStatement } from '@/components/features/ArtistProfile/ArtistStatement';
 import { ArtistArtworks } from '@/components/features/ArtistProfile/ArtistArtworks';
 import { BackButton } from '@/components/ui/BackButton';
-
-import { getFullName } from '@/utils/getFullName';
-import { MOCK_ARTWORKS } from '@/mocks/data/artworksData';
-import type { ArtistDetail } from '@/types/artist';
-import type { Artwork } from '@/types/artwork';
-
-import Slide03 from '@/assets/hero-slider/slide-03.webp';
-
-export interface ArtistPageData extends Omit<ArtistDetail, 'artworks'> {
-  email?: string;
-  created_at?: string;
-  art_categories?: string[];
-  artworks: Artwork[];
-}
-
-const MOCK_ARTIST: ArtistPageData = {
-  id: 10,
-  first_name: 'Toy',
-  last_name: 'Failor',
-  bio: 'Toy Failor is a contemporary artist working across figurative painting and conceptual landscapes. His practice explores the tension between stillness and movement, memory and place, through carefully composed scenes that invite quiet reflection.',
-  style:
-    "Toy Failor's work sits between contemporary impressionism and figurative landscape. He uses oil on canvas to build layered atmospheres, blending expressive brushwork with subtle narrative elements.",
-  statement:
-    'My work is about the quiet moments we often overlook — a shadow on a hill, a figure in the distance, a tree that remembers more than we do. I paint to hold onto those moments.',
-  image_url: Slide03,
-  email: 'studio@toyfailor.com',
-  created_at: '2026-12-23T12:00:00Z',
-  art_categories: [
-    'figurative',
-    'landscape',
-    'narrative',
-    'contemporary impressionism',
-  ],
-  address: {
-    country: 'Greece',
-    city: 'Athens',
-  },
-  social_media: {
-    instagram: 'https://www.instagram.com/nike/',
-    twitter: 'https://x.com/Nike',
-    telegram: 'https://t.me/nikeuzb',
-    facebook: 'https://www.facebook.com/nike/?locale=pl_PL',
-  },
-  artworks: MOCK_ARTWORKS.slice(0, 9),
-};
+import { Loader } from '@/components/ui/Loader';
 
 export const ArtistProfilePage = () => {
-  const fullName = getFullName(MOCK_ARTIST.first_name, MOCK_ARTIST.last_name);
+  const { id } = useParams<{ id: string }>();
+  
+  const [artist, setArtist] = useState<ArtistDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const artistId = Number(id);
+  const isValidId = Boolean(id) && !Number.isNaN(artistId) && artistId > 0;
+
+  useEffect(() => {
+    if (!isValidId) return;
+
+    let isCancelled = false;
+
+    const fetchArtistProfile = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await artistsApi.getArtistById(artistId);
+        if (!isCancelled) {
+          setArtist(response);
+        }
+      } catch {
+        if (!isCancelled) {
+          setArtist(null);
+          setError('Failed to load artist profile');
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchArtistProfile();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [artistId, isValidId]);
+
+  if (!isValidId) {
+    return (
+      <div className="px-global min-h-[calc(100svh-var(--header-height))] flex flex-col items-center justify-center text-center gap-[24px]">
+        <p className="text-[20px] md:text-[28px] font-[200] uppercase tracking-[1px] text-primary">
+          Invalid artist ID
+        </p>
+        <BackButton className="w-[36px] h-[36px] p-[8px] md:w-[48px] md:h-[48px] md:p-[12px]" />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="px-global min-h-[calc(100svh-var(--header-height))] flex flex-col items-center justify-center">
+        <Loader text='Loading artist profile...'/>
+      </div>
+    )
+  }
+
+  if (error || !artist) {
+    return (
+      <div className="px-global min-h-[calc(100svh-var(--header-height))] flex flex-col items-center justify-center text-center gap-[24px]">
+        <p className="text-[20px] md:text-[28px] font-[200] uppercase tracking-[1px] text-primary">
+          {error || 'Artist not found'}
+        </p>
+        <BackButton className="w-[36px] h-[36px] p-[8px] md:w-[48px] md:h-[48px] md:p-[12px]" />
+      </div>
+    );
+  }
+
+  const fullName = getFullName(artist.first_name, artist.last_name);
 
   return (
     <div
@@ -100,7 +135,7 @@ export const ArtistProfilePage = () => {
           `}
         >
           <ArtistPortrait
-            artist={MOCK_ARTIST}
+            artist={artist}
             className={`
               order-1 h-[420px]
               lg:order-none lg:h-[min(52.08vw,750px)]
@@ -108,13 +143,13 @@ export const ArtistProfilePage = () => {
           />
 
           <ArtistArtworks
-            artworks={MOCK_ARTIST.artworks}
+            artworks={artist.artworks}
             variant="desktop-left"
           />
         </div>
 
         <ArtistArtworks
-          artworks={MOCK_ARTIST.artworks}
+          artworks={artist.artworks}
           variant="mobile"
           className="order-4"
         />
@@ -132,25 +167,25 @@ export const ArtistProfilePage = () => {
             `}
           >
             <ArtistBio
-              artist={MOCK_ARTIST}
+              artist={artist}
               className="order-3 lg:order-none"
             />
             <ArtistContactInfo
-              artist={MOCK_ARTIST}
+              artist={artist}
               className="order-2 lg:order-none"
             />
             <ArtistStyle
-              artist={MOCK_ARTIST}
+              artist={artist}
               className="order-5 lg:order-none"
             />
             <ArtistStatement
-              artist={MOCK_ARTIST}
+              artist={artist}
               className="order-6 lg:order-none"
             />
           </div>
 
           <ArtistArtworks
-            artworks={MOCK_ARTIST.artworks}
+            artworks={artist.artworks}
             variant="desktop-right"
           />
         </div>

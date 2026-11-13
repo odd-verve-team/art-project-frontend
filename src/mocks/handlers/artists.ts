@@ -4,7 +4,7 @@ import {
   updateMockUserProfile,
   MOCK_ARTISTS_DETAILS,
 } from '../data/artistsData';
-import { MOCK_PROFILE_ARTWORKS } from '../data/profileMockData';
+import { MOCK_PROFILE_ARTWORKS } from '../data/profileData';
 import type { Artwork } from '@/types/artwork';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || '';
@@ -70,7 +70,7 @@ export const artistsHandlers = [
       price: '1000.00',
       category: 'landscape',
       medium: 'oil',
-      painting_length: 50,
+      painting_height: 50,
       painting_width: 50,
       image_width: 1000,
       image_height: 1000,

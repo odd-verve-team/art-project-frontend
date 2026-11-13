@@ -50,7 +50,10 @@ export const artworksHandlers = [
         bio:
           artistDetail?.bio ??
           'Passionate visual artist exploring contemporary mediums and forms.',
-        art_categories: [artwork.category, 'modern'],
+        art_categories: artistDetail?.art_categories ?? [
+          artwork.category,
+          'modern',
+        ],
       },
     };
 

@@ -16,10 +16,10 @@ export const ProfileArtCard = ({ artwork, artistName }: Props) => {
     status,
     created_at,
     painting_width,
-    painting_length,
+    painting_height,
   } = artwork;
 
-  const size = `${painting_width}x${painting_length} cm`;
+  const size = `${painting_width}x${painting_height} cm`;
   const date = created_at
     ? new Date(created_at).toLocaleDateString('en-GB')
     : 'xx/xx/xxxx';

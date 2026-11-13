@@ -1,9 +1,9 @@
-import type { ArtistPageData } from '@/pages/ArtistProfilePage';
 import { getFullName } from '@/utils/getFullName';
 import { DEFAULT_AVATAR } from '@/constants/common';
+import type { ArtistDetail } from '@/types/artist';
 
 interface Props {
-  artist: ArtistPageData;
+  artist: ArtistDetail;
   className?: string;
 }
 

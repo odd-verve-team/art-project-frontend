@@ -14,10 +14,12 @@ export interface PublicAddress {
 
 export interface ArtistArtworkMin {
   id: number;
+  title?: string;
   image_url: string;
-  image_width: number | string;
-  image_length: number | string;
+  image_width: number;
+  image_height: number;
   artist: {
+    id?: number;
     first_name: string | null;
     last_name: string | null;
     avatar_url: string | null;
@@ -33,6 +35,9 @@ export interface ArtistDetail {
   style: string | null;
   statement: string | null;
   image_url: string | null;
+  email?: string;
+  created_at?: string;
+  art_categories?: string[];
   address: PublicAddress;
   social_media: SocialMedia;
   artworks: ArtistArtworkMin[];

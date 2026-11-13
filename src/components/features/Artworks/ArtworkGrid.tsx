@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import type { ArtistArtworkMin } from '@/types/artist';
 import type { Artwork } from '@/types/artwork';
 import { ArtworkCard } from './ArtworkCard';
 
@@ -7,7 +8,7 @@ const getColumnsCount = () => {
   return window.innerWidth >= 1024 ? 3 : 2;
 };
 
-export const ArtworkGrid = ({ artworks }: { artworks: Artwork[] }) => {
+export const ArtworkGrid = ({ artworks }: { artworks: (Artwork | ArtistArtworkMin)[] }) => {
   const [columnsCount, setColumnsCount] = useState<number>(getColumnsCount);
 
   useEffect(() => {
@@ -22,10 +23,10 @@ export const ArtworkGrid = ({ artworks }: { artworks: Artwork[] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, [columnsCount]);
 
-  const columns: Artwork[][] = useMemo(() => {
+  const columns: (Artwork | ArtistArtworkMin)[][] = useMemo(() => {
     if (!Array.isArray(artworks)) return [];
 
-    const columnWrappers: Artwork[][] = Array.from(
+    const columnWrappers: (Artwork | ArtistArtworkMin)[][] = Array.from(
       { length: columnsCount },
       () => [],
     );
