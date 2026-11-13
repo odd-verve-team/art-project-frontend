@@ -1,22 +1,78 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { artworksApi } from '@/services/api';
+import { useArtworkStore } from '@/store/useArtworkStore';
+import { useDebounce } from '@/hooks/useDebounce';
 
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
 import { SearchBar } from '@/components/features/Search/SearchBar';
+import { Loader } from '@/components/ui/Loader';
 
-import { MOCK_ARTWORKS } from '@/mocks/data/artworksData';
+import type { Artwork } from '@/types/artwork';
 
 export const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Artwork[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const galleryArtworks = useArtworkStore((state) => state.galleryArtworks);
+  const fetchGalleryArtworks = useArtworkStore((state) => state.fetchGalleryArtworks);
+  const isGalleryLoading = useArtworkStore((state) => state.isLoading);
 
   const trimmedQuery = searchQuery.trim().toLowerCase();
+  const debouncedQuery = useDebounce(trimmedQuery, 300);
 
-  const matchedArtworks = trimmedQuery
-    ? MOCK_ARTWORKS.filter((art) =>
-        art.title.toLowerCase().includes(trimmedQuery),
-      ).slice(0, 4)
-    : [];
+  const handleQueryChange = (value: string) => {
+    setSearchQuery(value);
 
-  const displayedArtworks = trimmedQuery ? matchedArtworks : MOCK_ARTWORKS;
+    if (!value.trim()) {
+      setSearchResults([]);
+      setIsSearching(false);
+    }
+  };
+
+  useEffect(() => {
+    if (galleryArtworks.length === 0) {
+      fetchGalleryArtworks();
+    }
+  }, [galleryArtworks.length, fetchGalleryArtworks]);
+
+  useEffect(() => {
+    if (!debouncedQuery) return;
+
+    let isCancelled = false;
+
+    const fetchSearchResults = async () => {
+      setIsSearching(true);
+      try {
+        const response = await artworksApi.search(debouncedQuery);
+        if (!isCancelled) {
+          setSearchResults(response);
+        }
+      } catch {
+        if (!isCancelled) {
+          setSearchResults([]);
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsSearching(false);
+        }
+      }
+    };
+
+    fetchSearchResults();
+    
+    return () => {
+      isCancelled = true
+    };
+  }, [debouncedQuery]);
+
+  const hasQuery = Boolean(trimmedQuery);
+  const isSearchPending = isSearching || trimmedQuery !== debouncedQuery;
+  const displayedArtworks = hasQuery ? searchResults : galleryArtworks;
+  const isGridLoading = hasQuery
+    ? isSearchPending
+    : isGalleryLoading && galleryArtworks.length === 0;
 
   return (
     <div>
@@ -35,8 +91,9 @@ export const SearchPage = () => {
 
           <SearchBar
             query={searchQuery}
-            onQueryChange={setSearchQuery}
-            results={matchedArtworks}
+            onQueryChange={handleQueryChange}
+            results={searchResults}
+            isLoading={isSearchPending}
           />
         </div>
       </div>
@@ -57,7 +114,9 @@ export const SearchPage = () => {
                 md:border-none md:p-0
               `}
             >
-              {displayedArtworks.length > 0 ? (
+              {isGridLoading ? (
+                <Loader text="Searching artworks..." />
+              ) : displayedArtworks.length > 0 ? (
                 <ArtworkGrid artworks={displayedArtworks} />
               ) : (
                 <div className="flex flex-col items-center justify-center py-[80px] md:py-[120px] text-center text-primary select-none">
