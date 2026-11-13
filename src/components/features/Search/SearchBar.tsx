@@ -9,9 +9,10 @@ interface Props {
   query: string;
   onQueryChange: (value: string) => void;
   results: Artwork[];
+  isLoading?: boolean;
 }
 
-export const SearchBar = ({ query, onQueryChange, results }: Props) => {
+export const SearchBar = ({ query, onQueryChange, results, isLoading = false }: Props) => {
   const hasQuery = Boolean(query.trim());
 
   return (
@@ -54,7 +55,17 @@ export const SearchBar = ({ query, onQueryChange, results }: Props) => {
       >
         {hasQuery && (
           <div className="flex flex-col px-[12px] md:px-[24px]">
-            {results.length > 0 ? (
+            {isLoading ? (
+              <div
+                className={`
+                  py-[10px] border-b border-muted/50
+                  text-muted text-[14px] font-[300]
+                  md:py-[12px] md:text-[16px]
+                `}
+              >
+                Searching...
+              </div>
+            ) : results.length > 0 ? (
               results.map((artwork) => {
                 const authorName = getFullName(
                   artwork.artist?.first_name,
@@ -66,11 +77,11 @@ export const SearchBar = ({ query, onQueryChange, results }: Props) => {
                     key={artwork.id}
                     to={`/gallery/${artwork.id}`}
                     className={`
-                      py-[10px] border-b border-muted/50
-                      text-background/80 text-[14px] font-[300]
-                      hover:text-background transition-colors duration-300
-                      md:py-[12px] md:text-[16px]
-                    `}
+                    py-[10px] border-b border-muted/50
+                    text-background/80 text-[14px] font-[300]
+                    hover:text-background transition-colors duration-300
+                    md:py-[12px] md:text-[16px]
+                  `}
                   >
                     {`${artwork.title} — ${authorName}`}
                   </Link>
