@@ -17,7 +17,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 80,
     image_height: 80,
     painting_width: 80,
-    painting_length: 80,
+    painting_height: 80,
     price: '1200.00',
     artist: {
       id: 10,
@@ -40,7 +40,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 90,
     image_height: 110,
     painting_width: 90,
-    painting_length: 110,
+    painting_height: 110,
     price: '950.00',
     artist: {
       id: 11,
@@ -63,7 +63,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 60,
     image_height: 80,
     painting_width: 60,
-    painting_length: 80,
+    painting_height: 80,
     price: '1100.00',
     artist: {
       id: 10,
@@ -86,7 +86,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 70,
     image_height: 90,
     painting_width: 70,
-    painting_length: 90,
+    painting_height: 90,
     price: '1450.00',
     artist: {
       id: 12,
@@ -109,7 +109,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 80,
     image_height: 100,
     painting_width: 80,
-    painting_length: 100,
+    painting_height: 100,
     price: '800.00',
     artist: {
       id: 13,
@@ -133,7 +133,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 100,
     image_height: 80,
     painting_width: 100,
-    painting_length: 80,
+    painting_height: 80,
     price: '2100.00',
     artist: {
       id: 14,
@@ -156,7 +156,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 95,
     image_height: 75,
     painting_width: 95,
-    painting_length: 75,
+    painting_height: 75,
     price: '1750.00',
     artist: {
       id: 11,
@@ -179,7 +179,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 100,
     image_height: 70,
     painting_width: 100,
-    painting_length: 70,
+    painting_height: 70,
     price: '1600.00',
     artist: {
       id: 10,
@@ -203,7 +203,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 65,
     image_height: 85,
     painting_width: 65,
-    painting_length: 85,
+    painting_height: 85,
     price: '1300.00',
     artist: {
       id: 12,
@@ -226,7 +226,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 75,
     image_height: 75,
     painting_width: 75,
-    painting_length: 75,
+    painting_height: 75,
     price: '890.00',
     artist: {
       id: 13,
@@ -250,7 +250,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 110,
     image_height: 90,
     painting_width: 110,
-    painting_length: 90,
+    painting_height: 90,
     price: '1950.00',
     artist: {
       id: 14,
@@ -273,7 +273,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 85,
     image_height: 105,
     painting_width: 85,
-    painting_length: 105,
+    painting_height: 105,
     price: '2400.00',
     artist: {
       id: 15,
@@ -297,7 +297,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 120,
     image_height: 80,
     painting_width: 120,
-    painting_length: 80,
+    painting_height: 80,
     price: '3100.00',
     artist: {
       id: 15,
@@ -320,7 +320,7 @@ export const MOCK_ARTWORKS: Artwork[] = [
     image_width: 70,
     image_height: 95,
     painting_width: 70,
-    painting_length: 95,
+    painting_height: 95,
     price: '1420.00',
     artist: {
       id: 10,

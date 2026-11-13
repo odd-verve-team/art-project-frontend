@@ -14,7 +14,7 @@ export const ArtworkInfo = ({ artwork, className = '' }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const size = `${artwork.painting_length}x${artwork.painting_width} cm`;
+  const size = `${artwork.painting_width}x${artwork.painting_height} cm`;
   const price = Number(artwork.price).toLocaleString('de-DE');
 
   const specs = [

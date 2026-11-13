@@ -70,7 +70,7 @@ export const artistsHandlers = [
       price: '1000.00',
       category: 'landscape',
       medium: 'oil',
-      painting_length: 50,
+      painting_height: 50,
       painting_width: 50,
       image_width: 1000,
       image_height: 1000,

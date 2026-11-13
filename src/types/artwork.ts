@@ -44,8 +44,8 @@ export interface Artwork {
   artist: Artist;
   description: string;
   category: ArtworkCategory;
-  painting_length: number;
   painting_width: number;
+  painting_height: number;
   status: ArtworkStatus;
   is_featured: boolean;
   created_at: string;
@@ -65,8 +65,8 @@ export interface ArtworkDetail extends Omit<Artwork, 'artist'> {
 export interface ArtistArtworkListItem {
   id: number;
   title: string;
-  painting_length: number;
   painting_width: number;
+  painting_height: number;
   year: number;
   medium: ArtworkMedium;
   status: ArtworkStatus;
@@ -88,8 +88,8 @@ export interface ArtworksResponse {
 
 export interface CreateArtworkRequest {
   title: string;
-  painting_length: number;
   painting_width: number;
+  painting_height: number;
   year: number;
   medium: ArtworkMedium;
   category: ArtworkCategory;
