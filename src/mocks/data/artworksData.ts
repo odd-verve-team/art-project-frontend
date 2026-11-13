@@ -23,7 +23,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 10,
       first_name: 'Mary',
       last_name: 'Jayn',
-      avatar_url: Slide03,
+      avatar_url:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
     },
     description: 'An exploration of quiet contemplation on a sunlit hill.',
     category: 'landscape',
@@ -46,7 +47,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 11,
       first_name: 'Arthur',
       last_name: 'Pendleton',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Sharp angles converging into calm neutral tones.',
     category: 'cubism',
@@ -69,7 +71,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 10,
       first_name: 'Mary',
       last_name: 'Jayn',
-      avatar_url: Slide03,
+      avatar_url:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Expressive charcoal and graphite portrait study.',
     category: 'portrait',
@@ -92,7 +95,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 12,
       first_name: 'Elena',
       last_name: 'Rostova',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1546689241-ba21ab8c5d2e?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Warm coastal horizon with delicate light textures.',
     category: 'impressionism',
@@ -115,7 +119,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 13,
       first_name: 'Danylo',
       last_name: 'Kravets',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1509635214689-98ef31ec7e82?auto=format&fit=crop&w=600&q=80',
     },
     description:
       'Graphic study of movement and dynamic shadows across city streets.',
@@ -139,7 +144,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 14,
       first_name: 'Sophia',
       last_name: 'Vane',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1417436026361-a033044d901f?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Experimental mixed media exploring post-modern identity.',
     category: 'abstractionism',
@@ -162,7 +168,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 11,
       first_name: 'Arthur',
       last_name: 'Pendleton',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Surrealist reflections on memory and fragmented moments.',
     category: 'surrealism',
@@ -185,7 +192,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 10,
       first_name: 'Mary',
       last_name: 'Jayn',
-      avatar_url: Slide03,
+      avatar_url:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
     },
     description:
       'Abstract composition balancing warm ochre and cool blue planes.',
@@ -209,7 +217,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 12,
       first_name: 'Elena',
       last_name: 'Rostova',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1546689241-ba21ab8c5d2e?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Romantic still life study bathed in amber sunset glow.',
     category: 'still_life',
@@ -232,7 +241,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 13,
       first_name: 'Danylo',
       last_name: 'Kravets',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1509635214689-98ef31ec7e82?auto=format&fit=crop&w=600&q=80',
     },
     description:
       'Monochrome lithography depicting organic forms under tension.',
@@ -256,7 +266,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 14,
       first_name: 'Sophia',
       last_name: 'Vane',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1417436026361-a033044d901f?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Lyrical watercolor portrait evoking floral metamorphosis.',
     category: 'romanticism',
@@ -303,7 +314,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 15,
       first_name: 'Taras',
       last_name: 'Melnyk',
-      avatar_url: null,
+      avatar_url:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Expansive seascape capturing the solitude of dawn.',
     category: 'landscape',
@@ -326,7 +338,8 @@ export const MOCK_ARTWORKS: Artwork[] = [
       id: 10,
       first_name: 'Mary',
       last_name: 'Jayn',
-      avatar_url: Slide03,
+      avatar_url:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
     },
     description: 'Dreamlike figures lost in an endless nocturnal maze.',
     category: 'surrealism',

@@ -1,5 +1,5 @@
-import type { UserDetail, UserProfile } from '@/types/user';
-import type { Artist, Artwork } from '@/types/artwork';
+import type { Artwork } from '@/types/artwork';
+import { MOCK_ARTISTS_DETAILS } from './artistsData';
 
 import Slide01 from '@/assets/hero-slider/slide-01.webp';
 import Slide03 from '@/assets/hero-slider/slide-03.webp';
@@ -8,35 +8,12 @@ import Slide08 from '@/assets/hero-slider/slide-08.webp';
 import HorizontalMountainArt from '@/assets/mock-horizontal-artwork.svg';
 import ManifestoArt5 from '@/assets/manifesto/manifesto-art-5.webp';
 
-export interface ProfileNotification {
-  id: number;
-  date: string;
-  title: string;
-  content?: string;
-}
-
-export const MOCK_PROFILE_USER: UserDetail = {
-  id: '10',
-  email: 'mary.jayn@gmail.com',
-  role: 'artist',
-  application_status: 'approved',
-};
-
-// Empty profile, as the backend returns it right after the first login
-export const MOCK_USER_PROFILE: UserProfile = {
-  first_name: null,
-  last_name: null,
-  email: 'mary.jayn@gmail.com',
-  phone_number: null,
-  avatar_url: null,
-};
-
-const MOCK_ARTIST: Artist = {
-  id: 10,
-  first_name: 'Mary',
-  last_name: 'Jayn',
-  avatar_url: Slide03,
-};
+const {
+  id,
+  first_name,
+  last_name,
+  image_url: avatar_url,
+} = MOCK_ARTISTS_DETAILS[10];
 
 export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
   {
@@ -48,7 +25,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 80,
     painting_height: 80,
     price: '1200',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description: 'An exploration of quiet contemplation on a sunlit hill.',
     category: 'landscape',
     status: 'approved',
@@ -66,7 +43,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 120,
     painting_height: 70,
     price: '950',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description: 'Distant mountain peaks under a deep cobalt sky.',
     category: 'landscape',
     status: 'pending',
@@ -84,7 +61,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 70,
     painting_height: 90,
     price: '1450',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description: 'Warm coastal horizon with figures in motion.',
     category: 'impressionism',
     status: 'pending',
@@ -102,7 +79,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 80,
     painting_height: 100,
     price: '800',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description: 'Graphic study of movement and shadows across city lines.',
     category: 'modern',
     status: 'rejected',
@@ -120,7 +97,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 60,
     painting_height: 80,
     price: '1100',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description: 'Expressive charcoal and graphite portrait study.',
     category: 'portrait',
     status: 'sold',
@@ -138,7 +115,7 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     painting_width: 100,
     painting_height: 70,
     price: '1600',
-    artist: MOCK_ARTIST,
+    artist: { id, first_name, last_name, avatar_url },
     description:
       'Abstract composition balancing warm ochre and cool blue planes.',
     category: 'abstractionism',
@@ -147,31 +124,5 @@ export const MOCK_PROFILE_ARTWORKS: Artwork[] = [
     created_at: '2026-07-05T16:00:00Z',
     year: 2025,
     medium: 'mixed_media',
-  },
-];
-
-export const MOCK_PROFILE_NOTIFICATIONS: ProfileNotification[] = [
-  {
-    id: 1,
-    date: '12/07',
-    title: 'MARY ARTWORK SHIPPED: YOUR ORDER HAS BEEN DISPATCHED',
-  },
-  {
-    id: 2,
-    date: '01/10',
-    title:
-      'INQUIRY ANSWERED: THE CURATOR HAS RESPONDED TO YOUR REQUEST REGARDING "THE SHADOW OF STILLNESS".',
-    content:
-      'THANK YOU FOR YOUR INTEREST IN THE SHADOW OF STILLNESS. OUR CURATOR HAS REVIEWED YOUR REQUEST AND PROVIDED THE FULL ARTWORK DETAILS, HIGH-RESOLUTION VISUAL DOCUMENTATION, AND CURRENT SHIPPING ESTIMATES.',
-  },
-  {
-    id: 3,
-    date: '21/04',
-    title: 'MARY ARTWORK SHIPPED: YOUR ORDER HAS BEEN DISPATCHED',
-  },
-  {
-    id: 4,
-    date: '21/03',
-    title: 'ARTIST HAS JUST BEEN LISTED IN OUR NEW CURATED COLLECTION',
   },
 ];
