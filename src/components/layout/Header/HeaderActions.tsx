@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { useAppStore } from '@/store/useAppStore';
 
-import { HEADER_HOVER, type HeaderTheme } from './headerConstants';
+import type { HeaderTheme } from '@/constants/navigation';
+
+import { HEADER_HOVER } from './headerConstants';
 
 import SearchIcon from '@/assets/search-icon.svg';
 

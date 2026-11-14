@@ -4,16 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/utils/cn';
+
+import { PROFILE_TABS } from '@/constants/navigation';
+
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 // #region Constants & Styles
-const PROFILE_TABS = [
-  { name: 'Favorites', href: '/profile/favorites' },
-  { name: 'My Arts', href: '/profile/arts', artistOnly: true },
-  { name: 'Profile Settings', href: '/profile/settings' },
-  { name: 'Preferences & Notifications', href: '/profile/notifications' },
-];
-
 const TAB_LINK_BASE = `
   text-[12px]/[24px] font-[500] tracking-[1px] uppercase
   transition-opacity duration-300

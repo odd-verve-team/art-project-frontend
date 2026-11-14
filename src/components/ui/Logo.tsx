@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import type { HeaderTheme } from '../layout/Header/headerConstants';
+import type { HeaderTheme } from '@/constants/navigation';
 
 const LOGO_VARS = {
   '--corner-size': '11px',

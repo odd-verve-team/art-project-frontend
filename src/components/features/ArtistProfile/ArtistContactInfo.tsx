@@ -1,16 +1,6 @@
-import type { ArtistDetail, SocialMedia } from '@/types/artist';
+import type { ArtistDetail } from '@/types/artist';
+import { SOCIAL_LINKS_CONFIG } from '@/constants/common';
 
-import InstagramIcon from '@/assets/socials/instagram-icon.svg';
-import TwitterIcon from '@/assets/socials/twitter-icon.svg';
-import TelegramIcon from '@/assets/socials/telegram-icon.svg';
-import FacebookIcon from '@/assets/socials/facebook-icon.svg';
-
-const SOCIAL_ITEMS: { key: keyof SocialMedia; icon: string }[] = [
-  { key: 'instagram', icon: InstagramIcon },
-  { key: 'twitter', icon: TwitterIcon },
-  { key: 'telegram', icon: TelegramIcon },
-  { key: 'facebook', icon: FacebookIcon },
-];
 
 const getSocialUsername = (url: string) => {
   const cleanUrl = url.split('?')[0].replace(/\/$/, '');
@@ -112,7 +102,7 @@ export const ArtistContactInfo = ({ artist, className = '' }: Props) => {
               lg:gap-[min(0.83vw,12px)]
             `}
           >
-            {SOCIAL_ITEMS.map((item) => {
+            {SOCIAL_LINKS_CONFIG.map((item) => {
               const url = social_media?.[item.key];
               if (!url) return null;
 

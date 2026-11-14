@@ -1,8 +1,10 @@
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { useAppStore } from '@/store/useAppStore';
 
-import { NAV_ITEMS, HEADER_HOVER } from './headerConstants';
+import { NAV_ITEMS } from '@/constants/navigation';
+import { HEADER_HOVER } from './headerConstants';
 
 import SearchIcon from '@/assets/search-icon.svg';
 import CloseIcon from '@/assets/close-icon.svg';

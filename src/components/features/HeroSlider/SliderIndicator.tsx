@@ -1,7 +1,8 @@
 import { motion, type MotionValue, type PanInfo } from 'framer-motion';
-import { heroSlides } from './sliderData';
-import { IndicatorLine } from './IndicatorLine';
 import { useRef } from 'react';
+
+import { HERO_SLIDES } from '@/constants/home';
+import { IndicatorLine } from './IndicatorLine';
 
 interface SliderIndicatorProps {
   progress: MotionValue<number>;
@@ -42,12 +43,14 @@ export const SliderIndicator = ({
       style={{ touchAction: 'none' }}
       initial={skipAnimation ? false : { opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }}
+      transition={
+        skipAnimation ? undefined : { duration: 0.4, ease: 'easeOut' }
+      }
       onPanStart={handlePanStart}
       onPan={handlePan}
       onPanEnd={handlePanEnd}
     >
-      {heroSlides.map((slide, index) => (
+      {HERO_SLIDES.map((slide, index) => (
         <IndicatorLine
           key={slide.id}
           index={index}

@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
+import { type HeaderTheme, NAV_ITEMS } from '@/constants/navigation';
+import { HEADER_HOVER } from './headerConstants';
 
-import { NAV_ITEMS, HEADER_HOVER, type HeaderTheme } from './headerConstants';
 
 const getLinkClass =
   (path: string, theme: HeaderTheme) =>

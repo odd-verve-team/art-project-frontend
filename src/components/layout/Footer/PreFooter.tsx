@@ -1,4 +1,4 @@
-import { MANIFESTO_IMAGES, LINE_BASE } from './preFooterConstants';
+import { MANIFESTO_IMAGES, LINE_BASE } from '@/constants/home';
 
 export const PreFooter = () => {
   return (

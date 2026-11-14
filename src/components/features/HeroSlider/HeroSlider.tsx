@@ -5,22 +5,22 @@ import {
   animate,
   type PanInfo,
 } from 'framer-motion';
-import { heroSlides } from './sliderData';
-import { SliderIndicator } from './SliderIndicator';
-import { SpeedControl } from './SpeedControl';
 import { useEffect, useRef, useCallback, useState } from 'react';
+
 import { useAppStore } from '@/store/useAppStore';
+import { HERO_SLIDES } from '@/constants/home';
+
+import { SpeedControl } from './SpeedControl';
+import { SliderIndicator } from './SliderIndicator';
 
 const BASE_DURATION = 10;
 const SLIDER_DELAY = 1.5;
 const CONTROLS_DELAY = 0.2;
 
 export const HeroSlider = () => {
-  const [isFirstVisit] = useState(
-    () => !useAppStore.getState().heroAnimated,
-  );
+  const [isFirstVisit] = useState(() => !useAppStore.getState().heroAnimated);
 
-  const totalSlides = heroSlides.length;
+  const totalSlides = HERO_SLIDES.length;
   const progress = useMotionValue(0);
   const entranceX = useMotionValue(isFirstVisit ? window.innerWidth : 0);
 
@@ -32,12 +32,10 @@ export const HeroSlider = () => {
   const [speed, setSpeed] = useState(1);
   const [showControls, setShowControls] = useState(!isFirstVisit);
 
-
   const scrollX = useTransform(progress, (p) => {
     const normalized = ((p % totalSlides) + totalSlides) % totalSlides;
     return `${-(normalized / totalSlides) * 50}%`;
   });
-
 
   const stopAutoScroll = useCallback(() => {
     controlsRef.current?.stop();
@@ -66,7 +64,6 @@ export const HeroSlider = () => {
       },
     });
   }, [progress, totalSlides, speed]);
-
 
   useEffect(() => {
     const track = trackRef.current;
@@ -142,7 +139,6 @@ export const HeroSlider = () => {
     return () => controlsRef.current?.stop();
   }, [startAutoScroll]);
 
-
   const handleSliderPanStart = () => {
     if (!isEntranceDone.current) return;
     stopAutoScroll();
@@ -175,7 +171,7 @@ export const HeroSlider = () => {
             className="w-max flex items-center"
             style={{ x: scrollX, willChange: 'transform' }}
           >
-            {heroSlides.map((slide) => (
+            {HERO_SLIDES.map((slide) => (
               <img
                 key={slide.id}
                 src={slide.image}
@@ -184,7 +180,7 @@ export const HeroSlider = () => {
                 draggable={false}
               />
             ))}
-            {heroSlides.map((slide) => (
+            {HERO_SLIDES.map((slide) => (
               <img
                 key={`dup-${slide.id}`}
                 src={slide.image}

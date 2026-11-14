@@ -7,7 +7,7 @@ import { GalleryToolbar } from '@/components/features/Gallery/GalleryToolbar';
 import { Loader } from '@/components/ui/Loader';
 
 import { formatGalleryParams } from '@/utils/galleryFilters';
-import { DEFAULT_PAGE } from '@/components/features/Gallery/galleryConstants';
+import { DEFAULT_PAGE } from '@/constants/gallery';
 
 export const GalleryPage = () => {
   const galleryArtworks = useArtworkStore((state) => state.galleryArtworks);
@@ -101,31 +101,33 @@ export const GalleryPage = () => {
             </div>
           </div>
 
-          {meta && meta.page < meta.totalPages && galleryArtworks.length > 0 && (
-            <div
-              className={`
+          {meta &&
+            meta.page < meta.totalPages &&
+            galleryArtworks.length > 0 && (
+              <div
+                className={`
                 flex justify-center items-center min-h-[44px]
                 pb-[24px]
                 lg:pt-[30px] lg:pb-[62px]
               `}
-            >
-              {isLoading && !isInitialLoading ? (
-                <Loader compact text="" />
-              ) : (
-                <button
-                  onClick={handleLoadMore}
-                  className={`
+              >
+                {isLoading && !isInitialLoading ? (
+                  <Loader compact text="" />
+                ) : (
+                  <button
+                    onClick={handleLoadMore}
+                    className={`
                     text-primary font-[300] uppercase transition-opacity
                     duration-300 hover:opacity-70
                     text-[16px]/[24px]
                     lg:text-[24px]
                   `}
-                >
-                  See More
-                </button>
-              )}
-            </div>
-          )}
+                  >
+                    See More
+                  </button>
+                )}
+              </div>
+            )}
         </div>
       </div>
     </div>
