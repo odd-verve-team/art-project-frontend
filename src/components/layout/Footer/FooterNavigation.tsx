@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
+import { NAV_ITEMS, FOOTER_SOCIAL_ITEMS } from '@/constants/navigation';
 import {
   FOOTER_TEXT_BASE,
   FOOTER_TITLE,
@@ -7,19 +8,6 @@ import {
 } from './footerConstants';
 
 import ArrowIcon from '@/assets/social-arrow-icon.svg';
-
-const SOCIAL_ITEMS = [
-  { label: 'facebook', url: '1' },
-  { label: 'instagram', url: '2' },
-  { label: 'youtube', url: '3' },
-];
-
-const NAV_ITEMS = [
-  { label: 'home', path: '/' },
-  { label: 'about', path: '/#about' },
-  { label: 'gallery', path: '/gallery' },
-  { label: 'profile', path: '/profile' },
-];
 
 const LINK_CLASS = `block leading-none w-fit ${FOOTER_HOVER}`;
 const SOCIAL_LINK_CLASS = `flex items-center gap-[8px] w-fit ${FOOTER_HOVER}`;
@@ -77,7 +65,7 @@ export const FooterNavigation = () => {
       >
         <h3 className={FOOTER_TITLE}>Social</h3>
         <ul className="mt-[8px] flex flex-col gap-[8px]">
-          {SOCIAL_ITEMS.map((item) => (
+          {FOOTER_SOCIAL_ITEMS.map((item) => (
             <li key={item.url}>
               <a
                 href={item.url}

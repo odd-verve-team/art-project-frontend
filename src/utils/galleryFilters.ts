@@ -1,12 +1,12 @@
-import type { GetArtworksParams } from "@/services/api";
-import type { ArtworkSort } from "@/types/artwork";
-import type { GalleryFilterState } from "@/types/gallery";
-import { 
-  DEFAULT_PAGE, 
-  DEFAULT_LIMIT, 
-  FILTER_LIMITS, 
+import type { GetArtworksParams } from '@/services/api';
+import type { ArtworkSort } from '@/types/artwork';
+import type { GalleryFilterState } from '@/types/gallery';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_LIMIT,
+  FILTER_LIMITS,
   STATUS_OPTIONS,
-} from "@/components/features/Gallery/galleryConstants";
+} from '@/constants/gallery';
 
 export const formatGalleryParams = (
   filters: GalleryFilterState,

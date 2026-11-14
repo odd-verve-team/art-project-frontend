@@ -1,12 +1,7 @@
 import { http, HttpResponse, delay } from 'msw';
+import type { NotificationItem } from '@/types/notifications';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || '';
-
-export interface NotificationItem {
-  created_at: string;
-  title: string;
-  message_body: string | null;
-}
 
 const mockNotifications: NotificationItem[] = [
   {

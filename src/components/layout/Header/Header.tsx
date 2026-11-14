@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Logo } from '@/components/ui/Logo';
+import type { HeaderTheme } from '@/constants/navigation';
+
 import { HeaderNavigation } from '@/components/layout/Header/HeaderNavigation';
 import { HeaderActions } from '@/components/layout/Header/HeaderActions';
-import { MobileMenu } from './MobileMenu';
-
-import type { HeaderTheme } from './headerConstants';
+import { MobileMenu } from '@/components/layout/Header/MobileMenu';
+import { Logo } from '@/components/ui/Logo';
 
 import BurgerIcon from '@/assets/burger-icon.svg';
 

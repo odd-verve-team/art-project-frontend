@@ -11,7 +11,7 @@ import {
   STATUS_OPTIONS,
   FILTER_LIMITS,
   DEFAULT_FILTERS,
-} from './galleryConstants';
+} from '@/constants/gallery';
 
 import CloseIcon from '@/assets/close-icon.svg';
 

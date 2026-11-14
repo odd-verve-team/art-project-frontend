@@ -11,7 +11,7 @@ import {
   FILTER_LIMITS,
   MEDIUM_OPTIONS,
   CATEGORY_OPTIONS,
-} from '../Gallery/galleryConstants';
+} from '@/constants/gallery';
 
 import PencilIcon from '@/assets/pencil-icon.svg';
 

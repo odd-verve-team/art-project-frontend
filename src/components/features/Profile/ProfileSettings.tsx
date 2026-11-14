@@ -4,82 +4,17 @@ import { useState } from 'react';
 import { notificationsApi } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProfileStore } from '@/store/useProfileStore';
+import { cn } from '@/utils/cn';
 
 import type { Address, UserDetail, UserProfile } from '@/types/user';
 import type { ArtistProfile, SocialMedia } from '@/types/artist';
 import type { ArtworkCategory } from '@/types/artwork';
-import { CATEGORY_OPTIONS } from '../Gallery/galleryConstants';
-import { cn } from '@/utils/cn';
 
-import ImageIcon from '@/assets/image-icon.svg';
-import InstagramIcon from '@/assets/socials/instagram-icon.svg';
-import TelegramIcon from '@/assets/socials/telegram-icon.svg';
-import TwitterIcon from '@/assets/socials/twitter-icon.svg';
-import FacebookIcon from '@/assets/socials/facebook-icon.svg';
+import { ADDRESS_FIELDS, ARTIST_TEXT_FIELDS, PERSONAL_FIELDS } from '@/constants/profile';
+import { DEFAULT_AVATAR, SOCIAL_LINKS_CONFIG } from '@/constants/common';
+import { CATEGORY_OPTIONS } from '@/constants/gallery';
 
 // #region Constants & Styles
-const PERSONAL_FIELDS = [
-  {
-    name: 'first_name',
-    type: 'text',
-    placeholder: 'name',
-    required: true,
-    disabled: false,
-  },
-  {
-    name: 'last_name',
-    type: 'text',
-    placeholder: 'second name',
-    required: true,
-    disabled: false,
-  },
-  {
-    name: 'email',
-    type: 'email',
-    placeholder: 'email',
-    required: true,
-    disabled: true,
-  },
-  {
-    name: 'phone_number',
-    type: 'tel',
-    placeholder: 'phone number',
-    required: false,
-    disabled: false,
-  },
-];
-
-const ADDRESS_FIELDS = [
-  { name: 'country', type: 'text', label: 'country' },
-  { name: 'city', type: 'text', label: 'city' },
-  { name: 'postal_code', type: 'text', label: 'postal code' },
-];
-
-const ARTIST_TEXT_FIELDS = [
-  {
-    name: 'bio',
-    label: 'about you',
-    placeholder: 'tell us about yourself...',
-  },
-  {
-    name: 'statement',
-    label: 'your statement',
-    placeholder: 'your artist statement...',
-  },
-  {
-    name: 'style',
-    label: 'your style',
-    placeholder: 'describe your style...'
-  },
-];
-
-const SOCIAL_FIELDS = [
-  { name: 'instagram', placeholder: 'instagram', icon: InstagramIcon },
-  { name: 'telegram', placeholder: 'telegram', icon: TelegramIcon },
-  { name: 'twitter', placeholder: 'twitter', icon: TwitterIcon },
-  { name: 'facebook', placeholder: 'facebook', icon: FacebookIcon },
-];
-
 const TEXT_BASE = `
   text-[12px]/[24px] font-[500] tracking-[1px] uppercase
   md:text-[13px]/[24px]
@@ -115,10 +50,12 @@ export const ProfileSettings = () => {
     profile: UserProfile;
   }>();
   const setUser = useAuthStore((state) => state.setUser);
-  const updateProfile = useProfileStore((state) => state.updateProfile)
+  const updateProfile = useProfileStore((state) => state.updateProfile);
 
   const [isArtistForm, setIsArtistForm] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<ArtworkCategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    ArtworkCategory[]
+  >([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -215,7 +152,7 @@ export const ProfileSettings = () => {
       };
 
       if (avatarFile) {
-        (dataToUpdate).avatar = avatarFile;
+        dataToUpdate.avatar = avatarFile;
       }
 
       try {
@@ -282,7 +219,7 @@ export const ProfileSettings = () => {
                   />
                 ) : (
                   <img
-                    src={ImageIcon}
+                    src={DEFAULT_AVATAR}
                     alt="No Avatar"
                     className="transition-opacity group-hover:opacity-70"
                   />
@@ -418,27 +355,27 @@ export const ProfileSettings = () => {
               <div className="flex flex-col gap-[16px] lg:max-w-[600px]">
                 <span className={TEXT_BASE}>social</span>
                 <div className="flex flex-col gap-[24px]">
-                  {SOCIAL_FIELDS.map((social) => {
+                  {SOCIAL_LINKS_CONFIG.map((social) => {
                     const value =
                       artistProfile?.social_media?.[
-                        social.name as keyof SocialMedia
+                        social.key as keyof SocialMedia
                       ];
 
                     return (
                       <div
-                        key={social.name}
+                        key={social.key}
                         className="relative flex items-center w-full"
                       >
                         <input
                           type="text"
-                          name={social.name}
+                          name={social.key}
                           placeholder={social.placeholder}
                           defaultValue={value || ''}
                           className={cn(INPUT_CLASS, 'pr-[28px]')}
                         />
                         <img
                           src={social.icon}
-                          alt={social.name}
+                          alt={social.key}
                           className="absolute right-0 bottom-[6px] w-[16px] h-[16px] pointer-events-none"
                         />
                       </div>

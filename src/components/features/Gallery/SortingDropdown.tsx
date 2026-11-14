@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { SORT_OPTIONS } from '@/components/features/Gallery/galleryConstants';
+import { SORT_OPTIONS } from '@/constants/gallery';
 import type { ArtworkSort } from '@/types/artwork';
 
 interface Props {
