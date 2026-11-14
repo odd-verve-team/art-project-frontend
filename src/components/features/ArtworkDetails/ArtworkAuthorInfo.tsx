@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import type { Artist, ArtworkAuthorDetail } from '@/types/artwork';
 import { getFullName } from '@/utils/getFullName';
 
+import type { Artist, ArtworkAuthorDetail } from '@/types/artwork';
 import { DEFAULT_AVATAR } from '@/constants/common';
-import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
+import ArrowIcon from '@/assets/social-arrow-icon.svg';
 
 interface Props {
   artist: Artist | ArtworkAuthorDetail;
@@ -18,7 +18,6 @@ export const ArtworkAuthorInfo = ({ artist, className = '' }: Props) => {
   const isDefaultAvatar = image === DEFAULT_AVATAR;
   const artistHref = artist.id ? `/artists/${artist.id}` : '#';
 
-  //! TODO: bio and categories will come from the extended Artist type (artwork detail response)
   const bio = 'bio' in artist ? artist.bio || '' : '';
   const categories = 'art_categories' in artist && artist.art_categories
     ? artist.art_categories.join(' / ')

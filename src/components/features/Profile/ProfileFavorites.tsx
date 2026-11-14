@@ -3,10 +3,10 @@ import { useOutletContext } from 'react-router-dom';
 
 import { useFavoritesStore } from '@/store/useFavoritesStore';
 
+import type { UserDetail } from '@/types/user';
+
 import { Loader } from '@/components/ui/Loader';
 import { ArtworkGrid } from '@/components/features/Artworks/ArtworkGrid';
-
-import type { UserDetail } from '@/types/user';
 
 export const ProfileFavorites = () => {
   const { user } = useOutletContext<{ user: UserDetail | null }>();
@@ -54,26 +54,6 @@ export const ProfileFavorites = () => {
       >
         {content}
       </div>
-
-      {/* 
-        //! TODO: Uncomment when backend supports user.favorites 
-        //! endpoint with pagination and total count
-      */}
-      {/* 
-      {favorites.length > 0 && (
-        <div className="flex justify-center mt-[24px]">
-          <button
-            type="button"
-            className={`
-              text-[12px]/[24px] font-[500] tracking-[1px] uppercase text-primary
-              hover:opacity-70 transition-opacity duration-300 outline-none cursor-pointer
-            `}
-          >
-            See more
-          </button>
-        </div>
-      )} 
-      */}
     </section>
   );
 };
